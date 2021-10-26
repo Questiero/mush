@@ -4,7 +4,7 @@ package mush;
  *
  * @author jules
  */
-public class Mush {
+public class Main {
 
     /**
      * @param args the command line arguments
