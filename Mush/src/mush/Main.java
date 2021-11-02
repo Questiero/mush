@@ -1,11 +1,13 @@
 package mush;
 
+import mush.carte.Vaisseau;
+
 public class Main {
 
      public static void main(String[] args) {
         
-        System.out.println("Hello world");
-
+         Vaisseau daedalus = new Vaisseau("Daedalus");
+         
      }
     
 }
