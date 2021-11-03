@@ -15,7 +15,7 @@ public class Joueur{
     
    private Joueur (String prénom, String nom){
         this.prénom = prénom;
-        this.nom= nom;
+        this.nom = nom;
     
    }
 }
