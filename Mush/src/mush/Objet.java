@@ -9,6 +9,7 @@ package mush;
  *
  * @author hp
  */
-public class Objets {
-    
+public class Objet {
+   String nomobj; 
+   
 }
