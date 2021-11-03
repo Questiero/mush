@@ -8,7 +8,7 @@ public class Vaisseau {
     
     private final Salle[] salles = new Salle[nbrSalles];
     //Représentation des déplacements possibles entre les salles au sein du vaisseau sous forme de graph (représenté par sa matrice d'adjacence)
-    private final boolean[][] graphSalles = {{, , , , , , , , , , , , , , , , , , , , , , , , , , },
+    /*private final boolean[][] graphSalles = {{, , , , , , , , , , , , , , , , , , , , , , , , , , },
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
@@ -34,7 +34,7 @@ public class Vaisseau {
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
                                              {, , , , , , , , , , , , , , , , , , , , , , , , , , },
-                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , }};
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , }};*/
     
     public Vaisseau(String nom) {
         
