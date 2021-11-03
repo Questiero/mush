@@ -9,6 +9,12 @@ package mush;
  *
  * @author ikrame
  */
-public class Joueurs {
+public class Joueur{
+    String prénom;
+    String nom;
     
+   private Joueur (String prénom, String nom){
+        this.prénom= prénom;
+        this.nom=nom;
+   }
 }
