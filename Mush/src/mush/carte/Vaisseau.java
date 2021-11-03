@@ -8,7 +8,33 @@ public class Vaisseau {
     
     private final Salle[] salles = new Salle[nbrSalles];
     //Représentation des déplacements possibles entre les salles au sein du vaisseau sous forme de graph (représenté par sa matrice d'adjacence)
-    private final boolean[][] graphSalles = new boolean[nbrSalles][nbrSalles];
+    private final boolean[][] graphSalles = {{, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , },
+                                             {, , , , , , , , , , , , , , , , , , , , , , , , , , }};
     
     public Vaisseau(String nom) {
         
@@ -22,7 +48,7 @@ public class Vaisseau {
         
         String[] nomSalles = {"Pont",
                               "Tourelle Alpha avant",
-                              "Tourelle Alpha arrière", 
+                              "Tourelle Beta avant", 
                               "Couloir avant",
                               "Jardin Hydrophonique",
                               "Laboratoire",
@@ -53,7 +79,7 @@ public class Vaisseau {
             this.salles[i] = new Salle(nomSalles[i]);
             
         }
-        
+                
     }
     
 }
