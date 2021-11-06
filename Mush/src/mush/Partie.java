@@ -34,6 +34,7 @@ public class Partie {
 
     private void initPersonnages() {
         //TODO
+        
         String[] nomPersonnages = {"Wang Chao",
             "Zhong Chun",
             "Eleesha Williams",
@@ -50,9 +51,11 @@ public class Partie {
             "Roland Zuccali",
             "Stephen Seagull",
             "Terrence Archer"};
+        
         for (int i = 0; i < nbJoueurs; i++) {
             this.personnages[i] = new Joueur(nomPersonnages[i]);
         }
+        
     }
 
     /**

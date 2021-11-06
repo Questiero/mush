@@ -13,9 +13,9 @@ public class Vaisseau {
     private final int maxOxygene = 500;
     private final int maxFuel = 50;
     //Caractéristiques du Vaisseau
-    private int armure;
-    private int oxygene;
-    private int fuel;
+    private int armure = maxArmure;
+    private int oxygene = maxOxygene;
+    private int fuel = maxFuel;
 
     //Tableau des salles
     private Salle[] salles = new Salle[nbSalles];
@@ -29,11 +29,6 @@ public class Vaisseau {
 
         //Initialisation du nom à celui donné en paramètre
         this.nom = nom;
-
-        //Initialisation des caractéristiques du Vaisseau aux valeurs par défaut
-        this.armure = this.maxArmure;
-        this.oxygene = this.maxOxygene;
-        this.fuel = this.maxFuel;
 
         this.initSalles();
 
