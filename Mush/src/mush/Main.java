@@ -36,7 +36,7 @@ public class Main {
             case 2:
                 break;
             default:
-                System.out.println(Main.msgErreurEntree());
+                System.out.println(Main.msgErreurEntree);
                 Main.displayMainMenu();
                 break;
             
