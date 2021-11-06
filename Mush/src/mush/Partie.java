@@ -4,10 +4,18 @@ import java.util.ArrayList;
 
 public class Partie {
     
+    //Nombre des joueurs 
+    private final int nbJoueurs = 16;
+    
     private Vaisseau vaisseau;
     
+    //Valeur contenant le jour actuel
+    private int jour;
+    //Valeur contenant le cycle actuel
+    private int cycle;
+    
     //Tableau contenant tout les joueurs de la partie
-    private Joueur[] personnages = new Joueur[16];
+    private Joueur[] personnages = new Joueur[nbJoueurs];
     //Tableau dynamique contenant tout les joueurs contrôlés par des personnes
     private ArrayList<Joueur> joueurs = new ArrayList<>();
     //Tableau dynamique contenant tout les joueurs contrôlés par l'ordinateur
@@ -20,14 +28,56 @@ public class Partie {
         
         this.vaisseau = new Vaisseau("Daedalus");
         
-        initPersonnages();
+        this.initPersonnages();
         
     }
     
     private void initPersonnages() {
+        //TODO
+    }
+    
+    /**
+     * Incrémentation du cycle en tenant compte de la limite de 8 cycles par jour
+     */
+    private void nextCycle() {
         
+        this.cycle++;
         
+        if(this.cycle==9) {
+            
+            this.cycle = 1;
+            
+            //TODO Code chaque cycle (ex: +1PA, +1PM pour tout les joueurs)
+            
+            nextDay();
+            
+        }
         
+    }
+    
+    /**
+     * Incrémentaiton du jour
+     */
+    private void nextDay() {
+        
+        this.jour++;
+        
+        //TODO Code chaque jour (ex: reset Infirmier)
+        
+    }
+    
+    /**
+     * Lance la partie
+     */
+    public void start() {
+        //TODO
+    }
+
+    /**
+     * Arrête la partie
+     */
+    public void end() {
+        //TODO
     }
     
 }

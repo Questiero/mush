@@ -3,7 +3,7 @@ package mush;
 public class Vaisseau {
 
     //Nombre de salles dans le vaisseau
-    private final int nbrSalles = 27;
+    private final int nbSalles = 27;
 
     //Nom du vaisseau
     private final String nom;
@@ -11,14 +11,14 @@ public class Vaisseau {
     //Caractéristiques maximales du Vaisseau
     private final int maxArmure = 200;
     private final int maxOxygene = 500;
-    private final int maxFuel = 20;
+    private final int maxFuel = 50;
     //Caractéristiques du Vaisseau
     private int armure;
     private int oxygene;
     private int fuel;
 
     //Tableau des salles
-    private Salle[] salles = new Salle[nbrSalles];
+    private Salle[] salles = new Salle[nbSalles];
 
     /**
      * Constructeur de Vaisseau
@@ -35,7 +35,7 @@ public class Vaisseau {
         this.oxygene = this.maxOxygene;
         this.fuel = this.maxFuel;
 
-        initSalles();
+        this.initSalles();
 
     }
 
@@ -72,7 +72,7 @@ public class Vaisseau {
             "Tourelle Beta arrière",
             "Salle des moteurs"};
 
-        for (int i = 0; i < nbrSalles; i++) {
+        for (int i = 0; i < nbSalles; i++) {
 
             this.salles[i] = new Salle(nomSalles[i]);
 
