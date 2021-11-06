@@ -3,14 +3,14 @@ package mush;
 import java.util.Scanner;
 
 public class Main {
-    
+
     //Constantes statiques pour faciliter les entrées:
     public final static Scanner scanner = new Scanner(System.in);
     public final static String msgErreurEntree = "Erreur, veuillez entrer une valeur correspondant au menu affiché";
-    
+
     //Partie de jeu
     private final static Partie partie = new Partie();
-    
+
     /**
      * Affiche le menu principal
      */
@@ -24,12 +24,12 @@ public class Main {
         System.out.println("          | |  | | |_| \\__ \\ | | |");
         System.out.println("          \\_|  |_/\\__,_|___/_| |_|");
         System.out.println("\n");
-        
+
         System.out.println("1. Nouvelle Partie");
         System.out.println("2. Quitter");
 
-        switch(Main.scanner.nextInt()) {
-            
+        switch (Main.scanner.nextInt()) {
+
             case 1:
                 Main.partie.start();
                 break;
@@ -39,15 +39,15 @@ public class Main {
                 System.out.println(Main.msgErreurEntree);
                 Main.displayMainMenu();
                 break;
-            
+
         }
-        
+
     }
-    
+
     public static void main(String[] args) {
-        
+
         Main.displayMainMenu();
-        
+
     }
-    
+
 }

@@ -4,11 +4,19 @@ import java.util.ArrayList;
 
 public class Salle {
 
+    //Nom de la salle
     private final String nom;
-    // declaration de l'inventaire des obejts dans la salle 
+    
+    //Stockage de la salle 
     private ArrayList<Objet> stockage = new ArrayList<>();
 
+    /**
+     * Constructeur de Salle
+     * 
+     * @param nom nom de la Salle
+     */
     public Salle(String nom) {
         this.nom = nom;
     }
+
 }
