@@ -1,5 +1,7 @@
 package mush;
 
+import java.util.HashMap;
+
 public class Joueur {
     //Nombre des joueurs 
     private final int nbJoueurs = 16;
@@ -23,9 +25,10 @@ public class Joueur {
     private int pmo;
     
     //Compétences des joueurs
-    private Competence competence;
+    private HashMap<String, String> competence;
     
     //Contenu de l'inventaire
+    private final int conetnuInventaireMax = 3;
     private Objet[] inventaire;
 
     private Joueur(String nom) {
@@ -35,8 +38,8 @@ public class Joueur {
         this.pm = maxPA;
         this.pv = maxPV;
         this.pmo = maxPMO;
-        this.competence;
-        this.inventaire;
+        this.competence = new HashMap<>();
+        this.inventaire = new Objet[conetnuInventaireMax];
         
     }
 }
