@@ -35,25 +35,34 @@ public class Partie {
     private void initPersonnages() {
         //TODO
         
-        String[] nomPersonnages = {"Wang Chao",
-            "Zhong Chun",
-            "Eleesha Williams",
-            "Finola Keegan",
-            "Frieda Bergmann",
-            "Gioele Rinaldao",
-            "Jiang Hua",
-            "Ian Soulton",
-            "Janice Kent",
-            "Kim Jin Su",
-            "Lai Kuan-Ti",
-            "Paola Rinaldo",
-            "Raluca Tomescu",
-            "Roland Zuccali",
-            "Stephen Seagull",
-            "Terrence Archer"};
+        String[][] caracteristiquesPersonnages = {{"Wang Chao", "Tireur", "Bourreau"},
+            {"Zhong Chun", "Seul espoir", "Infirmier"},
+            {"Eleesha Williams", "Traqueur", "Observateur"},
+            {"Finola Keegan", "Biologiste", "Infirmier"},
+            {"Frieda Bergmann", "Astrophysicien", "Pilote"},
+            {"Gioele Rinaldao", "Robuste", "Paranoïaque"},
+            {"Jiang Hua", "Pilote", "Technicien"},
+            {"Ian Soulton", "Biologiste", "Mycologiste"},
+            {"Janice Kent", "Psy", "Informaticien"},
+            {"Kim Jin Su", "Leader", "Pilote"},
+            {"Lai Kuan-Ti", "Concepteur", "Optimiste"},
+            {"Paola Rinaldo", "Logistique", "Tireur"},
+            {"Raluca Tomescu", "Physicien", "Détaché"},
+            {"Roland Zuccali", "Sprinter", "Pilote"},
+            {"Stephen Seagull", "Cuistot", "Robuste"},
+            {"Terrence Archer", "Technicien", "Tireur"}};
+        
+        
         
         for (int i = 0; i < nbJoueurs; i++) {
-            this.personnages[i] = new Joueur(nomPersonnages[i]);
+            
+            Joueur personnage = new Joueur(caracteristiquesPersonnages[i][0]);
+            
+            personnage.addCompetence(caracteristiquesPersonnages[i][1]);
+            personnage.addCompetence(caracteristiquesPersonnages[i][2]);
+
+            this.personnages[i] = personnage;
+            
         }
         
     }
