@@ -51,7 +51,7 @@ public class Partie {
             "Stephen Seagull",
             "Terrence Archer"};
         for (int i = 0; i < nbJoueurs; i++) {
-            Joueur joueur = new Joueur(nomPersonnages[i]);
+            this.personnages[i] = new Joueur(nomPersonnages[i]);
         }
     }
 
