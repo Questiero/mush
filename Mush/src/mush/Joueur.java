@@ -98,14 +98,14 @@ public class Joueur {
     }
 
     /**
-     * Retourne l'entier associé à la compétence competenceKey si le joueur la
+     * Retourne l'Integer associé à la compétence competenceKey si le joueur la
      * possède, null sinon
      *
      * @param competenceKey clé de la compétence à récupérer
-     * @return int associé à la compétence si le joueur la possède, null sinon
+     * @return Integer associé à la compétence si le joueur la possède, null sinon
      */
-    public int getCompetence(String competenceKey) {
-        return this.competences.get(competenceKey).intValue();
+    public Integer getCompetence(String competenceKey) {
+        return this.competences.get(competenceKey);
     }
 
 }
