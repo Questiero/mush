@@ -4,11 +4,12 @@ import java.util.Scanner;
 
 public class Main {
     
-    //Partie de jeu
-    private static Partie partie = new Partie();
+    //Constantes statiques pour faciliter les entrées:
+    public final static Scanner scanner = new Scanner(System.in);
+    public final static String msgErreurEntree = "Erreur, veuillez entrer une valeur correspondant au menu affiché";
     
-    //Scanner pour l'entrée des données
-    public static Scanner scanner = new Scanner(System.in);
+    //Partie de jeu
+    private final static Partie partie = new Partie();
     
     /**
      * Affiche le menu principal
@@ -41,15 +42,6 @@ public class Main {
             
         }
         
-    }
-    
-    /**
-     * Accès et modification facile du message d'erreur pour une valeur hors borne22211
-     * @return message d'erreur
-     * 
-     */
-    public static String msgErreurEntree() {
-        return "Erreur, veuillez entrer une valeur correspondant au menu affiché";
     }
     
     public static void main(String[] args) {
