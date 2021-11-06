@@ -51,7 +51,7 @@ public class Main {
     
     /**
      * Accès et modification facile du message d'erreur pour une valeur hors borne22211
-     * @return message d'erreur1za
+     * @return message d'erreur
      * 
      */
     public static String msgErreurEntree() {
