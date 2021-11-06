@@ -10,12 +10,6 @@ public class Main {
     //Scanner pour l'entrée des données
     public static Scanner scanner = new Scanner(System.in);
     
-    public static void main(String[] args) {
-        
-        Main.displayMainMenu();
-        
-    }
-    
     /**
      * Affiche le menu principal
      */
@@ -56,6 +50,12 @@ public class Main {
      */
     public static String msgErreurEntree() {
         return "Erreur, veuillez entrer une valeur correspondant au menu affiché";
+    }
+    
+    public static void main(String[] args) {
+        
+        Main.displayMainMenu();
+        
     }
     
 }
