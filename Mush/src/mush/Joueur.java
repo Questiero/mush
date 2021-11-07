@@ -41,9 +41,11 @@ public class Joueur {
 
     }
 
+    public void transform() {
+        this.mush = true;
+    }
+    
     /**
-     * Retourne le nom du Personnage
-     *
      * @return nom du personnage
      */
     @Override
@@ -89,7 +91,7 @@ public class Joueur {
             case "Seul espoir":
             case "Sprinter":
             case "Traqueur":
-                this.competences.put(competenceKey, -1);
+                this.competences.put(competenceKey, 0);
                 break;
             default:
 
@@ -102,7 +104,8 @@ public class Joueur {
      * possède, null sinon
      *
      * @param competenceKey clé de la compétence à récupérer
-     * @return Integer associé à la compétence si le joueur la possède, null sinon
+     * @return Integer associé à la compétence si le joueur la possède, null
+     * sinon
      */
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
