@@ -50,14 +50,14 @@ public class Partie {
         {"Terrence Archer", "Technicien", "Tireur"}};
 
         for (String[] caracteristiquesPersonnage : caracteristiquesPersonnages) {
-            
+
             Joueur personnage = new Joueur(caracteristiquesPersonnage[0]);
-            
+
             personnage.addCompetence(caracteristiquesPersonnage[1]);
             personnage.addCompetence(caracteristiquesPersonnage[2]);
-            
+
             this.personnages.add(personnage);
-            
+
         }
 
     }
@@ -98,7 +98,7 @@ public class Partie {
         //TODO 
 
         //Sélection des joueurs
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
 
             int choix = -1;
             boolean correctInput;
@@ -114,14 +114,14 @@ public class Partie {
 
                 }
 
-                choix = Main.scanner.nextInt(); //TODO .next() ?
+                choix = Main.scanner.nextInt();
 
                 correctInput = ((choix >= 1) && (choix <= this.personnages.size()));
 
                 if (!correctInput) {
 
-                    System.out.println("\n" + Main.msgErreurEntree + "\n");
-                    
+                    System.out.println(Main.msgErreurEntree);
+
                 }
 
             } while (!correctInput);
@@ -130,24 +130,37 @@ public class Partie {
             this.personnages.remove(choix - 1);
 
             //Si le joueur choississant actuellement nest le joueur 3 et que les deux joueurs précédant ont choisis Mush, il n'a pas le choix et doit être humain
-            if (!((i == 2) && (this.joueurs.get(i).isMush()) && this.joueurs.get(i).isMush())) {
+            if (!((i == 2) && (this.joueurs.get(0).isMush()) && this.joueurs.get(1).isMush())) {
 
-                System.out.println("\nJoueur " + (i + 1) + ", vous préférez:");
-                System.out.println("1. Etre un humain");
-                System.out.println("2. Etre un mush");
-                System.out.println("3. Laissez le hasard décider");
+                do {
 
-                switch (Main.scanner.nextInt()) { //TODO Only correct inputs with .next()
+                    System.out.println("\nJoueur " + (i + 1) + ", vous préférez:");
+                    System.out.println("1. Etre un humain");
+                    System.out.println("2. Etre un mush");
+                    System.out.println("3. Laissez le hasard décider");
 
-                    case 2:
-                        this.joueurs.get(i).transform();
-                        break;
-                    case 3: //TODO correct chances to get transformed taking into account current number of mush and remaining number of players
-                        if (Math.random() <= 0.5d) {
+                    switch (Main.scanner.nextInt()) {
+
+                        case 1:
+                            correctInput = true;
+                            break;
+                        case 2:
+                            correctInput = true;
                             this.joueurs.get(i).transform();
-                        }
+                            break;
+                        case 3: //TODO correct chances to get transformed taking into account current number of mush and remaining number of players
+                            correctInput = true;
+                            if (Math.random() <= 0.5d) {
+                                this.joueurs.get(i).transform();
+                            }
+                            break;
+                        default:
+                            correctInput = false;
+                            System.out.println(Main.msgErreurEntree);
 
-                }
+                    }
+
+                } while (!correctInput);
 
             }
 

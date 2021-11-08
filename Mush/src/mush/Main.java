@@ -6,7 +6,7 @@ public class Main {
 
     //Constantes statiques pour faciliter les entrées:
     public final static Scanner scanner = new Scanner(System.in);
-    public final static String msgErreurEntree = "Erreur, veuillez entrer une valeur correspondant au menu affiché";
+    public final static String msgErreurEntree = "\nErreur, veuillez entrer une valeur correspondant au menu affiché\n";
 
     //Partie de jeu
     private final static Partie partie = new Partie();
