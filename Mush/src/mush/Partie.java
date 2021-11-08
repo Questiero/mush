@@ -18,6 +18,9 @@ public class Partie {
     //Tableau dynamique contenant tout les joueurs contrôlés par l'ordinateur
     private final ArrayList<Joueur> ordinateurs = new ArrayList<>();
 
+    //Nombre de mush actuellement dans la partie
+    private int nbrMush = 0;
+
     /**
      * Constructeur de Partie
      */
@@ -97,10 +100,13 @@ public class Partie {
     public void start() {
         //TODO 
 
+        //Clone de this.personnages pour faciliter la distribution
+        ArrayList<Joueur> tempPersonnages = (ArrayList<Joueur>) this.personnages.clone();
+
         //Sélection des joueurs
         for (int i = 0; i < 3; i++) {
 
-            int choix = -1;
+            int choixPersonnage = -1;
             boolean correctInput;
 
             //Affiche le menu de sélection tant que le nombre saisi ne correspond pas à un personnage disponible
@@ -108,15 +114,15 @@ public class Partie {
 
                 System.out.println("Joueur " + (i + 1) + ", choississez un personnage parmis:");
 
-                for (int j = 0; j < this.personnages.size(); j++) {
+                for (int j = 0; j < tempPersonnages.size(); j++) {
 
-                    System.out.println((j + 1) + ". " + this.personnages.get(j));
+                    System.out.println((j + 1) + ". " + tempPersonnages.get(j));
 
                 }
 
-                choix = Main.scanner.nextInt();
+                choixPersonnage = Main.scanner.nextInt();
 
-                correctInput = ((choix >= 1) && (choix <= this.personnages.size()));
+                correctInput = ((choixPersonnage >= 1) && (choixPersonnage <= tempPersonnages.size()));
 
                 if (!correctInput) {
 
@@ -126,11 +132,10 @@ public class Partie {
 
             } while (!correctInput);
 
-            this.joueurs.add(this.personnages.get(choix - 1));
-            this.personnages.remove(choix - 1);
+            this.joueurs.add(this.personnages.get(choixPersonnage - 1));
 
-            //Si le joueur choississant actuellement nest le joueur 3 et que les deux joueurs précédant ont choisis Mush, il n'a pas le choix et doit être humain
-            if (!((i == 2) && (this.joueurs.get(0).isMush()) && this.joueurs.get(1).isMush())) {
+            //Si les deux Mush ne sont pas encore séléctionnés, on demande à l'utilisateur de choisir
+            if (this.nbrMush < 2) {
 
                 do {
 
@@ -147,11 +152,14 @@ public class Partie {
                         case 2:
                             correctInput = true;
                             this.joueurs.get(i).transform();
+                            this.nbrMush++;
                             break;
-                        case 3: //TODO correct chances to get transformed taking into account current number of mush and remaining number of players
+                        case 3:
                             correctInput = true;
-                            if (Math.random() <= 0.5d) {
+                            if ((Math.random() * tempPersonnages.size()) < (double) (2 - this.nbrMush)) {
                                 this.joueurs.get(i).transform();
+                                System.out.println("Mush");
+                                this.nbrMush++;
                             }
                             break;
                         default:
@@ -163,6 +171,23 @@ public class Partie {
                 } while (!correctInput);
 
             }
+
+            tempPersonnages.remove(choixPersonnage - 1);
+
+        }
+
+        for (int i = 0; i < 13; i++) {
+
+            Joueur ordinateur = tempPersonnages.get(0);
+
+            if ((Math.random() * tempPersonnages.size()) < (double) (2 - this.nbrMush)) {
+                ordinateur.transform();
+                this.nbrMush++;
+                System.out.println("Mush");
+            }
+
+            this.ordinateurs.add(ordinateur);
+            tempPersonnages.remove(0);
 
         }
 
