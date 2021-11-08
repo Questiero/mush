@@ -45,6 +45,10 @@ public class Joueur {
         this.mush = true;
     }
     
+    public boolean isMush() {
+        return this.mush;
+    }
+    
     /**
      * @return nom du personnage
      */
