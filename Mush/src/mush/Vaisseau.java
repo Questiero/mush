@@ -41,7 +41,7 @@ public class Vaisseau {
 
         String[] nomSalles = {"Pont",
             "Tourelle Alpha avant",
-            "Tourelle Alpha arrière",
+            "Tourelle Alpha avant",
             "Couloir avant",
             "Jardin Hydrophonique",
             "Laboratoire",
