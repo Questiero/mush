@@ -18,7 +18,7 @@ public class Vaisseau {
     private int fuel = maxFuel;
 
     //Tableau des salles
-    private Salle[] salles = new Salle[nbSalles];
+    private final Salle[] salles = new Salle[nbSalles];
 
     /**
      * Constructeur de Vaisseau

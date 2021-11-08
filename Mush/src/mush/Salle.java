@@ -8,7 +8,7 @@ public class Salle {
     private final String nom;
     
     //Stockage de la salle 
-    private ArrayList<Objet> stockage = new ArrayList<>();
+    private final ArrayList<Objet> stockage = new ArrayList<>();
 
     /**
      * Constructeur de Salle

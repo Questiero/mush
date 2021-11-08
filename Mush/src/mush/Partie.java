@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Partie {
 
-    private Vaisseau vaisseau;
+    private final Vaisseau vaisseau;
 
     //Valeur contenant le jour actuel
     private int jour;
@@ -12,11 +12,11 @@ public class Partie {
     private int cycle;
 
     //Tableau contenant tout les joueurs de la partie
-    private ArrayList<Joueur> personnages = new ArrayList<>();
+    private final ArrayList<Joueur> personnages = new ArrayList<>();
     //Tableau dynamique contenant tout les joueurs contrôlés par des personnes
-    private ArrayList<Joueur> joueurs = new ArrayList<>();
+    private final ArrayList<Joueur> joueurs = new ArrayList<>();
     //Tableau dynamique contenant tout les joueurs contrôlés par l'ordinateur
-    private ArrayList<Joueur> ordinateurs = new ArrayList<>();
+    private final ArrayList<Joueur> ordinateurs = new ArrayList<>();
 
     /**
      * Constructeur de Partie
@@ -49,15 +49,15 @@ public class Partie {
         {"Stephen Seagull", "Cuistot", "Robuste"},
         {"Terrence Archer", "Technicien", "Tireur"}};
 
-        for (int i = 0; i < caracteristiquesPersonnages.length; i++) {
-
-            Joueur personnage = new Joueur(caracteristiquesPersonnages[i][0]);
-
-            personnage.addCompetence(caracteristiquesPersonnages[i][1]);
-            personnage.addCompetence(caracteristiquesPersonnages[i][2]);
-
+        for (String[] caracteristiquesPersonnage : caracteristiquesPersonnages) {
+            
+            Joueur personnage = new Joueur(caracteristiquesPersonnage[0]);
+            
+            personnage.addCompetence(caracteristiquesPersonnage[1]);
+            personnage.addCompetence(caracteristiquesPersonnage[2]);
+            
             this.personnages.add(personnage);
-
+            
         }
 
     }
@@ -101,7 +101,7 @@ public class Partie {
         for (int i = 0; i < 2; i++) {
 
             int choix = -1;
-            boolean correctInput = false;
+            boolean correctInput;
 
             //Affiche le menu de sélection tant que le nombre saisi ne correspond pas à un personnage disponible
             do {

@@ -25,10 +25,10 @@ public class Joueur {
     private boolean mush = false;
 
     //Compétences du joueur
-    private HashMap<String, Integer> competences = new HashMap<>();
+    private final HashMap<String, Integer> competences = new HashMap<>();
 
     //Inventaire du joueur
-    private Objet[] inventaire = new Objet[tailleInventaire];
+    private final Objet[] inventaire = new Objet[tailleInventaire];
 
     /**
      * Constructeur de Joueur
