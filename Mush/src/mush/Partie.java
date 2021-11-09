@@ -158,7 +158,6 @@ public class Partie {
                             correctInput = true;
                             if ((Math.random() * tempPersonnages.size()) < (double) (2 - this.nbrMush)) {
                                 this.joueurs.get(i).transform();
-                                System.out.println("Mush");
                                 this.nbrMush++;
                             }
                             break;
@@ -183,7 +182,6 @@ public class Partie {
             if ((Math.random() * tempPersonnages.size()) < (double) (2 - this.nbrMush)) {
                 ordinateur.transform();
                 this.nbrMush++;
-                System.out.println("Mush");
             }
 
             this.ordinateurs.add(ordinateur);
