@@ -21,7 +21,7 @@ public class Partie {
     //Nombre de mush actuellement dans la partie
     private int nbrMush = 0;
     //Nombre de joueurs encore en vie dans la partie
-    private int nbrJoueurs = 16;
+    private int nbrJoueurs = 0;
 
     /**
      * Constructeur de Partie
@@ -62,6 +62,8 @@ public class Partie {
             personnage.addCompetence(caracteristiquesPersonnage[2]);
 
             this.personnages.add(personnage);
+            
+            this.nbrJoueurs++;
 
         }
 
