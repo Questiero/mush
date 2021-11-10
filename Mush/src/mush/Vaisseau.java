@@ -21,7 +21,7 @@ public class Vaisseau {
     private final Salle[] salles = new Salle[nbSalles];
 
     //Matrice du graph représentant les déplacement possibles entre les salles du vaisseau
-    private final int[][] voisins = {
+    private final int[][] graphVoisins = {
         {0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -104,5 +104,5 @@ public class Vaisseau {
         }
 
     }
-
+    
 }

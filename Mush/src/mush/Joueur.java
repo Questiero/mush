@@ -117,5 +117,5 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
-
+    
 }
