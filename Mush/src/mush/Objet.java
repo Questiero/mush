@@ -34,7 +34,7 @@ public class Objet {
            "Chat de Shrödinger",
            "30 rations standards",
            "Extracteur de spores",
-           "Sér Aum rétro-fonngique"};
+           "Sérum rétro-fonngique"};
 
     }
     

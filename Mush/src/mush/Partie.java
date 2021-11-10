@@ -207,11 +207,15 @@ public class Partie {
         for (Joueur joueur : joueurs) {
 
             //Réalisation des actions pour un personnage contrôlé par un joueur
+            //TODO
+            
         }
 
         for (Joueur joueur : ordinateurs) {
 
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
+            //TODO
+                    
         }
 
     }
