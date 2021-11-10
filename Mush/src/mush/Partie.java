@@ -215,7 +215,7 @@ public class Partie {
 
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
             //TODO
-                    
+            
         }
 
     }
