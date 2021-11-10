@@ -47,7 +47,7 @@ public class Salle {
         int exctracteurSporeCpt = 1;
         int serumCpt = 1;
 
-        //répartition aléatoire des objets dans les 
+        //répartition aléatoire des objets dans les stockages 
         switch (x) {
             case 1:
                 if (armureCpt > 0) {
