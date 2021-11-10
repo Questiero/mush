@@ -28,10 +28,8 @@ public class Partie {
      */
     public Partie() {
 
-        this.vaisseau = new Vaisseau("Daedalus");
-
+        this.vaisseau = new Vaisseau("Daedalus");        
         this.initPersonnages();
-
     }
 
     private void initPersonnages() {

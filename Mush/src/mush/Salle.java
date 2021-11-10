@@ -19,4 +19,9 @@ public class Salle {
         this.nom = nom;
     }
     
+    private void initStockage(){  
+        
+    
+    }
+    
 }
