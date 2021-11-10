@@ -9,7 +9,7 @@ public class Salle {
     
     //Stockage de la salle 
     private final ArrayList<Objet> stockage = new ArrayList<>();
-
+    
     /**
      * Constructeur de Salle
      * 
@@ -18,5 +18,5 @@ public class Salle {
     public Salle(String nom) {
         this.nom = nom;
     }
-
+    
 }

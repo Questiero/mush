@@ -29,7 +29,10 @@ public class Joueur {
 
     //Inventaire du joueur
     private final Objet[] inventaire = new Objet[tailleInventaire];
-
+    
+    //Position actuelle du Joueur, initialisé au Nexus
+    private String positionKey = "Nexus";
+    
     /**
      * Constructeur de Joueur
      *

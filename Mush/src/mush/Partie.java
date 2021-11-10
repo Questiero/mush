@@ -7,9 +7,9 @@ public class Partie {
     private final Vaisseau vaisseau;
 
     //Valeur contenant le jour actuel
-    private int jour;
+    private int jour = 1;
     //Valeur contenant le cycle actuel
-    private int cycle;
+    private int cycle = 0;
 
     //Tableau contenant tout les joueurs de la partie
     private final ArrayList<Joueur> personnages = new ArrayList<>();
@@ -20,6 +20,8 @@ public class Partie {
 
     //Nombre de mush actuellement dans la partie
     private int nbrMush = 0;
+    //Nombre de joueurs encore en vie dans la partie
+    private int nbrJoueurs = 16;
 
     /**
      * Constructeur de Partie
@@ -175,6 +177,7 @@ public class Partie {
 
         }
 
+        //Sélection et transformation des personnages contrôlés par l'ordinateur
         for (int i = 0; i < 13; i++) {
 
             Joueur ordinateur = tempPersonnages.get(0);
@@ -187,6 +190,26 @@ public class Partie {
             this.ordinateurs.add(ordinateur);
             tempPersonnages.remove(0);
 
+        }
+
+        //TODO position aléatoire des joueurs (pour le moment, par défaut Nexus)
+        this.gameProcess();
+
+    }
+
+    //Coeur de la partie
+    private void gameProcess() {
+
+        this.nextCycle();
+
+        for (Joueur joueur : joueurs) {
+
+            //Réalisation des actions pour un personnage contrôlé par un joueur
+        }
+
+        for (Joueur joueur : ordinateurs) {
+
+            //Réalisation des actions pour un personnage contrôlé par l'ordinateur
         }
 
     }
