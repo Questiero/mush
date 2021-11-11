@@ -49,6 +49,11 @@ public class Salle {
 
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
+                if (this.nom.equals("Réfectoire")) {
+                    Objet objet = new Objet(nomObjets[16]);
+                    stockage.add(objet);
+                } else {
+                }
                 int randomNom = ra.nextInt((nomObjets.length - 1) - 1) + 1;
                 Objet objet = new Objet(nomObjets[randomNom]);
                 stockage.add(objet);
@@ -56,5 +61,5 @@ public class Salle {
         }
 
     }
- 
+
 }
