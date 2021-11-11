@@ -11,6 +11,7 @@ public class Salle {
     private final ArrayList<Objet> stockage = new ArrayList<>();
     //variable aléatoir pour la répartition aléatoire des objets dans les salles
     private Random ra = new Random();
+    
 
     /**
      * Constructeur de Salle
@@ -49,15 +50,16 @@ public class Salle {
 
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
-                if (this.nom.equals("Réfectoire")) {
+               /* if (this.nom.equals("Réfectoire")) {
                     Objet objet = new Objet(nomObjets[16]);
                     stockage.add(objet);
                 } else {
-                }
-                int randomNom = ra.nextInt((nomObjets.length - 1) - 1) + 1;
-                Objet objet = new Objet(nomObjets[randomNom]);
+                }*/
+                Objet objet = new Objet(nomObjets[i]);
                 stockage.add(objet);
+                
             }
+            
         }
 
     }
