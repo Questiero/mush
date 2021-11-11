@@ -18,7 +18,7 @@ public class Main {
 
         System.out.println("\n");
         System.out.println("          ___  ___          _     ");
-        System.out.println("          |  \\/  |         | |    ");
+        System.out.println("          |  \\/  |        | |    ");
         System.out.println("          | .  . |_   _ ___| |__  ");
         System.out.println("          | |\\/| | | | / __| '_ \\ ");
         System.out.println("          | |  | | |_| \\__ \\ | | |");
