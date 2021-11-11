@@ -48,16 +48,20 @@ public class Salle {
             1, 1, 1, 1, 3, 1, 2, 1, 1,
             2, 1, 30, 1, 30, 1, 1};
 
+
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
-               /* if (this.nom.equals("Réfectoire")) {
-                    Objet objet = new Objet(nomObjets[16]);
+               /* while(nomObjets.length!=0){
+                    if (this.nom.equals("Réfectoire")) {
+                        Objet objet = new Objet(nomObjets[16]);
+                        stockage.add(objet);
+                    } else {
+                    }
+                    Objet objet = new Objet(nomObjets[i]);
                     stockage.add(objet);
-                } else {
+
                 }*/
-                Objet objet = new Objet(nomObjets[i]);
-                stockage.add(objet);
-                
+               
             }
             
         }
