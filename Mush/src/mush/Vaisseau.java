@@ -1,5 +1,7 @@
 package mush;
 
+import java.util.Random;
+
 public class Vaisseau {
 
     //Nombre de salles dans le vaisseau
@@ -7,6 +9,9 @@ public class Vaisseau {
 
     //Nom du vaisseau
     private final String nom;
+
+    //variable aléatoire
+    Random ra = new Random();
 
     //Caractéristiques maximales du Vaisseau
     private final int maxArmure = 200;
@@ -104,5 +109,45 @@ public class Vaisseau {
         }
 
     }
-    
+
+    private void initObjets() {
+
+        String[] nomObjets = {"Armure",
+            "Clé à molette",
+            "Combinaisons",
+            "Paire de gants de protection",
+            "Savon",
+            "Tablier intachable",
+            "Trottinette",
+            "Extincteurs",
+            "Couteau",
+            "Blasters",
+            "Grenade",
+            "Médikit",
+            "Caméras",
+            "Souche de test mush",
+            "Débris métallique",
+            "Chat de Shrödinger",
+            "ration standard",
+            "Extracteur de spores",
+            "Sérum rétro-fongique"};
+
+        int[] nbrObjets = {1, 1, 4,
+            1, 1, 1, 1, 3, 1, 2, 1, 1,
+            2, 1, 30, 1, 30, 1, 1};
+
+        for (int i = 0; i < nomObjets.length; i++) {
+            for (int j = 0; j < nbrObjets[i]; j++) {
+
+                int randIndex = ra.nextInt(nbSalles - 1);
+
+                Objet objet = new Objet(nomObjets[i]);
+
+                this.salles[randIndex].stockage.add(objet);
+            }
+
+        }
+
+    }
+
 }
