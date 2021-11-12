@@ -111,7 +111,7 @@ public class Vaisseau {
     }
     
     /**
-     * Initialisation des objets de stockages aléatoirment dans les salles
+     * Initialisation des objets aléatoirment dans les stockages des salles
      */
     private void initObjets() {
 
