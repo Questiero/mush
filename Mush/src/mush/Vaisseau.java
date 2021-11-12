@@ -109,7 +109,10 @@ public class Vaisseau {
         }
 
     }
-
+    
+    /**
+     * Initialisation des objets de stockages aléatoirment dans les salles
+     */
     private void initObjets() {
 
         String[] nomObjets = {"Armure",
