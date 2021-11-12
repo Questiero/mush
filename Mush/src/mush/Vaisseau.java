@@ -66,7 +66,7 @@ public class Vaisseau {
         this.nom = nom;
 
         this.initSalles();
-
+        this.initObjets();
     }
 
     /**
