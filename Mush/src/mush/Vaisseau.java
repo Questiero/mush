@@ -142,11 +142,9 @@ public class Vaisseau {
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
 
-                int randIndex = ra.nextInt(nbSalles - 1);
-
                 Objet objet = new Objet(nomObjets[i]);
 
-                this.salles[randIndex].stockage.add(objet);
+                this.salles[ra.nextInt(nbSalles - 1)].stockage.add(objet);
             }
 
         }
