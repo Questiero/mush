@@ -10,9 +10,6 @@ public class Vaisseau {
     //Nom du vaisseau
     private final String nom;
 
-    //variable aléatoire
-    Random ra = new Random();
-
     //Caractéristiques maximales du Vaisseau
     private final int maxArmure = 200;
     private final int maxOxygene = 500;
@@ -109,11 +106,14 @@ public class Vaisseau {
         }
 
     }
-    
+
     /**
      * Initialisation des objets aléatoirment dans les stockages des salles
      */
     private void initObjets() {
+
+        //variable aléatoire
+        Random ra = new Random();
 
         String[] nomObjets = {"Armure",
             "Clé à molette",
