@@ -131,14 +131,24 @@ public class Vaisseau {
             "Souche de test mush",
             "Débris métallique",
             "Chat de Shrödinger",
-            "Ration standard",
             "Extracteur de spores",
             "Sérum rétro-fongique"};
 
         int[] nbrObjets = {1, 1, 4,
             1, 1, 1, 1, 3, 1, 2, 1, 1,
-            2, 1, 30, 1, 30, 1, 1};
+            2, 1, 30, 1, 1, 1};
 
+        Salle Refectoire = new Salle("Réfectoire");
+        Objet rationStandard = new Objet("Ration Standard");
+
+        for (int i = 0; i < nbSalles; i++) {
+            if (this.salles[i] == Refectoire) {
+                for (int j = 0; j < 30; j++) {
+                    this.salles[i].stockage.add(rationStandard);
+                }
+            }
+        }
+        
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
 
