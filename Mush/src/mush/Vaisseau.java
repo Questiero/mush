@@ -131,7 +131,7 @@ public class Vaisseau {
             "Souche de test mush",
             "Débris métallique",
             "Chat de Shrödinger",
-            "ration standard",
+            "Ration standard",
             "Extracteur de spores",
             "Sérum rétro-fongique"};
 
