@@ -44,34 +44,37 @@ public class Joueur {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    Joueur(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //getters des variables 
-    public String getnom(){
+    public String getNom(){
         return nom;  
     }
-    public boolean getmush(){
+    public boolean getMush(){
         return mush;  
     }
     public String getPosition(){
         return this.positionKey;   
     }
-     public String getCompetences(){
-        return null;   
+     public HashMap<String, Integer> getCompetences(){
+        return this.competences; 
     }
-    //fonction pour afficher les caractéristiques d'un joueur 
+    //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
 
     /**
      *
      */
-    public static void affichage(){
-        Joueur personnage = new Joueur();
-        personnage .getnom();
-        personnage.getmush();
-        personnage.getPosition();
-        
-       
+    public void affichage(){
+        System.out.println(this.getNom());
+        System.out.println(this.getMush());
+        System.out.println(this.getPosition());
+        System.out.println(this.competences);
         
     }
+    
     public void transform() {
         this.mush = true;
     }
