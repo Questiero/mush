@@ -47,7 +47,12 @@ public class Main {
     public static void main(String[] args) {
 
         Main.displayMainMenu();
-
+        Joueur.affichage();
+        
+        
+     
+       
     }
 
+    
 }

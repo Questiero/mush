@@ -38,12 +38,40 @@ public class Joueur {
      *
      * @param nom nom du joueur
      */
-    public Joueur(String nom) {
+   
 
-        this.nom = nom;
-
+    Joueur() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    //getters des variables 
+    public String getnom(){
+        return nom;  
+    }
+    public boolean getmush(){
+        return mush;  
+    }
+    public String getPosition(){
+        return this.positionKey;   
+    }
+     public String getCompetences(){
+        return null;   
+    }
+    //fonction pour afficher les caractéristiques d'un joueur 
+    // Nom et si il est mush ou humain  
+
+    /**
+     *
+     */
+    public static void affichage(){
+        Joueur personnage = new Joueur();
+        personnage .getnom();
+        personnage.getmush();
+        personnage.getPosition();
+        
+       
+        
+    }
     public void transform() {
         this.mush = true;
     }
@@ -51,7 +79,6 @@ public class Joueur {
     public boolean isMush() {
         return this.mush;
     }
-    
     /**
      * @return nom du personnage
      */
@@ -59,6 +86,7 @@ public class Joueur {
     public String toString() {
         return this.nom;
     }
+    
 
     /**
      * Permet d'ajouter une compétence au joueur
@@ -117,5 +145,4 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
-    
 }
