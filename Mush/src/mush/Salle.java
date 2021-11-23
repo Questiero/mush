@@ -19,4 +19,8 @@ public class Salle {
         this.nom = nom;
     }
 
+    public String getNom() {
+        return this.nom;
+    }
+    
 }

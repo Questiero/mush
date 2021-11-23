@@ -1,5 +1,6 @@
 package mush;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Vaisseau {
@@ -148,7 +149,7 @@ public class Vaisseau {
                 }
             }
         }
-        
+
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
 
@@ -158,6 +159,67 @@ public class Vaisseau {
             }
 
         }
+
+    }
+
+    /**
+     * Détermine les voisins d'une salle donnée par référence
+     *
+     * @param salle salle pour laquelle on souhaite obtenir les voisins
+     * @return liste des voisins de salle si elle existe, null sinon
+     */
+    public ArrayList<Salle> getVoisins(Salle salle) {
+
+        return getVoisinsByKey(salle.getNom());
+
+    }
+
+    /**
+     * Détermine les voisins d'une salle donnée par un id
+     *
+     * @param salleKey clé de la salle pour laquelle on souhaite obtenir les
+     * voisins
+     * @return liste des voisins de salle si elle existe, null sinon
+     */
+    public ArrayList<Salle> getVoisinsByKey(String salleKey) {
+
+        //Détermination de la salle 
+        for (int i = 0; i < this.salles.length; i++) {
+
+            Salle salle = this.salles[i];
+
+            if (salle.getNom().equals(salleKey)) {
+                return getVoisinsByIndex(i);
+            }
+
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Détermine les voisins d'une salle donnée par un id
+     *
+     * @param salleIndex index de la salle pour laquelle on souhaite obtenir les
+     * voisins
+     * @return liste des voisins de salle si elle existe, null sinon
+     */
+    public ArrayList<Salle> getVoisinsByIndex(int salleIndex) {
+
+        ArrayList<Salle> res = new ArrayList<>();
+
+        for (int i = 0; i < this.graphVoisins.length; i++) {
+
+            if (this.graphVoisins[salleIndex][i] == 1) {
+
+                res.add(this.salles[i]);
+
+            }
+
+        }
+
+        return res;
 
     }
 
