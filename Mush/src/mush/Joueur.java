@@ -1,5 +1,6 @@
 package mush;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Joueur {
@@ -29,10 +30,10 @@ public class Joueur {
 
     //Inventaire du joueur
     private final Objet[] inventaire = new Objet[tailleInventaire];
-    
+
     //Position actuelle du Joueur, initialisé au Nexus
     private String positionKey = "Nexus";
-    
+
     /**
      * Constructeur de Joueur
      *
@@ -40,26 +41,21 @@ public class Joueur {
      */
    
 
-    Joueur() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    Joueur(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     //getters des variables 
-    public String getNom(){
-        return nom;  
+    public String getNom() {
+        return nom;
     }
-    public boolean getMush(){
-        return mush;  
+
+    public boolean getMush() {
+        return mush;
     }
-    public String getPosition(){
-        return this.positionKey;   
+
+    public String getPosition() {
+        return this.positionKey;
     }
-     public HashMap<String, Integer> getCompetences(){
-        return this.competences; 
+
+    public HashMap<String, Integer> getCompetences() {
+        return this.competences;
     }
     //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
@@ -67,21 +63,19 @@ public class Joueur {
     /**
      *
      */
-    public void affichage(){
-        System.out.println(this.getNom());
-        System.out.println(this.getMush());
-        System.out.println(this.getPosition());
-        System.out.println(this.competences);
-        
-    }
-    
+
     public void transform() {
         this.mush = true;
     }
-    
+
     public boolean isMush() {
         return this.mush;
     }
+
+    public String setPositionlKey() {
+        return this.positionKey;
+    }
+
     /**
      * @return nom du personnage
      */
@@ -89,7 +83,6 @@ public class Joueur {
     public String toString() {
         return this.nom;
     }
-    
 
     /**
      * Permet d'ajouter une compétence au joueur
@@ -147,5 +140,24 @@ public class Joueur {
      */
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
+    }
+    
+    public void affichageEtatJoueur(){
+        System.out.println(this.pv + " Points de Vie");
+        System.out.println(this.pa + " Points d'Action");
+        System.out.println(this.pm + " Points de Moral");
+        System.out.println(this.pmo + " Points de Mouvement");
+        System.out.println(Arrays.toString(inventaire) + "Inventaire");
+        if(this.isMush() == true)
+            System.out.println("Statue : MUSH");
+        else System.out.println("Statue : HUMAIN");
+        System.out.println(this.nom);
+        for (String comp: this.competences.keySet()){
+       
+        String key = comp.toString();
+        String value = this.competences.get(comp).toString();
+        System.out.println();
+        }
+        
     }
 }
