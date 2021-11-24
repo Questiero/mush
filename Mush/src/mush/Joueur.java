@@ -39,6 +39,9 @@ public class Joueur {
      *
      * @param nom nom du joueur
      */
+    public Joueur(String nom) {
+        this.nom = nom;
+    }
    
 
     //getters des variables 
