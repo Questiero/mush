@@ -202,7 +202,6 @@ public class Partie {
     private void gameProcess() {
 
         this.nextCycle();
-        Scanner sc = new Scanner(System.in);
 
         for (Joueur joueur : joueurs) {
 
@@ -213,7 +212,7 @@ public class Partie {
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("Entrez votre choix :");
-            int choix = sc.nextInt();
+            int choix = Main.scanner.nextInt();
             switch (choix) {
                 case 1 -> {
                     System.out.println("quel joueur souhaitez-vous afficher?");
