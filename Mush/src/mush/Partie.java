@@ -29,7 +29,7 @@ public class Partie {
      */
     public Partie() {
 
-        this.vaisseau = new Vaisseau("Daedalus");        
+        this.vaisseau = new Vaisseau("Daedalus");
         this.initPersonnages();
     }
 
@@ -61,7 +61,7 @@ public class Partie {
             personnage.addCompetence(caracteristiquesPersonnage[2]);
 
             this.personnages.add(personnage);
-            
+
             this.nbrJoueurs++;
 
         }
@@ -202,47 +202,41 @@ public class Partie {
     private void gameProcess() {
 
         this.nextCycle();
-        Scanner sc= new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
         for (Joueur joueur : joueurs) {
 
             //Réalisation des actions pour un personnage contrôlé par un joueur
             //le menu 
-            
             System.out.println("1.Affichage des caractéristiques des joueurs.");
             System.out.println("2.Déplacer les joueures.");
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("Entrez votre choix :");
             int choix = sc.nextInt();
-            switch (choix){
-                case 1 -> { 
+            switch (choix) {
+                case 1 -> {
                     System.out.println("quel joueur souhaitez-vous afficher?");
-                    
-                    
+
                 }
                 case 2 -> {
-                    
+
                 }
                 case 3 -> {
-                    
+
                 }
                 case 4 -> {
-                    
+
                 }
-                
+
             }
-             
-            
-            
-            
+
         }
 
         for (Joueur joueur : ordinateurs) {
 
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
             //TODO
-            
         }
 
     }

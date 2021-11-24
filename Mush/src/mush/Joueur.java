@@ -30,10 +30,10 @@ public class Joueur {
 
     //Inventaire du joueur
     private final Objet[] inventaire = new Objet[tailleInventaire];
-    
+
     //Position actuelle du Joueur, initialisé au Nexus
     private String positionKey = "Nexus";
-    
+
     /**
      * Constructeur de Joueur
      *
@@ -42,17 +42,20 @@ public class Joueur {
    
 
     //getters des variables 
-    public String getNom(){
-        return nom;  
+    public String getNom() {
+        return nom;
     }
-    public boolean getMush(){
-        return mush;  
+
+    public boolean getMush() {
+        return mush;
     }
-    public String getPosition(){
-        return this.positionKey;   
+
+    public String getPosition() {
+        return this.positionKey;
     }
-     public HashMap<String, Integer> getCompetences(){
-        return this.competences; 
+
+    public HashMap<String, Integer> getCompetences() {
+        return this.competences;
     }
     //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
@@ -64,10 +67,15 @@ public class Joueur {
     public void transform() {
         this.mush = true;
     }
-    
+
     public boolean isMush() {
         return this.mush;
     }
+
+    public String setPositionlKey() {
+        return this.positionKey;
+    }
+
     /**
      * @return nom du personnage
      */
@@ -75,7 +83,6 @@ public class Joueur {
     public String toString() {
         return this.nom;
     }
-    
 
     /**
      * Permet d'ajouter une compétence au joueur

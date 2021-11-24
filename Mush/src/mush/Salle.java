@@ -9,6 +9,7 @@ public class Salle {
     private final String nom;
     //Stockage de la salle
     public final ArrayList<Objet> stockage = new ArrayList<>();
+
     //variable aléatoir pour la répartition aléatoire des objets dans les salles
     /**
      * Constructeur de Salle
@@ -22,5 +23,5 @@ public class Salle {
     public String getNom() {
         return this.nom;
     }
-    
+
 }

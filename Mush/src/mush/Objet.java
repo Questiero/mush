@@ -7,7 +7,6 @@ public class Objet {
 
     //Nombre d'objets en tout
     private final int nbObjets = 19;
-    
 
     /**
      * Constructeur d'Objet
