@@ -163,6 +163,24 @@ public class Vaisseau {
     }
 
     /**
+     * @param key clé de la salle qu'on souhaite obtenir
+     * @return la Salle voulue si elle existe, null sinon
+     */
+    public Salle getSalle(String key) {
+
+        for (Salle salle : salles) {
+
+            if (salle.getNom().equals(key)) {
+                return salle;
+            }
+
+        }
+
+        return null;
+
+    }
+
+    /**
      * Détermine les voisins d'une salle donnée par référence
      *
      * @param salle salle pour laquelle on souhaite obtenir les voisins
