@@ -9,6 +9,8 @@ public class Salle {
     private final String nom;
     //Stockage de la salle
     public final ArrayList<Objet> stockage = new ArrayList<>();
+    //Historique des actions
+    public final ArrayList<String> historique = new ArrayList<>();
 
     //variable aléatoir pour la répartition aléatoire des objets dans les salles
     /**
@@ -23,5 +25,11 @@ public class Salle {
     public String getNom() {
         return this.nom;
     }
-
+   
+    public void Carnetdebord (String[] actions){ 
+        ArrayList<String> action = new ArrayList<>();
+        action.add("Consulter le journal de bord (gratuit)") ;
+        action.add("Consulter le canal de communication pour voir les messages échangés entre les\n" + "joueurs (gratuit)");
+        action.add("Ecrire un message dans le canal de communication (gratuit)");
+    }
 }
