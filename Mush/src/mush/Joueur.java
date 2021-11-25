@@ -42,7 +42,6 @@ public class Joueur {
     public Joueur(String nom) {
         this.nom = nom;
     }
-   
 
     //getters des variables 
     public String getNom() {
@@ -57,16 +56,35 @@ public class Joueur {
         return this.positionKey;
     }
 
+    public int getPv_Pa_Pm_Pmo() {
+        return this.pv
+                & this.pa
+                & this.pm
+                & this.pmo;
+    }
+
+    public Objet[] getInventaire() {
+        return inventaire;
+    }
+
     public HashMap<String, Integer> getCompetences() {
         return this.competences;
     }
+
+    public void affichageEtatJoueur() {
+        this.getNom();
+        this.getPv_Pa_Pm_Pmo();
+        this.getMush();
+        this.getInventaire();
+        this.getCompetences();
+    }
     //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
+    // PV, PA, PM, PMO et contenu de l'inventaire
 
     /**
      *
      */
-
     public void transform() {
         this.mush = true;
     }
@@ -144,23 +162,5 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
-    
-    public void affichageEtatJoueur(){
-        System.out.println(this.pv + " Points de Vie");
-        System.out.println(this.pa + " Points d'Action");
-        System.out.println(this.pm + " Points de Moral");
-        System.out.println(this.pmo + " Points de Mouvement");
-        System.out.println(Arrays.toString(inventaire) + "Inventaire");
-        if(this.isMush() == true)
-            System.out.println("Statue : MUSH");
-        else System.out.println("Statue : HUMAIN");
-        System.out.println(this.nom);
-        for (String comp: this.competences.keySet()){
-       
-        String key = comp.toString();
-        String value = this.competences.get(comp).toString();
-        System.out.println();
-        }
-        
-    }
+
 }

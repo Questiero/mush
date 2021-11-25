@@ -12,7 +12,6 @@ public class Salle {
     //Historique des actions
     public final ArrayList<String> historique = new ArrayList<>();
 
-    //variable aléatoir pour la répartition aléatoire des objets dans les salles
     /**
      * Constructeur de Salle
      *
@@ -29,7 +28,9 @@ public class Salle {
     public void Carnetdebord (String[] actions){ 
         ArrayList<String> action = new ArrayList<>();
         action.add("Consulter le journal de bord (gratuit)") ;
-        action.add("Consulter le canal de communication pour voir les messages échangés entre les\n" + "joueurs (gratuit)");
-        action.add("Ecrire un message dans le canal de communication (gratuit)");
+        action.add("Consulter le canal de communication pour voir les messages"
+                 + " échangés entre les\n" + "joueurs (gratuit)");
+        action.add("Ecrire un message "
+                 + "dans le canal de communication (gratuit)");
     }
 }

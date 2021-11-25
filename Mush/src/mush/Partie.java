@@ -68,6 +68,15 @@ public class Partie {
 
     }
 
+    //Méthode pour vérifer si l'arraylist Personnage contient le joueur
+    private void getPersonnagesCaracs(Joueur joueur) {
+        joueur.getNom();
+        joueur.getMush();
+        joueur.getPv_Pa_Pm_Pmo();
+        joueur.getInventaire();
+        joueur.getCompetences();
+    }
+
     /**
      * Incrémentation du cycle en tenant compte de la limite de 8 cycles par
      * jour
@@ -204,7 +213,6 @@ public class Partie {
         this.nextCycle();
 
         for (Joueur joueur : joueurs) {
-
             //Réalisation des actions pour un personnage contrôlé par un joueur
             //le menu 
             System.out.println("1.Affichage des caractéristiques des joueurs.");
@@ -216,8 +224,19 @@ public class Partie {
             switch (choix) {
                 case 1 -> {
                     System.out.println("quel joueur souhaitez-vous afficher?");
+                    String choixJoueur = Main.scanner.next();
+
+                    for (Joueur personnage : personnages) {
+                        if (personnage.getNom().equals(choixJoueur)) {
+                            getPersonnagesCaracs(personnage);
+                        } else {
+                            System.out.println("No");
+                        //j'ai modifié ici. c'est pas términé mais pour ne pas oublier 
+                        }
+                    }
 
                 }
+
                 case 2 -> {
 
                 }
@@ -231,7 +250,6 @@ public class Partie {
             }
 
         }
-
         for (Joueur joueur : ordinateurs) {
 
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
