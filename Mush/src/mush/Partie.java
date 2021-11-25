@@ -70,11 +70,7 @@ public class Partie {
 
     //Méthode pour vérifer si l'arraylist Personnage contient le joueur
     private void getPersonnagesCaracs(Joueur joueur) {
-        joueur.getNom();
-        joueur.getMush();
-        joueur.getPv_Pa_Pm_Pmo();
-        joueur.getInventaire();
-        joueur.getCompetences();
+        joueur.affichageEtatJoueur();
     }
 
     /**
