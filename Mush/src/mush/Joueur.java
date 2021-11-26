@@ -56,11 +56,20 @@ public class Joueur {
         return this.positionKey;
     }
 
-    public int getPv_Pa_Pm_Pmo() {
-        return this.pv
-                & this.pa
-                & this.pm
-                & this.pmo;
+    public int getPv() {
+        return this.pv;
+    }
+
+    public int getPa() {
+        return this.pa;
+    }
+
+    public int getPm() {
+        return this.pm;
+    }
+
+    public int getPmo() {
+        return this.pmo;
     }
 
     public Objet[] getInventaire() {
@@ -72,15 +81,20 @@ public class Joueur {
     }
 
     public void affichageEtatJoueur() {
-        this.getNom();
-        this.getPv_Pa_Pm_Pmo();
-        this.getMush();
-        this.getInventaire();
-        this.getCompetences();
+        System.out.println("--------------------------------- ");
+        System.out.println("\t" + this.getNom());
+        System.out.println("PV : " + this.getPv());
+        System.out.println("PA : " + this.getPa());
+        System.out.println("PM : " + this.getPm());
+        System.out.println("PMO : " + this.getPmo());
+        System.out.println("MUSH ? " + this.getMush());
+        System.out.println("Inventaire : " + Arrays.toString(this.getInventaire()));
+        System.out.println("Competences : " + this.getCompetences());
+        System.out.println("--------------------------------- ");
     }
     //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
-    // PV, PA, PM, PMO et contenu de l'inventaire
+    // PV, PA, PM, PMO, contenu de l'inventaire et les competences
 
     /**
      *
