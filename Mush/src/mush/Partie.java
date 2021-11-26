@@ -219,12 +219,18 @@ public class Partie {
             int choix = Main.scanner.nextInt();
             switch (choix) {
                 case 1 -> {
-                    System.out.println("quel joueur souhaitez-vous afficher?");
-                    String choixJoueur = Main.scanner.next();
-                    
-                    personnages.forEach((Joueur personnage) -> {
-                            getPersonnagesCaracs(personnage);
-                    });
+                    System.out.println("Quel joueur souhaitez-vous afficher?");
+                    int index = 0;
+                    System.out.println("Veuillez entrer le numero de joueur : ");
+                    for(Joueur jo: joueurs){
+                        System.out.println((index++)+": "+jo);
+                    }
+                    int choixJoueur = Main.scanner.nextInt();
+                    switch (choixJoueur){
+                        case 0 -> getPersonnagesCaracs(joueurs.get(0));
+                        case 1 -> getPersonnagesCaracs(joueurs.get(1));
+                        case 2 -> getPersonnagesCaracs(joueurs.get(2));
+                    }
                     
                 }
                 
