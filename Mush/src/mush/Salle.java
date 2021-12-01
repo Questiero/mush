@@ -24,6 +24,10 @@ public class Salle {
     public String getNom() {
         return this.nom;
     }
+    
+    public String toString(){
+        return this.nom;
+    }
    
     public void Carnetdebord (String[] actions){ 
         ArrayList<String> action = new ArrayList<>();
