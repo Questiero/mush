@@ -212,7 +212,7 @@ public class Partie {
             //Réalisation des actions pour un personnage contrôlé par un joueur
             //le menu 
             System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
+            System.out.println("2.Déplacer les joueurs.");
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("5.Faire un action");
@@ -245,7 +245,7 @@ public class Partie {
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
             //TODO
             System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
+            System.out.println("2.Déplacer les joueurs.");
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("5.Accéder au journal de bord");
