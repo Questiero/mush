@@ -180,6 +180,11 @@ public class Vaisseau {
 
     }
 
+    public Salle getSalleParHazard() {
+        Random ra = new Random();
+        return salles[ra.nextInt(salles.length)];
+    }
+
     public Salle getSalleAvecCamera() {
 
         for (Salle salle : salles) {
@@ -266,5 +271,5 @@ public class Vaisseau {
     public int getFuel() {
         return this.fuel;
     }
-    
+
 }

@@ -383,6 +383,7 @@ public class Partie {
         System.out.println(vaisseau.getFuel());
     }
 
+
     /**
      * Arrête la partie
      */
