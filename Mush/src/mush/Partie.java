@@ -140,7 +140,7 @@ public class Partie {
 
             } while (!correctInput);
 
-            this.joueurs.add(this.personnages.get(choixPersonnage - 1));
+            this.joueurs.add(tempPersonnages.get(choixPersonnage - 1));
 
             //Si les deux Mush ne sont pas encore séléctionnés, on demande à l'utilisateur de choisir
             if (this.nbrMush < 2) {
