@@ -17,5 +17,9 @@ public class Objet {
 
         this.nom = nom;
     }
+    
+    public String toString(){
+        return this.nom;
+    }
 
 }

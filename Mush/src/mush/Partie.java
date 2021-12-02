@@ -228,7 +228,7 @@ public class Partie {
 
                 }
                 case 3 -> {
-                    unaction();
+                    action();
                 }
                 case 4 -> {
                     affichageStockage(joueurs);
@@ -261,7 +261,7 @@ public class Partie {
 
                 }
                 case 3 -> {
-                    unaction();
+                    action();
                 }
                 case 4 -> {
                     affichageStockage(ordinateurs);
@@ -275,6 +275,7 @@ public class Partie {
 
     }
 
+    //méthode pour afficher les caracterisiques d'un joueur choisi
     private void affichageCaraJoueurs(ArrayList<Joueur> list) {
         System.out.println("Veuillez entrer le numero de joueur "
                 + " que souhaitez-vous afficher: ");
@@ -293,6 +294,7 @@ public class Partie {
 
     }
 
+    //méthode pour afficher le stockage où il y a un joueur choisi
     private void affichageStockage(ArrayList<Joueur> list) {
 
         System.out.println("Veuillez entrer le numero de joueur "
@@ -309,7 +311,8 @@ public class Partie {
         }
     }
 
-    private void unaction() {
+    //methode pour faire un action
+    private void action() {
         System.out.println("1.Consulter le Journal Du Bord");
         System.out.println("2.Consulter le canal de communication");
         System.out.println("3.Ecrire un message dans le canal de communication");
@@ -317,8 +320,9 @@ public class Partie {
         //les actions dans un lieu spécifique
     }
 
+    //méthode pour consulter le journal du bord
     private void journalDuBord() {
-        
+
         System.out.println("1.Afficher la liste des joueurs dans les salle avec Caméras");
         System.out.println("2.Afficher les incendies en cours ");
         System.out.println("3.Affichage la liste des équipements endommagés");
@@ -330,20 +334,22 @@ public class Partie {
         System.out.println("9.Afficher le nombre de mushs à bord");
         System.out.println("10.Afficher le nombre de joueurs morts");
         System.out.println("Entrez votre choix : ");
-        
+
         int choix = Main.scanner.nextInt();
         switch (choix) {
             case 1 -> {
+                //les salle où il y a des caméras
+                vaisseau.getSalleAvecCamera();
             }
 
             case 2 -> {
 
             }
             case 3 -> {
-                
+
             }
             case 4 -> {
-                
+                etatVaisseau();
             }
             case 5 -> {
 
@@ -355,20 +361,26 @@ public class Partie {
 
             }
             case 8 -> {
-                
+
             }
             case 9 -> {
-                
+                nbMushs();
             }
             case 10 -> {
 
-            }            
+            }
         }
 
     }
 
     private void nbMushs() {
         System.out.println(this.nbrMush);
+    }
+
+    private void etatVaisseau() {
+        System.out.println(vaisseau.getArmure());
+        System.out.println(vaisseau.getOxygene());
+        System.out.println(vaisseau.getFuel());
     }
 
     /**
