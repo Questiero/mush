@@ -332,6 +332,10 @@ public class Partie {
 
     }
 
+    private void nbMushs() {
+        System.out.println(this.nbrMush);
+    }
+
     /**
      * Arrête la partie
      */
