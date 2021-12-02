@@ -11,6 +11,8 @@ public class Salle {
     public final ArrayList<Objet> stockage = new ArrayList<>();
     //Historique des actions
     public final ArrayList<String> historique = new ArrayList<>();
+    
+    private boolean camera = false; 
 
     /**
      * Constructeur de Salle
@@ -36,5 +38,10 @@ public class Salle {
                  + " échangés entre les\n" + "joueurs (gratuit)");
         action.add("Ecrire un message "
                  + "dans le canal de communication (gratuit)");
+    }
+    
+    
+    public boolean cameraInstalle(){
+        return this.camera = true;
     }
 }
