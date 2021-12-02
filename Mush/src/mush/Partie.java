@@ -195,7 +195,6 @@ public class Partie {
 
             this.ordinateurs.add(ordinateur);
             tempPersonnages.remove(0);
-
         }
 
         //TODO position aléatoire des joueurs (pour le moment, par défaut Nexus)
@@ -203,78 +202,82 @@ public class Partie {
 
     }
 
+    private void nbMush() {
+        System.out.println(this.nbrMush);
+        
+    }
     //Coeur de la partie
     private void gameProcess() {
 
         this.nextCycle();
 
         for (Joueur joueur : joueurs) {
-        //Réalisation des actions pour un personnage contrôlé par un joueur
-        //le menu 
-        System.out.println("1.Affichage des caractéristiques des joueurs.");
-        System.out.println("2.Déplacer les joueures.");
-        System.out.println("3.Accéder à l'historique des actions.");
-        System.out.println("4.Accéder au stockage des objets.");
-        System.out.println("Entrez votre choix :");
-        int choix = Main.scanner.nextInt();
-        switch (choix) {
-            case 1 -> {//Affichage des caractéristiques des joueurs.
-                System.out.println("Quel joueur souhaitez-vous afficher?");
-                System.out.println("Veuillez entrer le numero de joueur : ");
-                int index = 1;
-                for (Joueur jo : joueurs) {
-                    System.out.println((index++) + ": " + jo);
+            //Réalisation des actions pour un personnage contrôlé par un joueur
+            //le menu 
+            System.out.println("1.Affichage des caractéristiques des joueurs.");
+            System.out.println("2.Déplacer les joueures.");
+            System.out.println("3.Accéder à l'historique des actions.");
+            System.out.println("4.Accéder au stockage des objets.");
+            System.out.println("Entrez votre choix :");
+            int choix = Main.scanner.nextInt();
+            switch (choix) {
+                case 1 -> {//Affichage des caractéristiques des joueurs.
+                    System.out.println("Quel joueur souhaitez-vous afficher?");
+                    System.out.println("Veuillez entrer le numero de joueur : ");
+                    int index = 1;
+                    for (Joueur jo : joueurs) {
+                        System.out.println((index++) + ": " + jo);
+                    }
+                    int choixJoueur = Main.scanner.nextInt();
+                    switch (choixJoueur) {
+                        case 1 ->
+                            getPersonnagesCaracs(joueurs.get(0));
+                        case 2 ->
+                            getPersonnagesCaracs(joueurs.get(1));
+                        case 3 ->
+                            getPersonnagesCaracs(joueurs.get(2));
+                    }
+
                 }
-                int choixJoueur = Main.scanner.nextInt();
-                switch (choixJoueur) {
-                    case 1 ->
-                        getPersonnagesCaracs(joueurs.get(0));
-                    case 2 ->
-                        getPersonnagesCaracs(joueurs.get(1));
-                    case 3 ->
-                        getPersonnagesCaracs(joueurs.get(2));
+
+                case 2 -> {
+
                 }
+                case 3 -> {
 
-            }
-
-            case 2 -> {
-
-            }
-            case 3 -> {
-
-            }
-            case 4 -> {
-                //on affiche le stockage des objets d'une salle à partir de 
-                //la position du joueur
-
-                System.out.println("Veuillez entrer le joueur pour afficher sa "
-                        + "position");
-                System.out.println("Veuillez entrer le numero de joueur : ");
-                int index = 1;
-                for (Joueur jo : joueurs) {
-                    System.out.println((index++) + ": " + jo);
                 }
-                int choixJoueur = Main.scanner.nextInt();
-                switch (choixJoueur) {
-                    case 1 ->
-                        System.out.println(vaisseau.getSalle(joueurs.get(0).getPosition()).stockage.toString());
-                    case 2 ->
-                        System.out.println(vaisseau.getSalle(joueurs.get(1).getPosition()).stockage.toString());
-                    case 3 ->
-                        System.out.println(vaisseau.getSalle(joueurs.get(2).getPosition()).stockage.toString());
+                case 4 -> {
+                    //on affiche le stockage des objets d'une salle à partir de 
+                    //la position du joueur
+
+                    System.out.println("Veuillez entrer le joueur pour afficher sa "
+                            + "position");
+                    System.out.println("Veuillez entrer le numero de joueur : ");
+                    int index = 1;
+                    for (Joueur jo : joueurs) {
+                        System.out.println((index++) + ": " + jo);
+                    }
+                    int choixJoueur = Main.scanner.nextInt();
+                    switch (choixJoueur) {
+                        case 1 ->
+                            System.out.println(vaisseau.getSalle(joueurs.get(0).getPosition()).stockage.toString());
+                        case 2 ->
+                            System.out.println(vaisseau.getSalle(joueurs.get(1).getPosition()).stockage.toString());
+                        case 3 ->
+                            System.out.println(vaisseau.getSalle(joueurs.get(2).getPosition()).stockage.toString());
+                    }
+
                 }
 
             }
 
         }
-
-         }
         for (Joueur joueur : ordinateurs) {
 
             //Réalisation des actions pour un personnage contrôlé par l'ordinateur
             //TODO
             System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
+            System.out.println("2.Déplacer les joueurs.");
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("Entrez votre choix :");
