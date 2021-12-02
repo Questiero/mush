@@ -141,7 +141,7 @@ public class Partie {
             } while (!correctInput);
 
             this.joueurs.add(tempPersonnages.get(choixPersonnage - 1));
-            
+
             //Si les deux Mush ne sont pas encore séléctionnés, on demande à l'utilisateur de choisir
             if (this.nbrMush < 2) {
 
@@ -212,7 +212,7 @@ public class Partie {
             //Réalisation des actions pour un personnage contrôlé par un joueur
             //le menu 
             System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
+            System.out.println("2.Déplacer les joueurs.");
             System.out.println("3.Accéder à l'historique des actions.");
             System.out.println("4.Accéder au stockage des objets.");
             System.out.println("Entrez votre choix :");
@@ -322,10 +322,13 @@ public class Partie {
         }
     }
 
-    /**
-     * Arrête la partie
-     */
-    public void end() {
+    private void nbMushs() {
+        System.out.println(this.nbrMush);
+    }
+/**
+ * Arrête la partie
+ */
+public void end() {
         //TODO
     }
 
