@@ -180,6 +180,25 @@ public class Vaisseau {
 
     }
 
+    public Salle getSalleParHazard() {
+        Random ra = new Random();
+        return salles[ra.nextInt(salles.length)];
+    }
+
+    public Salle getSalleAvecCamera() {
+
+        for (Salle salle : salles) {
+
+            if (salle.isCameraInstalle()) {
+                return salle;
+            }
+
+        }
+
+        return null;
+
+    }
+
     /**
      * Détermine les voisins d'une salle donnée par référence
      *
@@ -239,6 +258,18 @@ public class Vaisseau {
 
         return res;
 
+    }
+
+    public int getArmure() {
+        return this.armure;
+    }
+
+    public int getOxygene() {
+        return this.oxygene;
+    }
+
+    public int getFuel() {
+        return this.fuel;
     }
 
 }

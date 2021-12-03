@@ -20,7 +20,7 @@ public class Joueur {
     private int pm = maxPM;
     private int pa = maxPA;
     private int pv = maxPV;
-    private int pmo = maxPMO;
+    private int pmo = 7;
 
     //Type de joueur (humain, mush)
     private boolean mush = false;
@@ -32,7 +32,7 @@ public class Joueur {
     private final Objet[] inventaire = new Objet[tailleInventaire];
 
     //Position actuelle du Joueur, initialisé au Nexus
-    private String positionKey = "Nexus";
+    private String positionKey = "Laboratoire";
 
     /**
      * Constructeur de Joueur
@@ -79,6 +79,8 @@ public class Joueur {
     public void affichageEtatJoueur() {
         System.out.println("--------------------------------- ");
         System.out.println("\t" + this.getNom());
+        if(this.maxPV == 0)
+            System.out.println("**!JOUEUR MORT!**");
         System.out.println("PV : " + this.getPv());
         System.out.println("PA : " + this.getPa());
         System.out.println("PM : " + this.getPm());
@@ -176,5 +178,7 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
+    
+    
 
 }

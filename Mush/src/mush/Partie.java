@@ -256,6 +256,70 @@ public class Partie {
 
     }
 
+    //méthode pour consulter le journal du bord
+    private void journalDuBord() {
+
+        System.out.println("1.Afficher la liste des joueurs dans les salle avec Caméras");
+        System.out.println("2.Afficher les incendies en cours ");
+        System.out.println("3.Affichage la liste des équipements endommagés");
+        System.out.println("4.Afficher l'état du vaisseau.");
+        System.out.println("5.Afficher la position des objets dans l'unité de stockage");
+        System.out.println("6.afficher le nombre de vaisseaux alien à proximité,");
+        System.out.println("7.Afficher les informations disponibles sur la planète à proximité");
+        System.out.println("8.Afficher les recherches de laboratoire et les projets NERON terminés, ");
+        System.out.println("9.Afficher le nombre de mushs à bord");
+        System.out.println("10.Afficher le nombre de joueurs morts");
+        System.out.println("Entrez votre choix : ");
+
+        int choix = Main.scanner.nextInt();
+        switch (choix) {
+            case 1 -> {
+                //les salle où il y a des caméras
+                vaisseau.getSalleAvecCamera();
+            }
+
+            case 2 -> {
+
+            }
+            case 3 -> {
+
+            }
+            case 4 -> {
+                etatVaisseau();
+            }
+            case 5 -> {
+
+            }
+            case 6 -> {
+            }
+
+            case 7 -> {
+
+            }
+            case 8 -> {
+
+            }
+            case 9 -> {
+                nbMushs();
+            }
+            case 10 -> {
+
+            }
+        }
+
+    }
+
+    private void nbMushs() {
+        System.out.println(this.nbrMush);
+    }
+
+    private void etatVaisseau() {
+        System.out.println(vaisseau.getArmure());
+        System.out.println(vaisseau.getOxygene());
+        System.out.println(vaisseau.getFuel());
+    }
+
+
     /**
      * Arrête la partie
      */
