@@ -52,10 +52,6 @@ public class Joueur {
         return mush;
     }
 
-    public String getPosition() {
-        return this.positionKey;
-    }
-
     public int getPv() {
         return this.pv;
     }
@@ -107,8 +103,12 @@ public class Joueur {
         return this.mush;
     }
 
-    public String setPositionlKey() {
+    public String getPositionKey() {
         return this.positionKey;
+    }
+    
+    public void setPositionKey(String key) {
+        this.positionKey = key;
     }
 
     /**
