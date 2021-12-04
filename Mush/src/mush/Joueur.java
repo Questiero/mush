@@ -88,6 +88,7 @@ public class Joueur {
         System.out.println("MUSH ? " + this.getMush());
         System.out.println("Inventaire : " + Arrays.toString(this.getInventaire()));
         System.out.println("Competences : " + this.getCompetences());
+        System.out.println("Position : " + this.positionKey);
         System.out.println("--------------------------------- ");
     }
     //méthode  pour afficher les caractéristiques d'un joueur 

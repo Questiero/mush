@@ -1,7 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashSet;
 
 public class Partie {
 
@@ -225,19 +225,36 @@ public class Partie {
                         joueur.affichageEtatJoueur();
                         break;
                     case 2:
-                        
-                        int i;
-                        
+
                         ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
                         
-                        System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
-                        for(i = 0; i<voisins.size(); i++) {
-                            System.out.println((i+1)+". " + voisins.get(i) + "(1 PM)");
-                            i++;
+                        System.out.println(voisins);
+
+                        int choixSalle = -1;
+                        boolean correctInput;
+
+                        do {
+
+                            int i;
+
+                            System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
+                            for (i = 0; i < voisins.size(); i++) {
+                                System.out.println((i + 1) + ". " + voisins.get(i) + "(1 PM)");
+                            }
+                            System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
+
+                            choixSalle = Main.scanner.nextInt();
+
+                            correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
+
+                        } while (!correctInput);
+
+                        if (choixSalle <= voisins.size()) {
+                            joueur.setPositionKey(voisins.get(choixSalle-1).getNom());
+                            System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
                         }
-                        System.out.println((i+2)+". Restez dans cette salle (gratuit)");
-                        
-                        //TODO
+
+                        //TODO -1PM
                         
                         break;
                     case 3:
@@ -318,7 +335,6 @@ public class Partie {
         System.out.println(vaisseau.getOxygene());
         System.out.println(vaisseau.getFuel());
     }
-
 
     /**
      * Arrête la partie
