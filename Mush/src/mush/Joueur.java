@@ -43,6 +43,10 @@ public class Joueur {
         this.nom = nom;
     }
 
+    Joueur() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //getters des variables 
     public String getNom() {
         return nom;

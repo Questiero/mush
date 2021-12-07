@@ -3,6 +3,7 @@ package mush;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Partie {
 
@@ -339,13 +340,35 @@ public class Partie {
     private void nbMushs() {
         System.out.println(this.nbrMush);
     }
+    //methode pour les actions 
+    public void unAction(){
+        Scanner ra = new Scanner(System.in);
+        int choix =ra.nextInt();
+        Joueur joueur = new Joueur();
+     // Déposer un objet dans l’unité de stockage (gratuit) ; 
+     //Prendre un objet dans l’unité de stockage (gratuit) ; 
+     //Cacher  un  objet  dans  l’unité  de  stockage  (1  PA). 
+     //Caresser le chat (1 PA). Si le chat est dans l’inventaire ;
+        switch (choix ) {
+            case 1 :{
+                
+                
+                    
+                }
+                      
+                
+            }
+                
+        }
+        
+    }
 
     private void etatVaisseau() {
         System.out.println(vaisseau.getArmure());
         System.out.println(vaisseau.getOxygene());
         System.out.println(vaisseau.getFuel());
     }
-
+    
     /**
      * Arrête la partie
      */
