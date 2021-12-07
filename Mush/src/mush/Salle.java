@@ -1,6 +1,8 @@
 package mush;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Salle {
 
@@ -9,7 +11,7 @@ public class Salle {
     //Stockage de la salle
     public final ArrayList<Objet> stockage = new ArrayList<>();
     //Historique des actions
-    public final ArrayList<String> historique = new ArrayList<>();
+    public final Queue<String> historique = new LinkedList<>();
 
     private boolean camera = false;
 
@@ -29,7 +31,7 @@ public class Salle {
     public String toString() {
         return this.nom;
     }
-    
+
     public void action(String[] actions) {
         ArrayList<String> action = new ArrayList<>();
         action.add("Consulter le journal de bord (gratuit)");
@@ -38,12 +40,27 @@ public class Salle {
         action.add("Ecrire un message "
                 + "dans le canal de communication (gratuit)");
     }
-    
-    public boolean isCameraInstalle(){
+
+    public boolean isCameraInstalle() {
         return this.camera;
     }
 
     public boolean installerUnCamera() {
         return this.camera = true;
     }
+
+    public Queue<String> getHistorique() {
+        return this.historique;
+    }
+
+    public void addToHistorique(String msg) {
+
+        if (this.historique.size() == 10) {
+            this.historique.remove();
+        }
+
+        this.historique.add(msg);
+
+    }
+
 }
