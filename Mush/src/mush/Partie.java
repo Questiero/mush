@@ -2,6 +2,7 @@ package mush;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 public class Partie {
 
@@ -198,7 +199,13 @@ public class Partie {
 
         }
 
-        //TODO position aléatoire des joueurs (pour le moment, par défaut Nexus)
+        //Répartition aléatoire de la salle de départ des joueurs
+        Random rand = new Random();
+
+        for (Joueur joueur : joueurs) {
+            joueur.setPositionKey(vaisseau.getSalles()[rand.nextInt(vaisseau.getSalles().length)].getNom());
+        }
+
         this.gameProcess();
 
     }
@@ -216,8 +223,9 @@ public class Partie {
 
                 System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                 System.out.println("1. Afficher vos caractéristiques (gratuit)");
-                System.out.println("2. Choisir une salle dans laquelle vous déplacer (1 PM)");
-                System.out.println("3. Terminez votre tour (gratuit)");
+                System.out.println("2. Afficher le journal de bord (gratuit)");
+                System.out.println("3. Choisir une salle dans laquelle vous déplacer (1 PM)");
+                System.out.println("4. Terminez votre tour (gratuit)");
 
                 switch (Main.scanner.nextInt()) {
 
@@ -226,8 +234,11 @@ public class Partie {
                         break;
                     case 2:
 
+                        break;
+                    case 3:
+
                         ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
-                        
+
                         System.out.println(voisins);
 
                         int choixSalle = -1;
@@ -250,14 +261,13 @@ public class Partie {
                         } while (!correctInput);
 
                         if (choixSalle <= voisins.size()) {
-                            joueur.setPositionKey(voisins.get(choixSalle-1).getNom());
+                            joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
                             System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
                         }
 
                         //TODO -1PM
-                        
                         break;
-                    case 3:
+                    case 4:
                         stop = true;
                         break;
                 }

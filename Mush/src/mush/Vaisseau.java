@@ -179,10 +179,9 @@ public class Vaisseau {
         return null;
 
     }
-
-    public Salle getSalleParHazard() {
-        Random ra = new Random();
-        return salles[ra.nextInt(salles.length)];
+ 
+    public Salle[] getSalles() {
+        return this.salles;
     }
 
     public Salle getSalleAvecCamera() {
