@@ -1,7 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashSet;
 
 public class Partie {
 
@@ -209,131 +209,131 @@ public class Partie {
         this.nextCycle();
 
         for (Joueur joueur : joueurs) {
-            //Réalisation des actions pour un personnage contrôlé par un joueur
-            //le menu 
-            System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
-            System.out.println("3.Accéder à l'historique des actions.");
-            System.out.println("4.Accéder au stockage des objets.");
-            System.out.println("5.Faire un action");
-            System.out.println("Entrez votre choix :");
 
-            int choix = Main.scanner.nextInt();
-            switch (choix) {
-                case 1 -> {//Affichage des caractéristiques des joueurs.
-                    affichageCaraJoueurs(joueurs);
-                }
+            boolean stop = false;
 
-                case 2 -> {
+            while (!stop) {
 
-                }
-                case 3 -> {
+                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                System.out.println("1. Afficher vos caractéristiques (gratuit)");
+                System.out.println("2. Choisir une salle dans laquelle vous déplacer (1 PM)");
+                System.out.println("3. Terminez votre tour (gratuit)");
 
-                }
-                case 4 -> {
-                    affichageStockage(joueurs);
-                }
-                case 5 -> {
-                    unaction();
+                switch (Main.scanner.nextInt()) {
+
+                    case 1:
+                        joueur.affichageEtatJoueur();
+                        break;
+                    case 2:
+
+                        ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
+                        
+                        System.out.println(voisins);
+
+                        int choixSalle = -1;
+                        boolean correctInput;
+
+                        do {
+
+                            int i;
+
+                            System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
+                            for (i = 0; i < voisins.size(); i++) {
+                                System.out.println((i + 1) + ". " + voisins.get(i) + "(1 PM)");
+                            }
+                            System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
+
+                            choixSalle = Main.scanner.nextInt();
+
+                            correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
+
+                        } while (!correctInput);
+
+                        if (choixSalle <= voisins.size()) {
+                            joueur.setPositionKey(voisins.get(choixSalle-1).getNom());
+                            System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
+                        }
+
+                        //TODO -1PM
+                        
+                        break;
+                    case 3:
+                        stop = true;
+                        break;
                 }
 
             }
 
         }
+
         for (Joueur joueur : ordinateurs) {
 
-            //Réalisation des actions pour un personnage contrôlé par l'ordinateur
-            //TODO
-            System.out.println("1.Affichage des caractéristiques des joueurs.");
-            System.out.println("2.Déplacer les joueures.");
-            System.out.println("3.Accéder à l'historique des actions.");
-            System.out.println("4.Accéder au stockage des objets.");
-            System.out.println("5.Accéder au journal de bord");
-
-            System.out.println("Entrez votre choix :");
-            int choix = Main.scanner.nextInt();
-            switch (choix) {
-                case 1 -> {//Affichage des caractéristiques des joueurs.
-                    affichageCaraJoueurs(ordinateurs);
-                }
-
-                case 2 -> {
-
-                }
-                case 3 -> {
-
-                }
-                case 4 -> {
-                    affichageStockage(ordinateurs);
-                }
-                case 5 -> {
-
-                    int commande = Main.scanner.nextInt();
-                    switch (commande) {
-                        case 9 -> {
-
-                        }
-                    }
-                }
-
-            }
+            //TODO actions aléatoires pour les joueurs contrôlés par les ordinateurs
         }
 
     }
 
-    private void affichageCaraJoueurs(ArrayList<Joueur> list) {
-        System.out.println("Quel joueur souhaitez-vous afficher?");
-        System.out.println("Veuillez entrer le numero de joueur : ");
-        int index = 1;
+    //méthode pour consulter le journal du bord
+    private void journalDuBord() {
 
-        for (Joueur jo : list) {
-            System.out.println((index++) + ": " + jo);
-        }
+        System.out.println("1.Afficher la liste des joueurs dans les salle avec Caméras");
+        System.out.println("2.Afficher les incendies en cours ");
+        System.out.println("3.Affichage la liste des équipements endommagés");
+        System.out.println("4.Afficher l'état du vaisseau.");
+        System.out.println("5.Afficher la position des objets dans l'unité de stockage");
+        System.out.println("6.afficher le nombre de vaisseaux alien à proximité,");
+        System.out.println("7.Afficher les informations disponibles sur la planète à proximité");
+        System.out.println("8.Afficher les recherches de laboratoire et les projets NERON terminés, ");
+        System.out.println("9.Afficher le nombre de mushs à bord");
+        System.out.println("10.Afficher le nombre de joueurs morts");
+        System.out.println("Entrez votre choix : ");
 
-        int choixJoueur = Main.scanner.nextInt();
-        for (int i = 0; i < list.size(); i++) {
-            if (choixJoueur == i + 1) {
-                getPersonnagesCaracs(list.get(i));
+        int choix = Main.scanner.nextInt();
+        switch (choix) {
+            case 1 -> {
+                //les salle où il y a des caméras
+                vaisseau.getSalleAvecCamera();
+            }
+
+            case 2 -> {
+
+            }
+            case 3 -> {
+
+            }
+            case 4 -> {
+                etatVaisseau();
+            }
+            case 5 -> {
+
+            }
+            case 6 -> {
+            }
+
+            case 7 -> {
+
+            }
+            case 8 -> {
+
+            }
+            case 9 -> {
+                nbMushs();
+            }
+            case 10 -> {
+
             }
         }
-
-    }
-
-    private void affichageStockage(ArrayList<Joueur> list) {
-
-        System.out.println("Veuillez entrer le joueur pour afficher sa "
-                + "position");
-        System.out.println("Veuillez entrer le numero de joueur : ");
-        int index = 1;
-        for (Joueur jo : list) {
-            System.out.println((index++) + ": " + jo);
-        }
-        int choixJoueur = Main.scanner.nextInt();
-        for (int i = 0; i < list.size(); i++) {
-            if (choixJoueur == i + 1) {
-                System.out.println(vaisseau.getSalle(list.get(i).getPosition()).stockage.toString());
-            }
-        }
-    }
-
-    private void unaction() {
-        System.out.println("1-Afficher la liste des joueurs dans une salle avec Camera");
-        System.out.println("2-Afficher les incendies en cours ");
-        System.out.println("3-Afficher l'état du vaisseau.");
-        System.out.println("4-Afficher la position des objets dans l'unité de stockage");
-        System.out.println("5-afficher le nombre de vaisseaux "
-                + "alien à proximité,");
-        System.out.println("6-Afficher les informations disponibles sur la planète à proximité");
-        System.out.println("7-Afficher les recherches de laboratoire et les projets \n"
-                + "NERON terminés, ");
-        System.out.println("8-Afficher le nombre de mushs à bord");
-        System.out.println("9-fficher le nombre de joueurs morts");
-        System.out.println("Entrez votre choix :");
 
     }
 
     private void nbMushs() {
         System.out.println(this.nbrMush);
+    }
+
+    private void etatVaisseau() {
+        System.out.println(vaisseau.getArmure());
+        System.out.println(vaisseau.getOxygene());
+        System.out.println(vaisseau.getFuel());
     }
 
     /**
