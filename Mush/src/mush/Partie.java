@@ -248,11 +248,88 @@ public class Partie {
 
                     case "etat":
                         joueur.affichageEtatJoueur();
+                        break;
                     case "journal":
-                        //TODO
+
+                        System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                        System.out.println("cameras. Afficher la liste des joueurs présents dans les salles où il y a une caméra (gratuit)");
+                        System.out.println("incendis. Afficher les incendies en cours (gratuit)");
+                        System.out.println("casse. Afficher la liste des équipements endommagés (gratuit)");
+                        System.out.println("etat. Afficher l'état du vaisseau (gratuit)");
+                        System.out.println("objets. Afficher la position des objets dans les unités de stockage (gratuit)");
+                        System.out.println("aliens. Afficher le nombre de vaisseaux alien à proximité (gratuit)");
+                        System.out.println("planete. Afficher les informations disponibles sur la planète à proximité (gratuit)");
+                        System.out.println("recherches. Afficher les recherches de laboratoire terminées (gratuit)");
+                        System.out.println("neron. Afficher les projets NERON terminés (gratuit)");
+                        System.out.println("mushs. Afficher le nombre de mushs à bord (gratuit)");
+                        System.out.println("morts. Afficher le nombre de joueurs morts (gratuit)");
+                        System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                        switch (Main.scanner.next()) {
+
+                            case "cameras":
+                                //TODO
+                                break;
+                            case "incendie":
+                                //TODO
+                                break;
+                            case "casse":
+                                //TODO
+                                break;
+                            case "etat":
+                                //TODO
+                                break;
+                            case "objets":
+                                //TODO
+                                break;
+                            case "aliens":
+                                //TODO
+                                break;
+                            case "planete":
+                                //TODO
+                                break;
+                            case "recherchers":
+                                //TODO
+                                break;
+                            case "neron":
+                                //TODO
+                                break;
+                            case "mushs":
+                                //TODO
+                                break;
+                            case "morts":
+                                //TODO
+                                break;
+                            case "retour":
+                                break;
+                            default:
+                                System.out.println(Main.msgErreurEntree);
+
+                        }
+
                         break;
                     case "canal":
-                        //TODO
+
+                        System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                        System.out.println("consulter. Consulter le canal de communication (gratuit)");
+                        System.out.println("envoyer. Envoyer un message dans le canal de communication (gratuit)");
+                        System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                        switch (Main.scanner.next()) {
+
+                            case "consulter":
+                                //TODO
+                                break;
+                            case "envoyer":
+                                //TODO
+                                break;
+                            case "retour":
+                                break;
+                            default:
+                                System.out.println(Main.msgErreurEntree);
+
+                        }
+
                         break;
                     case "salle":
                         //TODO
