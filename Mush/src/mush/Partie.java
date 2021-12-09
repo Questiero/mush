@@ -315,8 +315,7 @@ public class Partie {
                                 joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
                                 System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
                                 joueur.removePm(1);
-                            }
-                            else {
+                            } else {
                                 System.out.println(Main.msgErreurEntree);
                             }
 
@@ -332,56 +331,6 @@ public class Partie {
 
                 }
 
-                /*System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                System.out.println("1. Afficher vos caractéristiques (gratuit)");
-                System.out.println("2. Afficher le journal de bord (gratuit)");
-                System.out.println("3. Choisir une salle dans laquelle vous déplacer (1 PM)");
-                System.out.println("4. Terminez votre tour (gratuit)");
-
-                switch (Main.scanner.nextInt()) {
-
-                    case 1:
-                        joueur.affichageEtatJoueur();
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-
-                        ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
-
-                        System.out.println(voisins);
-
-                        int choixSalle = -1;
-                        boolean correctInput;
-
-                        do {
-
-                            int i;
-
-                            System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
-                            for (i = 0; i < voisins.size(); i++) {
-                                System.out.println((i + 1) + ". " + voisins.get(i) + "(1 PM)");
-                            }
-                            System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
-
-                            choixSalle = Main.scanner.nextInt();
-
-                            correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
-
-                        } while (!correctInput);
-
-                        if (choixSalle <= voisins.size()) {
-                            joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
-                            System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
-                        }
-
-                        //TODO -1PM
-                        break;
-                    case 4:
-                        stop = true;
-                        break;
-                }*/
             }
 
         }

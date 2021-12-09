@@ -40,14 +40,14 @@ public class Joueur {
      * @param nom nom du joueur
      */
     public Joueur(String nom) {
-        
+
         this.nom = nom;
-        
+
         //Initialisation de l'inventaire à des objets vides
-        for(int i = 0; i<this.tailleInventaire; i++) {
+        for (int i = 0; i < this.tailleInventaire; i++) {
             this.inventaire[i] = new Objet("Rien");
         }
-        
+
     }
 
     Joueur() {
@@ -106,8 +106,8 @@ public class Joueur {
             this.pmo = 0;
         }
     }
-    
-        public void addPv(int n) {
+
+    public void addPv(int n) {
         this.pv += n;
         if (this.pv > this.maxPV) {
             this.pv = this.maxPV;

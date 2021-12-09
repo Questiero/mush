@@ -14,13 +14,13 @@ public class Objet {
 
         this.nom = nom;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return this.nom;
     }
 
     public String getNom() {
         return this.nom;
     }
-    
+
 }
