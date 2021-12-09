@@ -40,7 +40,14 @@ public class Joueur {
      * @param nom nom du joueur
      */
     public Joueur(String nom) {
+        
         this.nom = nom;
+        
+        //Initialisation de l'inventaire à des objets vides
+        for(int i = 0; i<this.tailleInventaire; i++) {
+            this.inventaire[i] = new Objet("Rien");
+        }
+        
     }
 
     Joueur() {
@@ -72,6 +79,62 @@ public class Joueur {
         return this.pmo;
     }
 
+    public void removePv(int n) {
+        this.pv -= n;
+        if (this.pv < 0) {
+            this.pv = 0;
+        }
+    }
+
+    public void removePa(int n) {
+        this.pa -= n;
+        if (this.pa < 0) {
+            this.pa = 0;
+        }
+    }
+
+    public void removePm(int n) {
+        this.pm -= n;
+        if (this.pm < 0) {
+            this.pm = 0;
+        }
+    }
+
+    public void removePmo(int n) {
+        this.pmo -= n;
+        if (this.pmo < 0) {
+            this.pmo = 0;
+        }
+    }
+    
+        public void addPv(int n) {
+        this.pv += n;
+        if (this.pv > this.maxPV) {
+            this.pv = this.maxPV;
+        }
+    }
+
+    public void addPa(int n) {
+        this.pa += n;
+        if (this.pa > this.maxPA) {
+            this.pa = this.maxPA;
+        }
+    }
+
+    public void addPm(int n) {
+        this.pm += n;
+        if (this.pm > this.maxPM) {
+            this.pm = this.maxPM;
+        }
+    }
+
+    public void addPmo(int n) {
+        this.pmo += n;
+        if (this.pmo > this.maxPMO) {
+            this.pmo = this.maxPMO;
+        }
+    }
+
     public Objet[] getInventaire() {
         return inventaire;
     }
@@ -83,8 +146,9 @@ public class Joueur {
     public void affichageEtatJoueur() {
         System.out.println("--------------------------------- ");
         System.out.println("\t" + this.getNom());
-        if(this.maxPV == 0)
+        if (this.maxPV == 0) {
             System.out.println("**!JOUEUR MORT!**");
+        }
         System.out.println("PV : " + this.getPv());
         System.out.println("PA : " + this.getPa());
         System.out.println("PM : " + this.getPm());
@@ -113,7 +177,7 @@ public class Joueur {
     public String getPositionKey() {
         return this.positionKey;
     }
-    
+
     public void setPositionKey(String key) {
         this.positionKey = key;
     }
@@ -183,7 +247,17 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
-    
-    
+
+    public boolean hasObjet(String nom) {
+
+        for (Objet objet : this.inventaire) {
+            if (objet.getNom().equals(nom)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
 
 }

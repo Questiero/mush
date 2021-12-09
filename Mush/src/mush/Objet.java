@@ -19,4 +19,8 @@ public class Objet {
         return this.nom;
     }
 
+    public String getNom() {
+        return this.nom;
+    }
+    
 }

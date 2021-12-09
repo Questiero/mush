@@ -223,6 +223,116 @@ public class Partie {
             while (!stop) {
 
                 System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                System.out.println("etat. Afficher votre état");
+                System.out.println("journal. Afficher le journal de bord (gratuit)");
+                System.out.println("canal. Afficher les actions relatives au canal de communication (gratuit)");
+                System.out.println("salle. Afficher les actions disponibles dans " + joueur.getPositionKey() + " (gratuit)");
+                if (joueur.isMush()) {
+                    System.out.println("mush. Actions de Mush (gratuit)");
+                }
+                if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1) {
+                    System.out.println("extraire. Extraire un spore (1 PA)");
+                }
+                if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1) {
+                    System.out.println("chat. Caresser le chat de Schrödinger (1 PA)");
+                }
+                if (joueur.getPm() == 0 && joueur.getPa() >= 1) {
+                    System.out.println("conversion. Convertir 1 PA en 2 PM (1 PA)");
+                }
+                if (joueur.getPm() >= 1) {
+                    System.out.println("deplacer. Changer de salle (1 PM)");
+                }
+                System.out.println("fin. Finir votre tour (gratuit)");
+
+                switch (Main.scanner.next()) {
+
+                    case "etat":
+                        joueur.affichageEtatJoueur();
+                    case "journal":
+                        //TODO
+                        break;
+                    case "canal":
+                        //TODO
+                        break;
+                    case "salle":
+                        //TODO
+                        break;
+                    case "mush":
+                        if (joueur.isMush()) {
+                            //TODO
+                        } else {
+                            System.out.println(Main.msgErreurEntree);
+                        }
+                        break;
+                    case "extraire":
+                        if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1) {
+                            //TODO
+                        } else {
+                            System.out.println(Main.msgErreurEntree);
+                        }
+                        break;
+                    case "chat":
+                        if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1) {
+                            //TODO
+                        } else {
+                            System.out.println(Main.msgErreurEntree);
+                        }
+                        break;
+                    case "conversion":
+                        if (joueur.getPm() == 0 && joueur.getPa() >= 1) {
+                            //TODO
+                        } else {
+                            System.out.println(Main.msgErreurEntree);
+                        }
+                        break;
+                    case "deplacer":
+                        if (joueur.getPm() >= 1) {
+
+                            ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
+
+                            System.out.println(voisins);
+
+                            int choixSalle = -1;
+                            boolean correctInput;
+
+                            do {
+
+                                int i;
+
+                                System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
+                                for (i = 0; i < voisins.size(); i++) {
+                                    System.out.println((i + 1) + ". " + voisins.get(i) + "(1 PM)");
+                                }
+                                System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
+
+                                choixSalle = Main.scanner.nextInt();
+
+                                correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
+
+                            } while (!correctInput);
+
+                            if (choixSalle <= voisins.size()) {
+                                joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
+                                System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
+                                joueur.removePm(1);
+                            }
+                            else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+
+                        } else {
+                            System.out.println(Main.msgErreurEntree);
+                        }
+                        break;
+                    case "fin":
+                        stop = true;
+                        break;
+                    default:
+                        System.out.println(Main.msgErreurEntree);
+
+                }
+
+                /*System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                 System.out.println("1. Afficher vos caractéristiques (gratuit)");
                 System.out.println("2. Afficher le journal de bord (gratuit)");
                 System.out.println("3. Choisir une salle dans laquelle vous déplacer (1 PM)");
@@ -271,8 +381,7 @@ public class Partie {
                     case 4:
                         stop = true;
                         break;
-                }
-
+                }*/
             }
 
         }
@@ -340,27 +449,23 @@ public class Partie {
     private void nbMushs() {
         System.out.println(this.nbrMush);
     }
+
     //methode pour les actions 
-    public void unAction(){
+    public void unAction() {
         Scanner ra = new Scanner(System.in);
-        int choix =ra.nextInt();
+        int choix = ra.nextInt();
         Joueur joueur = new Joueur();
-     // Déposer un objet dans l’unité de stockage (gratuit) ; 
-     //Prendre un objet dans l’unité de stockage (gratuit) ; 
-     //Cacher  un  objet  dans  l’unité  de  stockage  (1  PA). 
-     //Caresser le chat (1 PA). Si le chat est dans l’inventaire ;
-        switch (choix ) {
-            case 1 :{
-                
-                
-                    
-                }
-                      
-                
+        // Déposer un objet dans l’unité de stockage (gratuit) ; 
+        //Prendre un objet dans l’unité de stockage (gratuit) ; 
+        //Cacher  un  objet  dans  l’unité  de  stockage  (1  PA). 
+        //Caresser le chat (1 PA). Si le chat est dans l’inventaire ;
+        switch (choix) {
+            case 1: {
+
             }
-                
+
         }
-        
+
     }
 
     private void etatVaisseau() {
@@ -368,7 +473,7 @@ public class Partie {
         System.out.println(vaisseau.getOxygene());
         System.out.println(vaisseau.getFuel());
     }
-    
+
     /**
      * Arrête la partie
      */
