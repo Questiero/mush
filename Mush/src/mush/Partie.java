@@ -1,8 +1,8 @@
 package mush;
 
 import java.util.ArrayList;
-import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Partie {
 
@@ -429,9 +429,10 @@ public class Partie {
 
                                 case "historique":
 
-                                    Queue<String> historique = this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique();
-
+                                    LinkedBlockingQueue<String> historique = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique());
+                                    
                                     if (historique.isEmpty()) {
+                                          
                                         System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
                                     } else {
                                         
@@ -519,7 +520,7 @@ public class Partie {
                                     if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
 
                                         joueur.toogleEstCouche();
-                                        this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se couche dans un lit");
+                                        this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se couche");
                                         this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").removeValue(1);
 
                                     } else {

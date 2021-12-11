@@ -2,8 +2,8 @@ package mush;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Salle {
 
@@ -14,7 +14,7 @@ public class Salle {
     //Equipements de la salle
     private final HashSet<Equipement> equipements = new HashSet<>();
     //Historique des actions
-    private final Queue<String> historique = new LinkedList<>();
+    private final LinkedBlockingQueue<String> historique = new LinkedBlockingQueue<>(10);
 
     private boolean incendie = false;
 
@@ -61,18 +61,12 @@ public class Salle {
         return this.incendie;
     }
 
-    public Queue<String> getHistorique() {
+    public LinkedBlockingQueue<String> getHistorique() {
         return this.historique;
     }
 
     public void addToHistorique(String msg) {
-
-        if (this.historique.size() == 10) {
-            this.historique.remove();
-        }
-
-        this.historique.add(msg);
-
+        this.historique.offer(msg);
     }
 
     public void addObjet(Objet objet) {
