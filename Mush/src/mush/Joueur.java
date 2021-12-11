@@ -34,6 +34,8 @@ public class Joueur {
     //Position actuelle du Joueur, initialisé au Nexus
     private String positionKey = "Laboratoire";
 
+    private boolean estCouche = false;
+    
     /**
      * Constructeur de Joueur
      *
@@ -141,6 +143,14 @@ public class Joueur {
 
     public HashMap<String, Integer> getCompetences() {
         return this.competences;
+    }
+    
+    public void toogleEstCouche() {
+        this.estCouche = !this.estCouche;
+    }
+    
+    public boolean estCouche() {
+        return this.estCouche;
     }
 
     public void affichageEtatJoueur() {
@@ -259,5 +269,5 @@ public class Joueur {
         return false;
 
     }
-
+    
 }

@@ -1,6 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,12 +10,14 @@ public class Salle {
     //Nom de la salle
     private final String nom;
     //Stockage de la salle
-    public final ArrayList<Objet> stockage = new ArrayList<>();
+    private final ArrayList<Objet> stockage = new ArrayList<>();
+    //Equipements de la salle
+    private final HashSet<Equipement> equipements = new HashSet<>();
     //Historique des actions
-    public final Queue<String> historique = new LinkedList<>();
+    private final Queue<String> historique = new LinkedList<>();
 
-    private boolean camera = false;
-
+    private boolean incendie = false;
+    
     /**
      * Constructeur de Salle
      *
@@ -40,13 +43,9 @@ public class Salle {
         action.add("Ecrire un message "
                 + "dans le canal de communication (gratuit)");
     }
-
-    public boolean isCameraInstalle() {
-        return this.camera;
-    }
-
-    public boolean installerUnCamera() {
-        return this.camera = true;
+    
+    public boolean estEnFeu() {
+        return this.incendie;
     }
 
     public Queue<String> getHistorique() {
@@ -62,5 +61,36 @@ public class Salle {
         this.historique.add(msg);
 
     }
+    
+    public void addObjet(Objet objet) {
+        this.stockage.add(objet);
+    }
 
+    public boolean hasEquipement(String key) {
+        
+        for(Equipement equipement : this.equipements) {
+            if(equipement.getNom().equals(key)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public int getEquipement(String key) {
+        
+        for(Equipement equipement : this.equipements) {
+            if(equipement.getNom().equals(key)) {
+                return equipement.getValue();
+            }
+        }
+        
+        return 0;
+        
+    }
+    
+    public void addEquipement(String key) {
+        this.equipements.add(new Equipement(key));
+    }
+    
 }

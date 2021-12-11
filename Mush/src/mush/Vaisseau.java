@@ -145,7 +145,7 @@ public class Vaisseau {
         for (int i = 0; i < nbSalles; i++) {
             if (this.salles[i] == Refectoire) {
                 for (int j = 0; j < 30; j++) {
-                    this.salles[i].stockage.add(rationStandard);
+                    this.salles[i].addObjet(rationStandard);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class Vaisseau {
 
                 Objet objet = new Objet(nomObjets[i]);
 
-                this.salles[ra.nextInt(nbSalles - 1)].stockage.add(objet);
+                this.salles[ra.nextInt(nbSalles - 1)].addObjet(objet);
             }
 
         }
@@ -182,20 +182,6 @@ public class Vaisseau {
 
     public Salle[] getSalles() {
         return this.salles;
-    }
-
-    public Salle getSalleAvecCamera() {
-
-        for (Salle salle : salles) {
-
-            if (salle.isCameraInstalle()) {
-                return salle;
-            }
-
-        }
-
-        return null;
-
     }
 
     /**
