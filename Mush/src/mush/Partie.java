@@ -367,7 +367,7 @@ public class Partie {
                             }
                             System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
                             System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey()+ " (gratuit)");
-                            if (Integer.valueOf(1).equals(joueur.getCompetence("Traqueur")) || joueur.getPa() >= 1) {
+                            if (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) || joueur.getPa() >= 1) {
                                 System.out.println("reparer. Reparer un équipement dans la salle " + (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) ? "(gratuit)" : "(1PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).estEnFeu() && joueur.hasObjet("Extincteur")) {
@@ -405,7 +405,7 @@ public class Partie {
                             } else {
                                 System.out.println("camera. Installer une caméra (4 PA)");
                             }
-                            if (!joueur.hasCompetence("Cuistot")) {
+                            if (joueur.hasCompetence("Cuistot") && !Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
                                 System.out.println("cuisiner. Cuisiner une ration (gratuit)");
                             }
                             if (joueur.getPositionKey().equals("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
@@ -438,7 +438,7 @@ public class Partie {
                                     //TODO
                                     break;
                                 case "reparer":
-                                    if (joueur.hasCompetence("Traqueur") || joueur.getPa() >= 1) {
+                                    if (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) || joueur.getPa() >= 1) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -522,7 +522,7 @@ public class Partie {
                                     }
                                     break;
                                 case "cuisiner":
-                                    if (!joueur.hasCompetence("Cuistot")) {
+                                    if (!joueur.hasCompetence("Cuistot") && !Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
