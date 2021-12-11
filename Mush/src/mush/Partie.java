@@ -295,12 +295,14 @@ public class Partie {
                                     break;
                                 case "incendie":
                                     //TODO
+                                    
                                     break;
                                 case "casse":
                                     //TODO
                                     break;
                                 case "etat":
                                     //TODO
+                                    System.out.println(vaisseau.getEtatVaisseau());
                                     break;
                                 case "objets":
                                     //TODO
@@ -310,6 +312,7 @@ public class Partie {
                                     break;
                                 case "planete":
                                     //TODO
+                                    
                                     break;
                                 case "recherchers":
                                     //TODO
@@ -319,9 +322,11 @@ public class Partie {
                                     break;
                                 case "mushs":
                                     //TODO
+                                    System.out.println(this.nbrMush);
                                     break;
                                 case "morts":
                                     //TODO
+                                    System.out.println(this.nbrMush);
                                     break;
                                 case "retour":
                                     break;
@@ -458,6 +463,8 @@ public class Partie {
                                     break;
                                 case "stockage":
                                     //TODO
+                          
+                        
                                     break;
                                 case "reparer":
                                     if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
