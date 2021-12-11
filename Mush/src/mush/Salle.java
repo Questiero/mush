@@ -17,14 +17,27 @@ public class Salle {
     private final Queue<String> historique = new LinkedList<>();
 
     private boolean incendie = false;
-    
+
     /**
      * Constructeur de Salle
      *
      * @param nom nom de la Salle
      */
     public Salle(String nom) {
+
         this.nom = nom;
+
+        if (this.nom.startsWith("Dortoir")) {
+            this.addEquipement("Lit", 3);
+            this.addEquipement("Douche", 1);
+        } else if (this.nom.contains("Baie Alpha")) {
+            this.addEquipement("Jet d'attaque", 3);
+        } else if (this.nom.equals("Baie Beta")) {
+            this.addEquipement("Jet d'attaque", 2);
+        } else if (this.nom.equals("Baie Icarus")) {
+            this.addEquipement("Jet d'exploration", 1);
+        }
+
     }
 
     public String getNom() {
@@ -43,7 +56,7 @@ public class Salle {
         action.add("Ecrire un message "
                 + "dans le canal de communication (gratuit)");
     }
-    
+
     public boolean estEnFeu() {
         return this.incendie;
     }
@@ -61,36 +74,40 @@ public class Salle {
         this.historique.add(msg);
 
     }
-    
+
     public void addObjet(Objet objet) {
         this.stockage.add(objet);
     }
 
     public boolean hasEquipement(String key) {
-        
-        for(Equipement equipement : this.equipements) {
-            if(equipement.getNom().equals(key)) {
+
+        for (Equipement equipement : this.equipements) {
+            if (equipement.getNom().equals(key)) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
-    public int getEquipement(String key) {
-        
-        for(Equipement equipement : this.equipements) {
-            if(equipement.getNom().equals(key)) {
-                return equipement.getValue();
+
+    public Equipement getEquipement(String key) {
+
+        for (Equipement equipement : this.equipements) {
+            if (equipement.getNom().equals(key)) {
+                return equipement;
             }
         }
-        
-        return 0;
-        
+
+        return null;
+
     }
-    
-    public void addEquipement(String key) {
-        this.equipements.add(new Equipement(key));
+
+    public void addEquipement(String key, int n) {
+
+        Equipement equipement = new Equipement(key);
+        equipement.setValue(n);
+        this.equipements.add(equipement);
+
     }
-    
+
 }

@@ -1,6 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Random;
 
 public class Partie {
@@ -122,7 +123,7 @@ public class Partie {
             //Affiche le menu de sélection tant que le nombre saisi ne correspond pas à un personnage disponible
             do {
 
-                System.out.println("Joueur " + (i + 1) + ", choississez un personnage parmis:");
+                System.out.println("\nJoueur " + (i + 1) + ", choississez un personnage parmis:");
 
                 for (int j = 0; j < tempPersonnages.size(); j++) {
 
@@ -254,7 +255,11 @@ public class Partie {
 
                     case "lever":
                         if (joueur.estCouche()) {
+
                             joueur.toogleEstCouche();
+                            this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se lève");
+                            this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").addValue(1);
+
                         } else {
                             System.out.println(Main.msgErreurEntree);
                         }
@@ -361,12 +366,13 @@ public class Partie {
 
                         if (!joueur.estCouche()) {
 
+                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                             System.out.println("historique. Afficher l'historique des 10 dernières actions de la salle (gratuit)");
                             if (joueur.hasCompetence("Traqueur")) {
                                 System.out.println("deplacements. Afficher l'historique de déplacements (gratuit)");
                             }
                             System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
-                            System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey()+ " (gratuit)");
+                            System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey() + " (gratuit)");
                             if (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) || joueur.getPa() >= 1) {
                                 System.out.println("reparer. Reparer un équipement dans la salle " + (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) ? "(gratuit)" : "(1PA)"));
                             }
@@ -388,13 +394,13 @@ public class Partie {
                             if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote")) {
                                 System.out.println("deplacer. Déplacer le Daedalus (3 PA)");
                             }
-                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
+                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
                                 System.out.println("rentrer. Rentrer sur Terre (5 PA)");
                             }
-                            if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit") > 0) {
+                            if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
                                 System.out.println("coucher. Se coucher dans un lit (gratuit)");
                             }
-                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
+                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
                                 System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) ? "(gratuit)" : "(3 PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Douche")) {
@@ -422,7 +428,23 @@ public class Partie {
                             switch (Main.scanner.next()) {
 
                                 case "historique":
-                                    //TODO
+
+                                    Queue<String> historique = this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique();
+
+                                    if (historique.isEmpty()) {
+                                        System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
+                                    } else {
+                                        
+                                        System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
+                                        
+                                        int i = 1;
+                                        while (!historique.isEmpty()) {
+                                            System.out.println(i + ") " + historique.poll());
+                                            i++;
+                                        }
+                                        
+                                    }
+
                                     break;
                                 case "deplacements":
                                     if (joueur.getCompetence("Traqueur") == 1) {
@@ -487,21 +509,25 @@ public class Partie {
                                     }
                                     break;
                                 case "rentrer":
-                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
+                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
                                     }
                                     break;
                                 case "coucher":
-                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit") > 0) {
-                                        //TODO
+                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
+
+                                        joueur.toogleEstCouche();
+                                        this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se couche dans un lit");
+                                        this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").removeValue(1);
+
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
                                     }
                                     break;
                                 case "pilgred":
-                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
+                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -564,6 +590,7 @@ public class Partie {
                     case "mush":
                         if (joueur.isMush() && !joueur.estCouche()) {
 
+                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                             int PaSpore = 2;
                             if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Sérum de constipaspore")) {
                                 PaSpore += 2;
@@ -657,8 +684,6 @@ public class Partie {
 
                             ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
 
-                            System.out.println(voisins);
-
                             int choixSalle = -1;
                             boolean correctInput;
 
@@ -668,7 +693,7 @@ public class Partie {
 
                                 System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
                                 for (i = 0; i < voisins.size(); i++) {
-                                    System.out.println((i + 1) + ". " + voisins.get(i) + "(1 PM)");
+                                    System.out.println((i + 1) + ". " + voisins.get(i) + " (1 PM)");
                                 }
                                 System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
 
