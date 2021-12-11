@@ -225,7 +225,7 @@ public class Partie {
                 System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
 
                 if (!joueur.estCouche()) {
-                    System.out.println("etat. Afficher votre état");
+                    System.out.println("etat. Afficher votre état (gratuit)");
                     System.out.println("journal. Afficher le journal de bord (gratuit)");
                     System.out.println("canal. Afficher les actions relatives au canal de communication (gratuit)");
                     System.out.println("salle. Afficher les actions disponibles dans " + joueur.getPositionKey() + " (gratuit)");
@@ -362,13 +362,13 @@ public class Partie {
                         if (!joueur.estCouche()) {
 
                             System.out.println("historique. Afficher l'historique des 10 dernières actions de la salle (gratuit)");
-                            if (joueur.getCompetence("Traqueur") == 1) {
+                            if (joueur.hasCompetence("Traqueur")) {
                                 System.out.println("deplacements. Afficher l'historique de déplacements (gratuit)");
                             }
-                            System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey());
-                            System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey());
+                            System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
+                            System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey()+ " (gratuit)");
                             if (Integer.valueOf(1).equals(joueur.getCompetence("Traqueur")) || joueur.getPa() >= 1) {
-                                System.out.println("reparer. Reparer un équipement dans la salle" + (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) ? "(gratuit)" : "(1PA)"));
+                                System.out.println("reparer. Reparer un équipement dans la salle " + (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) ? "(gratuit)" : "(1PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).estEnFeu() && joueur.hasObjet("Extincteur")) {
                                 System.out.println("eteindre. Eteindre un incendie dans la salle (gratuit)");
@@ -376,26 +376,26 @@ public class Partie {
                             if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 2)) || (joueur.getPa() >= 1) && this.vaisseau.getSalle("Nexus").hasEquipement("Accélération de processeur")) {
                                 System.out.println("detecter. Detecter une planète à proximité" + ((this.vaisseau.getSalle("Nexus").hasEquipement("Accélération du processeur")) ? "(1 PA)" : "(2 PA)"));
                             }
-                            if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && Integer.valueOf(1).equals(joueur.getCompetence("Astrophysicien"))) {
-                                System.out.println("scanner. Scanner la planète" + (Integer.valueOf(1).equals(joueur.getCompetence("Astrophysicien")) ? "(2 PA)" : "(3 PA)"));
+                            if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
+                                System.out.println("scanner. Scanner la planète" + (joueur.hasCompetence("Astrophysicien") ? "(2 PA)" : "(3 PA)"));
                             }
                             if (joueur.getPositionKey().startsWith("Tourelle") || this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Jet d'attaque")) {
                                 System.out.println("attaquer. Attaquer un vaisseau alien (1 PA)");
                             }
-                            if (this.planete.estDecouverte() && Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) && joueur.getPositionKey().equals("Baie Icarus")) {
+                            if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.getPositionKey().equals("Baie Icarus")) {
                                 System.out.println("expedition. Lancer une expédition (3 PA)");
                             }
-                            if (joueur.getPositionKey().equals("Pont") && Integer.valueOf(1).equals(joueur.getCompetence("Pilote"))) {
+                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote")) {
                                 System.out.println("deplacer. Déplacer le Daedalus (3 PA)");
                             }
-                            if (joueur.getPositionKey().equals("Pont") && Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
+                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
                                 System.out.println("rentrer. Rentrer sur Terre (5 PA)");
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit") > 0) {
                                 System.out.println("coucher. Se coucher dans un lit (gratuit)");
                             }
-                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) || joueur.getPa() >= 3)) {
-                                System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) ? "(gratuit)" : "(3 PA)"));
+                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
+                                System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) ? "(gratuit)" : "(3 PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Douche")) {
                                 System.out.println("douche. Se doucher" + ((joueur.hasObjet("Savon")) ? "(1 PA)" : "(2 PA"));
@@ -405,7 +405,7 @@ public class Partie {
                             } else {
                                 System.out.println("camera. Installer une caméra (4 PA)");
                             }
-                            if (!Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
+                            if (!joueur.hasCompetence("Cuistot")) {
                                 System.out.println("cuisiner. Cuisiner une ration (gratuit)");
                             }
                             if (joueur.getPositionKey().equals("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
@@ -438,7 +438,7 @@ public class Partie {
                                     //TODO
                                     break;
                                 case "reparer":
-                                    if (Integer.valueOf(1).equals(joueur.getCompetence("Traqueur")) || joueur.getPa() >= 1) {
+                                    if (joueur.hasCompetence("Traqueur") || joueur.getPa() >= 1) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -459,7 +459,7 @@ public class Partie {
                                     }
                                     break;
                                 case "scanner":
-                                    if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && Integer.valueOf(1).equals(joueur.getCompetence("Astrophysicien"))) {
+                                    if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -473,21 +473,21 @@ public class Partie {
                                     }
                                     break;
                                 case "expedition":
-                                    if (this.planete.estDecouverte() && Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) && joueur.getPositionKey().equals("Baie Icarus")) {
+                                    if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.getPositionKey().equals("Baie Icarus")) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
                                     }
                                     break;
                                 case "deplacer":
-                                    if (joueur.getPositionKey().equals("Pont") && Integer.valueOf(1).equals(joueur.getCompetence("Pilote"))) {
+                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote")) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
                                     }
                                     break;
                                 case "rentrer":
-                                    if (joueur.getPositionKey().equals("Pont") && Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
+                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") == 100) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -501,7 +501,7 @@ public class Partie {
                                     }
                                     break;
                                 case "pilgred":
-                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Pilote")) || joueur.getPa() >= 3)) {
+                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED") < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -522,7 +522,7 @@ public class Partie {
                                     }
                                     break;
                                 case "cuisiner":
-                                    if (!Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
+                                    if (!joueur.hasCompetence("Cuistot")) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
