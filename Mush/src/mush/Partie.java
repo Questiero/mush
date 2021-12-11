@@ -373,8 +373,8 @@ public class Partie {
                             }
                             System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
                             System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey() + " (gratuit)");
-                            if (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) || joueur.getPa() >= 1) {
-                                System.out.println("reparer. Reparer un équipement dans la salle " + (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) ? "(gratuit)" : "(1PA)"));
+                            if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
+                                System.out.println("reparer. Reparer un équipement dans la salle " + (joueur.competenceEquals("Technicien", 1) ? "(gratuit)" : "(1PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).estEnFeu() && joueur.hasObjet("Extincteur")) {
                                 System.out.println("eteindre. Eteindre un incendie dans la salle (gratuit)");
@@ -400,8 +400,8 @@ public class Partie {
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
                                 System.out.println("coucher. Se coucher dans un lit (gratuit)");
                             }
-                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
-                                System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) ? "(gratuit)" : "(3 PA)"));
+                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
+                                System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (joueur.competenceEquals("Physicien", 1) ? "(gratuit)" : "(3 PA)"));
                             }
                             if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Douche")) {
                                 System.out.println("douche. Se doucher" + ((joueur.hasObjet("Savon")) ? "(1 PA)" : "(2 PA"));
@@ -411,7 +411,7 @@ public class Partie {
                             } else {
                                 System.out.println("camera. Installer une caméra (4 PA)");
                             }
-                            if (joueur.hasCompetence("Cuistot") && !Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
+                            if (joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
                                 System.out.println("cuisiner. Cuisiner une ration (gratuit)");
                             }
                             if (joueur.getPositionKey().equals("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
@@ -460,7 +460,7 @@ public class Partie {
                                     //TODO
                                     break;
                                 case "reparer":
-                                    if (Integer.valueOf(1).equals(joueur.getCompetence("Technicien")) || joueur.getPa() >= 1) {
+                                    if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -527,7 +527,7 @@ public class Partie {
                                     }
                                     break;
                                 case "pilgred":
-                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (Integer.valueOf(1).equals(joueur.getCompetence("Physicien")) || joueur.getPa() >= 3)) {
+                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
@@ -548,7 +548,7 @@ public class Partie {
                                     }
                                     break;
                                 case "cuisiner":
-                                    if (!joueur.hasCompetence("Cuistot") && !Integer.valueOf(0).equals(joueur.getCompetence("Cuistot"))) {
+                                    if (!joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
                                         //TODO
                                     } else {
                                         System.out.println(Main.msgErreurEntree);

@@ -261,6 +261,10 @@ public class Joueur {
     public boolean hasCompetence(String competenceKey) {
         return this.competences.containsKey(competenceKey);
     }
+    
+    public boolean competenceEquals(String key, int n) {
+        return Integer.valueOf(n).equals(this.competences.get(key));
+    }
 
     public boolean hasObjet(String nom) {
 
