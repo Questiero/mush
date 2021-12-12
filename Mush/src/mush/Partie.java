@@ -149,6 +149,7 @@ public class Partie {
             this.aliensInter += this.aliensInactifs;
             this.aliensInactifs = rand.nextInt(6);
             
+            this.vaisseau.removeArmure(this.aliensActifs);
             
         }
         
