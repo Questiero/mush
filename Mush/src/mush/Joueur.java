@@ -176,7 +176,7 @@ public class Joueur {
     public void douche() {
         this.estSale = true;
     }
-    
+
     public boolean estSale() {
         return this.estSale;
     }
@@ -365,5 +365,5 @@ public class Joueur {
     public boolean estDans(String key) {
         return this.positionKey.equals(key);
     }
-    
+
 }

@@ -62,7 +62,7 @@ public class Salle {
     public boolean estEnFeu() {
         return this.incendie;
     }
-    
+
     public void toggleIncendie() {
         this.incendie = !this.incendie;
     }
@@ -108,7 +108,7 @@ public class Salle {
     public HashSet<Equipement> getEquipements() {
         return this.equipements;
     }
-    
+
     public Equipement getEquipement(String key) {
 
         for (Equipement equipement : this.equipements) {

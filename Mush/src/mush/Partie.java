@@ -1,10 +1,13 @@
 package mush;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Partie {
 
@@ -415,6 +418,8 @@ public class Partie {
 
                 while (!stop) {
 
+                    boolean retour = false;
+
                     System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
 
                     if (!joueur.estCouche()) {
@@ -443,7 +448,7 @@ public class Partie {
 
                     System.out.println("fin. Finir votre tour (gratuit)");
 
-                    switch (Main.scanner.next()) {
+                    switch (Main.scanner.next().toLowerCase()) {
 
                         case "lever":
                             if (joueur.estCouche()) {
@@ -480,10 +485,39 @@ public class Partie {
                                 System.out.println("morts. Afficher le nombre de joueurs morts (gratuit)");
                                 System.out.println("retour. Retourner au menu principal (gratuit)");
 
-                                switch (Main.scanner.next()) {
+                                switch (Main.scanner.next().toLowerCase()) {
 
                                     case "cameras":
-                                        //TODO
+
+                                        Salle[] salles = this.vaisseau.getSalles().clone();
+                                        LinkedList<Salle> sallesCameras = new LinkedList<>();
+
+                                        int i = 1;
+
+                                        System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
+                                        for (Salle salle : salles) {
+                                            if (salle.hasEquipement("Caméra")) {
+                                                System.out.println(i + ". " + salle.getNom());
+                                                sallesCameras.add(salle);
+                                                i++;
+                                            }
+                                        }
+
+                                        Salle salleTemp = sallesCameras.get(Main.scanner.nextInt() - 1);
+
+                                        if (salleTemp.hasEquipement("Caméra")) {
+
+                                            System.out.println("\nListe des joueurs dans " + salleTemp + ":");
+                                            for (Joueur joueurTemp : personnages) {
+                                                if (joueurTemp.getPositionKey().equals(salleTemp.getNom())) {
+                                                    System.out.println(joueurTemp);
+                                                }
+                                            }
+
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+
                                         break;
                                     case "incendie":
 
@@ -522,6 +556,7 @@ public class Partie {
                                         System.out.println("\n" + (16 - this.nbrJoueurs) + " joueurs sont morts");
                                         break;
                                     case "retour":
+                                        retour = true;
                                         break;
                                     default:
                                         System.out.println(Main.msgErreurEntree);
@@ -540,7 +575,7 @@ public class Partie {
                                 System.out.println("envoyer. Envoyer un message dans le canal de communication (gratuit)");
                                 System.out.println("retour. Retourner au menu principal (gratuit)");
 
-                                switch (Main.scanner.next()) {
+                                switch (Main.scanner.next().toLowerCase()) {
 
                                     case "consulter":
 
@@ -564,10 +599,11 @@ public class Partie {
                                     case "envoyer":
 
                                         System.out.println("\nEntrez votre message à envoyer dans le canal de communication:");
-                                        this.addToMainChat(Main.scanner.next());
+                                        this.addToMainChat(Main.scanner.next().toLowerCase());
 
                                         break;
                                     case "retour":
+                                        retour = true;
                                         break;
                                     default:
                                         System.out.println(Main.msgErreurEntree);
@@ -642,7 +678,7 @@ public class Partie {
                                 }
                                 System.out.println("retour. Retourner au menu principal (gratuit)");
 
-                                switch (Main.scanner.next()) {
+                                switch (Main.scanner.next().toLowerCase()) {
 
                                     case "historique":
 
@@ -813,6 +849,7 @@ public class Partie {
                                         }
                                         break;
                                     case "retour":
+                                        retour = true;
                                         break;
                                     default:
                                         System.out.println(Main.msgErreurEntree);
@@ -832,15 +869,15 @@ public class Partie {
                                 if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Sérum de constipaspore")) {
                                     PaSpore += 2;
                                 }
-                                
+
                                 boolean estSeul = true;
-                                for(Joueur joueurTemp : personnages) {
-                                    if(joueur.getPositionKey().equals(joueurTemp.getPositionKey())) {
+                                for (Joueur joueurTemp : personnages) {
+                                    if (joueur.getPositionKey().equals(joueurTemp.getPositionKey())) {
                                         estSeul = false;
                                     }
                                 }
-                                
-                                if (joueur.getPa() >= PaSpore && this.sporesExtraits<4 && joueur.getSpores()<2 && estSeul) {
+
+                                if (joueur.getPa() >= PaSpore && this.sporesExtraits < 4 && joueur.getSpores() < 2 && estSeul) {
                                     System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
 
                                 }
@@ -864,14 +901,14 @@ public class Partie {
                                 System.out.println("envoyer. Ecrire dans le canal de communication mush (gratuit)");
                                 System.out.println("retour. Retourner au menu principal (gratuit");
 
-                                switch (Main.scanner.next()) {
+                                switch (Main.scanner.next().toLowerCase()) {
 
                                     case "spore":
-                                        if (joueur.getPa() >= PaSpore && this.sporesExtraits<4 && joueur.getSpores()<2 && estSeul) {
+                                        if (joueur.getPa() >= PaSpore && this.sporesExtraits < 4 && joueur.getSpores() < 2 && estSeul) {
                                             this.sporesExtraits++;
                                             joueur.addSpore(1);
                                             joueur.sali();
-                                            if(salleJoueur.hasEquipement("Caméra")) {
+                                            if (salleJoueur.hasEquipement("Caméra")) {
                                                 salleJoueur.addToHistorique(joueur + " vient de créer un spore");
                                             }
                                         } else {
@@ -928,10 +965,11 @@ public class Partie {
                                     case "envoyer":
 
                                         System.out.println("\nEntrez votre message à envoyer dans le canal de communication mush:");
-                                        this.addToMushChat(Main.scanner.next());
+                                        this.addToMushChat(Main.scanner.next().toLowerCase());
 
                                         break;
                                     case "retour":
+                                        retour = true;
                                         break;
                                     default:
                                         System.out.println(Main.msgErreurEntree);
@@ -1011,10 +1049,16 @@ public class Partie {
                             break;
                         case "fin":
                             stop = true;
+                            retour = true;
                             break;
                         default:
                             System.out.println(Main.msgErreurEntree);
 
+                    }
+
+                    if (!retour) {
+                        System.out.println("\nEntrez n'importe quoi pour continuer");
+                        Main.scanner.next();
                     }
 
                 }

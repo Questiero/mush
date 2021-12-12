@@ -289,7 +289,7 @@ public class Vaisseau {
     public int[][] getPortes() {
         return this.graphVoisins;
     }
-    
+
     public int getArmure() {
         return this.armure;
     }
@@ -324,5 +324,5 @@ public class Vaisseau {
         System.out.println("Armure: " + this.armure + "/" + this.maxArmure);
         System.out.println("Fuel: " + this.fuel + "/" + this.maxFuel);
     }
-    
+
 }
