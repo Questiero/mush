@@ -153,6 +153,22 @@ public class Partie {
             
         }
         
+        //Casse des portes
+        int[][] graph = this.vaisseau.getPortes();
+        
+        for (int i = 0; i < graph.length; i++) {
+            
+            for (int j = i; j < graph.length; j++) {
+                
+                if(graph[i][j]==1 && rand.nextInt(100)<3) {
+                    graph[i][j] = -1;
+                    graph[j][i] = -1;
+                }
+                
+            }
+            
+        }
+        
         this.vaisseau.removeOxygene(this.nbrJoueurs);
 
         //Gestion des compétences et changement de caractéristiques à chaque fin de cycle

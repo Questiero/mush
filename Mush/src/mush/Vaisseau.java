@@ -287,6 +287,10 @@ public class Vaisseau {
 
     }
 
+    public int[][] getPortes() {
+        return this.graphVoisins;
+    }
+    
     public int getArmure() {
         return this.armure;
     }
