@@ -35,7 +35,8 @@ public class Joueur {
     private String positionKey = "Laboratoire";
 
     private boolean estCouche = false;
-    
+    private int sasiete = 0;
+
     /**
      * Constructeur de Joueur
      *
@@ -144,30 +145,42 @@ public class Joueur {
     public HashMap<String, Integer> getCompetences() {
         return this.competences;
     }
-    
+
     public void toogleEstCouche() {
         this.estCouche = !this.estCouche;
     }
-    
+
     public boolean estCouche() {
         return this.estCouche;
     }
 
-    public void affichageEtatJoueur() {
-        System.out.println("--------------------------------- ");
-        System.out.println("\t" + this.getNom());
-        if (this.maxPV == 0) {
-            System.out.println("**!JOUEUR MORT!**");
+    public void mange() {
+        this.sasiete = 3;
+    }
+
+    public int getSasiete() {
+        return this.sasiete;
+    }
+
+    public void waitSasiete() {
+        if (this.sasiete != 0) {
+            this.sasiete--;
         }
-        System.out.println("PV : " + this.getPv());
-        System.out.println("PA : " + this.getPa());
-        System.out.println("PM : " + this.getPm());
-        System.out.println("PMO : " + this.getPmo());
+    }
+
+    public void affichageEtatJoueur() {
+
+        //TODO clean un peu
+        
+        System.out.println("\nEtat actuel de " + this.getNom() + ":");
+        System.out.println("PV: " + this.pv + "/" + this.maxPV);
+        System.out.println("PA: " + this.pa + "/" + this.maxPA);
+        System.out.println("PM: " + this.pm + "/" + this.maxPM);
+        System.out.println("PMO: " + this.pmo + "/" + this.maxPMO);
         System.out.println("MUSH ? " + this.getMush());
-        System.out.println("Inventaire : " + Arrays.toString(this.getInventaire()));
-        System.out.println("Competences : " + this.getCompetences());
-        System.out.println("Position : " + this.positionKey);
-        System.out.println("--------------------------------- ");
+        System.out.println("Inventaire: " + Arrays.toString(this.getInventaire()));
+        System.out.println("Competences: " + this.getCompetences());
+        System.out.println("Position: " + this.positionKey);
     }
     //méthode  pour afficher les caractéristiques d'un joueur 
     // Nom et si il est mush ou humain  
@@ -257,11 +270,11 @@ public class Joueur {
     public Integer getCompetence(String competenceKey) {
         return this.competences.get(competenceKey);
     }
-    
+
     public boolean hasCompetence(String competenceKey) {
         return this.competences.containsKey(competenceKey);
     }
-    
+
     public boolean competenceEquals(String key, int n) {
         return Integer.valueOf(n).equals(this.competences.get(key));
     }
@@ -277,5 +290,5 @@ public class Joueur {
         return false;
 
     }
-    
+
 }

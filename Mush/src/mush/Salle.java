@@ -62,6 +62,10 @@ public class Salle {
     public boolean estEnFeu() {
         return this.incendie;
     }
+    
+    public void toggleIncendie() {
+        this.incendie = !this.incendie;
+    }
 
     public LinkedBlockingQueue<String> getHistorique() {
         return this.historique;

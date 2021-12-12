@@ -20,6 +20,48 @@ public class Vaisseau {
     private int oxygene = maxOxygene;
     private int fuel = maxFuel;
 
+    public void removeArmure(int n) {
+        this.armure -= n;
+        if (this.armure < 0) {
+            this.armure = 0;
+        }
+    }
+
+    public void removeOxygene(int n) {
+        this.oxygene -= n;
+        if (this.oxygene < 0) {
+            this.oxygene = 0;
+        }
+    }
+
+    public void removeFuel(int n) {
+        this.fuel -= n;
+        if (this.fuel < 0) {
+            this.fuel = 0;
+        }
+    }
+
+    public void addArmure(int n) {
+        this.armure += n;
+        if (this.armure > this.armure) {
+            this.armure = this.armure;
+        }
+    }
+
+    public void addOxygene(int n) {
+        this.oxygene += n;
+        if (this.oxygene > this.oxygene) {
+            this.oxygene = this.oxygene;
+        }
+    }
+
+    public void addFuel(int n) {
+        this.fuel += n;
+        if (this.fuel > this.fuel) {
+            this.fuel = this.fuel;
+        }
+    }
+
     //Tableau des salles
     private final Salle[] salles = new Salle[nbSalles];
 
@@ -257,4 +299,43 @@ public class Vaisseau {
         return this.fuel;
     }
 
+    public ArrayList<Salle> getSallesIncendie() {
+
+        ArrayList<Salle> res = new ArrayList<>();
+
+        for (Salle salle : this.salles) {
+
+            if (salle.estEnFeu()) {
+                res.add(salle);
+            }
+
+        }
+
+        return res;
+
+    }
+
+    public ArrayList<Salle> getSallesNonIncendie() {
+
+        ArrayList<Salle> res = new ArrayList<>();
+
+        for (Salle salle : this.salles) {
+
+            if (!salle.estEnFeu()) {
+                res.add(salle);
+            }
+
+        }
+
+        return res;
+
+    }
+
+    public void afficherEtatVaisseau() {
+        System.out.println("\nEtat actuel du vaisseau:");
+        System.out.println("Oxygene: " + this.oxygene + "/" + this.maxOxygene);
+        System.out.println("Armure: " + this.armure + "/" + this.armure);
+        System.out.println("Fuel: " + this.fuel + "/" + this.fuel);
+    }
+    
 }

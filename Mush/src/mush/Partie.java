@@ -1,6 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,7 +12,7 @@ public class Partie {
     //Valeur contenant le jour actuel
     private int jour = 1;
     //Valeur contenant le cycle actuel
-    private int cycle = 0;
+    private int cycle = 1;
 
     //Tableau contenant tout les joueurs de la partie
     private final ArrayList<Joueur> personnages = new ArrayList<>();
@@ -24,6 +25,8 @@ public class Partie {
     private int nbrMush = 0;
     //Nombre de joueurs encore en vie dans la partie
     private int nbrJoueurs = 0;
+
+    private boolean estMort = false;
 
     private final Planete planete = new Planete();
 
@@ -41,7 +44,8 @@ public class Partie {
     }
 
     private void initPersonnages() {
-        //TODO
+        
+        //TODO Objets
 
         String[][] caracteristiquesPersonnages = {{"Wang Chao", "Tireur", "Bourreau"},
         {"Zhong Chun", "Seul espoir", "Infirmier"},
@@ -97,11 +101,101 @@ public class Partie {
 
         this.cycle++;
 
+        //Evénèments aléatoires
+        Random rand = new Random();
+        
+        //TODO Logs
+        
+        //Incendies
+        for(Salle salle : this.vaisseau.getSallesNonIncendie()) {
+            if(rand.nextInt(100)<5) {
+                salle.toggleIncendie();
+            }
+        }
+        this.vaisseau.removeArmure(5*this.vaisseau.getSallesIncendie().size());
+        
+        //TODO Equipements endomagés
+        
+        //Plafond qui tombe
+        for(Salle salle : this.vaisseau.getSalles()) {
+            if(rand.nextInt(100)<2) {
+                
+                for(Joueur joueur : this.personnages) {
+                    
+                    if(joueur.getPositionKey().equals(salle.getNom())) {
+                        joueur.removePv(6);
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        //TODO Aliens
+        
+        this.vaisseau.removeOxygene(this.nbrJoueurs);
+
+        //Gestion des compétences et changement de caractéristiques à chaque fin de cycle
+        for (Joueur joueur : this.personnages) {
+
+            //Incrémentation des attributs du joueur
+            joueur.addPa(1);
+            if (joueur.estCouche()) {
+                joueur.addPa(1);
+            }
+            joueur.addPm(1);
+            joueur.removePmo(1);
+
+            //Activation de la compétence Logistique
+            if (joueur.hasCompetence("Logistique")) {
+
+                //Construction de la liste des joueurs dans la même salle que joueur
+                LinkedList<Joueur> joueursSalle = new LinkedList<>();
+
+                for (Joueur tempJoueur : this.personnages) {
+                    if (tempJoueur.getPositionKey().equals(joueur.getPositionKey())) {
+                        joueursSalle.add(tempJoueur);
+                    }
+                }
+
+                //Incrémentation des PA d'un joueur aléatoire dans la même salle que le Logistique
+                joueursSalle.get(rand.nextInt(joueursSalle.size())).addPa(1);
+
+            }
+
+            //Décrémentation de la valeur de sasiété du joueur
+            joueur.waitSasiete();
+
+            //Perte de Pmo si un joueur esrt mort au dernier cycle
+            if (this.estMort && !joueur.hasCompetence("Détaché")) {
+                joueur.removePmo(1);
+                this.estMort = false;
+            }
+
+            //Décrémentation des PVs si le moral du joueur est nul
+            if ((joueur.getPmo() == 0)) {
+                joueur.removePv(1);
+            }
+
+            //Arrosseurs automatiques
+            if (this.vaisseau.getSalle("Nexus").hasEquipement("Arrosseurs automatiques")) {
+
+                ArrayList<Salle> sallesIncendie = this.vaisseau.getSallesIncendie();
+
+                sallesIncendie.get(rand.nextInt(sallesIncendie.size())).toggleIncendie();
+
+            }
+
+            if (this.vaisseau.getOxygene() == 0) {
+                joueur.removePv(5);
+            }
+
+        }
+
         if (this.cycle == 9) {
 
             this.cycle = 1;
 
-            //TODO Code chaque cycle (ex: +1PA, +1PM pour tout les joueurs)
             nextDay();
 
         }
@@ -116,6 +210,7 @@ public class Partie {
         this.jour++;
 
         //TODO Code chaque jour (ex: reset Infirmier)
+        
     }
 
     /**
@@ -228,8 +323,9 @@ public class Partie {
     //Coeur de la partie
     private void gameProcess() {
 
-        this.nextCycle();
-
+        //TODO boucle et arrêt quand il faut genre
+        
+        //Actions des joueurs
         for (Joueur joueur : joueurs) {
 
             boolean stop = false;
@@ -308,14 +404,13 @@ public class Partie {
                                     break;
                                 case "incendie":
                                     //TODO
-                                    
+
                                     break;
                                 case "casse":
                                     //TODO
                                     break;
                                 case "etat":
-                                    //TODO
-                                    System.out.println(vaisseau.getEtatVaisseau());
+                                    this.vaisseau.afficherEtatVaisseau();
                                     break;
                                 case "objets":
                                     //TODO
@@ -325,7 +420,7 @@ public class Partie {
                                     break;
                                 case "planete":
                                     //TODO
-                                    
+
                                     break;
                                 case "recherchers":
                                     //TODO
@@ -334,12 +429,10 @@ public class Partie {
                                     //TODO
                                     break;
                                 case "mushs":
-                                    //TODO
-                                    System.out.println(this.nbrMush);
+                                    System.out.println("\n" + this.nbrMush + " mush sont actuellement à bord du vaisseau");
                                     break;
                                 case "morts":
-                                    //TODO
-                                    System.out.println(this.nbrMush);
+                                    System.out.println("\n" + (13-this.nbrJoueurs) + " joueurs sont morts");
                                     break;
                                 case "retour":
                                     break;
@@ -382,10 +475,10 @@ public class Partie {
 
                                     break;
                                 case "envoyer":
-                                    
+
                                     System.out.println("\nEntrez votre message à envoyer dans le canal de communication:");
                                     this.addToMainChat(Main.scanner.next());
-                                    
+
                                     break;
                                 case "retour":
                                     break;
@@ -511,8 +604,7 @@ public class Partie {
                                     break;
                                 case "stockage":
                                     //TODO
-                          
-                        
+
                                     break;
                                 case "reparer":
                                     if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
@@ -731,10 +823,10 @@ public class Partie {
 
                                     break;
                                 case "envoyer":
-                                    
+
                                     System.out.println("\nEntrez votre message à envoyer dans le canal de communication mush:");
                                     this.addToMushChat(Main.scanner.next());
-                                    
+
                                     break;
                                 case "retour":
                                     break;
@@ -823,10 +915,13 @@ public class Partie {
 
         }
 
+        //Action des ordinateurs
         for (Joueur joueur : ordinateurs) {
 
             //TODO actions aléatoires pour les joueurs contrôlés par les ordinateurs
         }
+
+        this.nextCycle();
 
     }
 
