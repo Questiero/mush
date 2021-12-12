@@ -24,6 +24,8 @@ public class Joueur {
 
     //Type de joueur (humain, mush)
     private boolean mush = false;
+    private boolean peutPoinconner = false;
+    private int nbrSpores = 0;
 
     //Compétences du joueur
     private final HashMap<String, Integer> competences = new HashMap<>();
@@ -34,6 +36,7 @@ public class Joueur {
     //Position actuelle du Joueur, initialisé au Nexus
     private String positionKey = "Laboratoire";
 
+    private boolean peutCaresser = true;
     private boolean estCouche = false;
     private int sasiete = 0;
 
@@ -168,10 +171,17 @@ public class Joueur {
         }
     }
 
+    public boolean getPeutCaresser() {
+        return this.peutCaresser;
+    }
+
+    public void setPeutCaresser(boolean b) {
+        this.peutCaresser = b;
+    }
+
     public void affichageEtatJoueur() {
 
         //TODO clean un peu
-        
         System.out.println("\nEtat actuel de " + this.getNom() + ":");
         System.out.println("PV: " + this.pv + "/" + this.maxPV);
         System.out.println("PA: " + this.pa + "/" + this.maxPA);
@@ -191,10 +201,19 @@ public class Joueur {
      */
     public void transform() {
         this.mush = true;
+        this.peutPoinconner = true;
     }
 
     public boolean isMush() {
         return this.mush;
+    }
+
+    public boolean getPeutPoinconner() {
+        return this.peutPoinconner;
+    }
+
+    public void setPeutPoinconner(boolean b) {
+        this.peutPoinconner = b;
     }
 
     public String getPositionKey() {
@@ -277,6 +296,10 @@ public class Joueur {
 
     public boolean competenceEquals(String key, int n) {
         return Integer.valueOf(n).equals(this.competences.get(key));
+    }
+
+    public void setCompetence(String competenceKey, int n) {
+        this.competences.replace(competenceKey, n);
     }
 
     public boolean hasObjet(String nom) {

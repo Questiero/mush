@@ -23,6 +23,7 @@ public class Partie {
 
     //Nombre de mush actuellement dans la partie
     private int nbrMush = 0;
+    private int sporesExtraits = 0;
     //Nombre de joueurs encore en vie dans la partie
     private int nbrJoueurs = 0;
 
@@ -36,7 +37,7 @@ public class Partie {
 
     //Vaisseaux Aliens
     private int aliensActifs = 0, aliensInter = 0, aliensInactifs = 0;
-    
+
     /**
      * Constructeur de Partie
      */
@@ -126,52 +127,52 @@ public class Partie {
                     }
 
                 }
-                
+
                 salle.addToHistorique("Le plafond viens de tomber !");
 
             }
-            
+
             //Equipements endommagés
-            for(Equipement equipement : salle.getEquipements()) {
-                if(rand.nextInt(100)<3) {
+            for (Equipement equipement : salle.getEquipements()) {
+                if (rand.nextInt(100) < 3) {
                     equipement.toggleCasse();
                     salle.addToHistorique("L'équipement " + equipement.getNom() + " viens de se casser");
                 }
             }
-            
+
         }
 
         //Aliens, l'apparition ne commence qu'à partir du 5ème cycle du premier jour
-        if(this.cycle>=5 || this.jour>=2) {
-            
+        if (this.cycle >= 5 || this.jour >= 2) {
+
             //Augmentation de l'activité des aliens
             this.aliensActifs += this.aliensInter;
             this.aliensInter += this.aliensInactifs;
             this.aliensInactifs = rand.nextInt(6);
-            
+
             this.vaisseau.removeArmure(this.aliensActifs);
-            
+
         }
-        
+
         //Casse des portes
         int[][] graph = this.vaisseau.getPortes();
-        
+
         for (int i = 0; i < graph.length; i++) {
-            
+
             for (int j = i; j < graph.length; j++) {
-                
-                if(graph[i][j]==1 && rand.nextInt(100)<3) {
+
+                if (graph[i][j] == 1 && rand.nextInt(100) < 3) {
                     graph[i][j] = -1;
                     graph[j][i] = -1;
                 }
-                
+
             }
-            
+
         }
-        
+
         this.vaisseau.removeOxygene(this.nbrJoueurs);
 
-        //Gestion des compétences et changement de caractéristiques à chaque fin de cycle
+        //Gestion des compétences et changement de caractéristiques des joueurs à chaque fin de cycle
         for (Joueur joueur : this.personnages) {
 
             //Incrémentation des attributs du joueur
@@ -245,14 +246,51 @@ public class Partie {
 
         this.jour++;
 
-        //TODO Code chaque jour (ex: reset Infirmier)
+        //Reset du nombre de spores que les mushs peuvent produire chaque jour
+        this.sporesExtraits = 0;
+
+        //Gestion des compétences et changement de caractéristiques des joueurs à chaque fin de jour
+        for (Joueur joueur : personnages) {
+
+            //Reset du poinconnage des mushs
+            if (joueur.isMush()) {
+                joueur.setPeutPoinconner(true);
+            }
+
+            //Reset des compétences
+            if (joueur.hasCompetence("Cuistot")) {
+                joueur.setCompetence("Cuistot", 4);
+            }
+            if (joueur.hasCompetence("Tireur")) {
+                joueur.setCompetence("Tireur", 2);
+            }
+            if (joueur.hasCompetence("Infirmier")) {
+                joueur.setCompetence("Infirmier", 1);
+            }
+            if (joueur.hasCompetence("Technicien")) {
+                joueur.setCompetence("Technicien", 1);
+            }
+            if (joueur.hasCompetence("Physicien")) {
+                joueur.setCompetence("Physicien", 1);
+            }
+            
+            if (joueur.hasCompetence("Concepteur")) {
+                joueur.addPa(2);
+            }
+            if (joueur.hasCompetence("Concepteur")) {
+                joueur.addPmo(1);
+            }
+            
+            joueur.setPeutCaresser(true);
+
+        }
+
     }
 
     /**
      * Lance la partie
      */
     public void start() {
-        //TODO 
 
         //Clone de this.personnages pour faciliter la distribution
         ArrayList<Joueur> tempPersonnages = (ArrayList<Joueur>) this.personnages.clone();
