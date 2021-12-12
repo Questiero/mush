@@ -93,6 +93,10 @@ public class Salle {
     public void addObjet(Objet objet) {
         this.stockage.add(objet);
     }
+    
+    public ArrayList<Objet> getStockage() {
+        return this.stockage;
+    }
 
     public boolean hasEquipement(String key) {
 

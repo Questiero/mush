@@ -160,28 +160,27 @@ public class Vaisseau {
 
         String[] nomObjets = {"Armure",
             "Clé à molette",
-            "Combinaisons",
+            "Combinaison",
             "Paire de gants de protection",
             "Savon",
             "Tablier intachable",
             "Trottinette",
-            "Extincteurs",
+            "Extincteur",
             "Couteau",
-            "Blasters",
+            "Blaster",
             "Grenade",
             "Médikit",
-            "Caméras",
+            "Caméra",
             "Souche de test mush",
             "Débris métallique",
-            "Chat de Shrödinger",
-            "Sérum rétro-fongique"};
+            "Chat de Shrödinger",};
 
         int[] nbrObjets = {1, 1, 4,
             1, 1, 1, 1, 3, 1, 2, 1, 1,
-            2, 1, 30, 1, 1};
+            2, 1, 30, 1,};
 
         Salle Refectoire = new Salle("Réfectoire");
-        Objet rationStandard = new Objet("Ration Standard");
+        Objet rationStandard = new Objet("Ration standard");
 
         for (int i = 0; i < nbSalles; i++) {
             if (this.salles[i] == Refectoire) {
