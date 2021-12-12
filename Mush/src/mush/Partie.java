@@ -27,6 +27,10 @@ public class Partie {
 
     private final Planete planete = new Planete();
 
+    //Conversations
+    private final LinkedBlockingQueue mainChat = new LinkedBlockingQueue<>(10);
+    private final LinkedBlockingQueue mushChat = new LinkedBlockingQueue<>(10);
+
     /**
      * Constructeur de Partie
      */
@@ -71,9 +75,18 @@ public class Partie {
 
     }
 
-    //Méthode pour vérifer si l'arraylist Personnage contient le joueur
-    private void getPersonnagesCaracs(Joueur joueur) {
-        joueur.affichageEtatJoueur();
+    public void addToMainChat(String msg) {
+        if (this.mainChat.size() == 10) {
+            this.mainChat.poll();
+        }
+        this.mainChat.offer(msg);
+    }
+
+    public void addToMushChat(String msg) {
+        if (this.mushChat.size() == 10) {
+            this.mushChat.poll();
+        }
+        this.mushChat.offer(msg);
     }
 
     /**
@@ -345,10 +358,29 @@ public class Partie {
                             switch (Main.scanner.next()) {
 
                                 case "consulter":
-                                    //TODO
+
+                                    LinkedBlockingQueue<String> mainChatTemp = new LinkedBlockingQueue<>(this.mainChat);
+
+                                    if (mainChatTemp.isEmpty()) {
+                                        System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication");
+                                    } else {
+
+                                        System.out.println("\nHistorique des messages envoyés dans le canal de communication:");
+
+                                        int i = mainChatTemp.size();
+                                        while (!mainChatTemp.isEmpty()) {
+                                            System.out.println(i + ") " + mainChatTemp.poll());
+                                            i--;
+                                        }
+
+                                    }
+
                                     break;
                                 case "envoyer":
-                                    //TODO
+                                    
+                                    System.out.println("\nEntrez votre message à envoyer dans le canal de communication:");
+                                    this.addToMainChat(Main.scanner.next());
+                                    
                                     break;
                                 case "retour":
                                     break;
@@ -429,27 +461,42 @@ public class Partie {
 
                                 case "historique":
 
-                                    LinkedBlockingQueue<String> historique = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique());
-                                    
-                                    if (historique.isEmpty()) {
-                                          
+                                    LinkedBlockingQueue<String> historiqueTemp = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique());
+
+                                    if (historiqueTemp.isEmpty()) {
                                         System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
                                     } else {
-                                        
+
                                         System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
-                                        
-                                        int i = 1;
-                                        while (!historique.isEmpty()) {
-                                            System.out.println(i + ") " + historique.poll());
-                                            i++;
+
+                                        int i = historiqueTemp.size();
+                                        while (!historiqueTemp.isEmpty()) {
+                                            System.out.println(i + ") " + historiqueTemp.poll());
+                                            i--;
                                         }
-                                        
+
                                     }
 
                                     break;
                                 case "deplacements":
-                                    if (joueur.getCompetence("Traqueur") == 1) {
-                                        //TODO
+                                    if (joueur.hasCompetence("Traqueur")) {
+
+                                        LinkedBlockingQueue<String> deplacementsTemp = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getDeplacements());
+
+                                        if (deplacementsTemp.isEmpty()) {
+                                            System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
+                                        } else {
+
+                                            System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
+
+                                            int i = deplacementsTemp.size();
+                                            while (!deplacementsTemp.isEmpty()) {
+                                                System.out.println(i + ") " + deplacementsTemp.poll());
+                                                i--;
+                                            }
+
+                                        }
+
                                     } else {
                                         System.out.println(Main.msgErreurEntree);
                                     }
@@ -596,13 +643,28 @@ public class Partie {
                             if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Sérum de constipaspore")) {
                                 PaSpore += 2;
                             }
-                            System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
-                            System.out.println("poincon. Poinçonner un joueur ou le chat avec un spore (2 PA)");
-                            System.out.println("infecter. Infecter une ration de nourriture (1 PA)");
-                            System.out.println("manger. Manger un spore (1 PA)");
-                            System.out.println("saboter. Saboter un équipement (3 PA)");
+                            if (joueur.getPa() >= PaSpore) {
+                                System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
+
+                            }
+                            if (joueur.getPa() >= 2) {
+                                System.out.println("poincon. Poinçonner un joueur ou le chat avec un spore (2 PA)");
+
+                            }
+                            if (joueur.getPa() >= 1) {
+                                System.out.println("infecter. Infecter une ration de nourriture (1 PA)");
+
+                            }
+                            if (joueur.getPa() >= 1) {
+                                System.out.println("manger. Manger un spore (1 PA)");
+
+                            }
+                            if (joueur.getPa() >= 3) {
+                                System.out.println("saboter. Saboter un équipement (3 PA)");
+
+                            }
                             System.out.println("consulter. Consuler le canal de communication mush (gratuit)");
-                            System.out.println("ecrire. Ecrire dans le canal de communication mush (gratuit)");
+                            System.out.println("envoyer. Ecrire dans le canal de communication mush (gratuit)");
                             System.out.println("retour. Retourner au menu principal (gratuit");
 
                             switch (Main.scanner.next()) {
@@ -643,10 +705,29 @@ public class Partie {
                                     }
                                     break;
                                 case "consulter":
-                                    //TODO
+
+                                    LinkedBlockingQueue<String> mushChatTemp = new LinkedBlockingQueue<>(this.mushChat);
+
+                                    if (mushChatTemp.isEmpty()) {
+                                        System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication mush");
+                                    } else {
+
+                                        System.out.println("\nHistorique des messages envoyés dans le canal de communication mush:");
+
+                                        int i = mushChatTemp.size();
+                                        while (!mushChatTemp.isEmpty()) {
+                                            System.out.println(i + ") " + mushChatTemp.poll());
+                                            i--;
+                                        }
+
+                                    }
+
                                     break;
-                                case "ecrire":
-                                    //TODO
+                                case "envoyer":
+                                    
+                                    System.out.println("\nEntrez votre message à envoyer dans le canal de communication mush:");
+                                    this.addToMushChat(Main.scanner.next());
+                                    
                                     break;
                                 case "retour":
                                     break;
@@ -705,9 +786,16 @@ public class Partie {
                             } while (!correctInput);
 
                             if (choixSalle <= voisins.size()) {
+
+                                this.vaisseau.getSalle(joueur.getPositionKey()).addToDeplacements(joueur + " quitte la salle");
+
                                 joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
+
                                 System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
+                                this.vaisseau.getSalle(joueur.getPositionKey()).addToDeplacements(joueur + " entre dans la salle");
+
                                 joueur.removePm(1);
+
                             } else {
                                 System.out.println(Main.msgErreurEntree);
                             }

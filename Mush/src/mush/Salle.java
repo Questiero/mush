@@ -15,6 +15,8 @@ public class Salle {
     private final HashSet<Equipement> equipements = new HashSet<>();
     //Historique des actions
     private final LinkedBlockingQueue<String> historique = new LinkedBlockingQueue<>(10);
+    //Historique des déplacements
+    private final LinkedBlockingQueue<String> deplacements = new LinkedBlockingQueue<>(10);
 
     private boolean incendie = false;
 
@@ -66,7 +68,22 @@ public class Salle {
     }
 
     public void addToHistorique(String msg) {
+        if (this.historique.size() == 10) {
+            this.historique.poll();
+        }
         this.historique.offer(msg);
+    }
+
+    public LinkedBlockingQueue<String> getDeplacements() {
+        return this.deplacements;
+    }
+
+    public void addToDeplacements(String msg) {
+        if (this.deplacements.size() == 10) {
+            this.deplacements.poll();
+        }
+        this.deplacements.offer(msg);
+
     }
 
     public void addObjet(Objet objet) {
