@@ -6,10 +6,10 @@ public class Main {
 
     //Constantes statiques pour faciliter les entrées:
     public final static Scanner scanner = new Scanner(System.in);
-    public final static String msgErreurEntree = "\nErreur, veuillez entrer une valeur correspondant au menu affiché\n";
+    public final static String msgErreurEntree = "\nErreur, veuillez entrer une valeur correspondant au menu affiché";
 
     //Partie de jeu
-    private final static Partie partie = new Partie();
+    private static Partie partie;
 
     /**
      * Affiche le menu principal
@@ -32,6 +32,7 @@ public class Main {
             switch (Main.scanner.nextInt()) {
 
                 case 1:
+                    partie = new Partie();
                     Main.partie.start();
                     break;
                 case 2:

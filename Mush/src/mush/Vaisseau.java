@@ -174,12 +174,11 @@ public class Vaisseau {
             "Souche de test mush",
             "Débris métallique",
             "Chat de Shrödinger",
-            "Extracteur de spores",
             "Sérum rétro-fongique"};
 
         int[] nbrObjets = {1, 1, 4,
             1, 1, 1, 1, 3, 1, 2, 1, 1,
-            2, 1, 30, 1, 1, 1};
+            2, 1, 30, 1, 1};
 
         Salle Refectoire = new Salle("Réfectoire");
         Objet rationStandard = new Objet("Ration Standard");
@@ -319,27 +318,11 @@ public class Vaisseau {
 
     }
 
-    public ArrayList<Salle> getSallesNonIncendie() {
-
-        ArrayList<Salle> res = new ArrayList<>();
-
-        for (Salle salle : this.salles) {
-
-            if (!salle.estEnFeu()) {
-                res.add(salle);
-            }
-
-        }
-
-        return res;
-
-    }
-
     public void afficherEtatVaisseau() {
         System.out.println("\nEtat actuel du vaisseau:");
         System.out.println("Oxygene: " + this.oxygene + "/" + this.maxOxygene);
-        System.out.println("Armure: " + this.armure + "/" + this.armure);
-        System.out.println("Fuel: " + this.fuel + "/" + this.fuel);
+        System.out.println("Armure: " + this.armure + "/" + this.maxArmure);
+        System.out.println("Fuel: " + this.fuel + "/" + this.maxFuel);
     }
     
 }

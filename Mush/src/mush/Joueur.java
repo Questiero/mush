@@ -22,6 +22,8 @@ public class Joueur {
     private int pv = maxPV;
     private int pmo = 7;
 
+    private boolean enVie = true;
+
     //Type de joueur (humain, mush)
     private boolean mush = false;
     private boolean peutPoinconner = false;
@@ -38,6 +40,7 @@ public class Joueur {
 
     private boolean peutCaresser = true;
     private boolean estCouche = false;
+    private boolean estSale = false;
     private int sasiete = 0;
 
     /**
@@ -87,8 +90,9 @@ public class Joueur {
 
     public void removePv(int n) {
         this.pv -= n;
-        if (this.pv < 0) {
+        if (this.pv <= 0) {
             this.pv = 0;
+            this.meurt();
         }
     }
 
@@ -141,6 +145,14 @@ public class Joueur {
         }
     }
 
+    public void meurt() {
+        this.enVie = false;
+    }
+
+    public boolean estEnVie() {
+        return this.enVie;
+    }
+
     public Objet[] getInventaire() {
         return inventaire;
     }
@@ -155,6 +167,18 @@ public class Joueur {
 
     public boolean estCouche() {
         return this.estCouche;
+    }
+
+    public void sali() {
+        this.estSale = false;
+    }
+
+    public void douche() {
+        this.estSale = true;
+    }
+    
+    public boolean estSale() {
+        return this.estSale;
     }
 
     public void mange() {
@@ -214,6 +238,30 @@ public class Joueur {
 
     public void setPeutPoinconner(boolean b) {
         this.peutPoinconner = b;
+    }
+
+    public int getSpores() {
+        return this.nbrSpores;
+    }
+
+    public void removeSpore(int n) {
+        this.nbrSpores -= n;
+        if (this.nbrSpores < 0) {
+            this.nbrSpores = 0;
+        }
+    }
+
+    public void addSpore(int n) {
+        this.nbrSpores += n;
+
+        if (this.mush) {
+            if (this.nbrSpores > 2) {
+                this.nbrSpores = 2;
+            }
+        } else if (this.nbrSpores > 3) {
+            this.nbrSpores = 0;
+            this.transform();
+        }
     }
 
     public String getPositionKey() {
@@ -314,4 +362,8 @@ public class Joueur {
 
     }
 
+    public boolean estDans(String key) {
+        return this.positionKey.equals(key);
+    }
+    
 }

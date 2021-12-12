@@ -1,6 +1,7 @@
 package mush;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -112,9 +113,9 @@ public class Partie {
         for (Salle salle : this.vaisseau.getSalles()) {
 
             //Incendies
-            if (rand.nextInt(100) < 5) {
+            if (rand.nextInt(100) < 5 && !salle.estEnFeu()) {
                 salle.toggleIncendie();
-                salle.addToHistorique("Un incendie viens de se déclarer !");
+                salle.addToHistorique("Un incendie vient de se déclarer !");
             }
 
             //Plafond qui tombe
@@ -122,13 +123,14 @@ public class Partie {
 
                 for (Joueur joueur : this.personnages) {
 
-                    if (joueur.getPositionKey().equals(salle.getNom())) {
+                    if (joueur.estDans(salle.getNom())) {
                         joueur.removePv(6);
+                        //Vérification que le joueur est encore en vie
                     }
 
                 }
 
-                salle.addToHistorique("Le plafond viens de tomber !");
+                salle.addToHistorique("Le plafond vient de tomber !");
 
             }
 
@@ -136,7 +138,7 @@ public class Partie {
             for (Equipement equipement : salle.getEquipements()) {
                 if (rand.nextInt(100) < 3) {
                     equipement.toggleCasse();
-                    salle.addToHistorique("L'équipement " + equipement.getNom() + " viens de se casser");
+                    salle.addToHistorique("L'équipement " + equipement.getNom() + " vient de se casser !");
                 }
             }
 
@@ -212,6 +214,7 @@ public class Partie {
             //Décrémentation des PVs si le moral du joueur est nul
             if ((joueur.getPmo() == 0)) {
                 joueur.removePv(1);
+                //Vérification de la mort
             }
 
             //Arrosseurs automatiques
@@ -273,14 +276,14 @@ public class Partie {
             if (joueur.hasCompetence("Physicien")) {
                 joueur.setCompetence("Physicien", 1);
             }
-            
+
             if (joueur.hasCompetence("Concepteur")) {
                 joueur.addPa(2);
             }
             if (joueur.hasCompetence("Concepteur")) {
                 joueur.addPmo(1);
             }
-            
+
             joueur.setPeutCaresser(true);
 
         }
@@ -396,612 +399,669 @@ public class Partie {
     //Coeur de la partie
     private void gameProcess() {
 
-        //TODO boucle et arrêt quand il faut genre
-        //Actions des joueurs
-        for (Joueur joueur : joueurs) {
+        //Variable pour déterminer si la partie doit s'arrêter
+        boolean continuer = true;
 
-            boolean stop = false;
+        do {
 
-            while (!stop) {
+            System.out.println("\nJour " + this.jour + ", cycle " + this.cycle);
 
-                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+            //Actions des joueurs
+            for (Joueur joueur : joueurs) {
 
-                if (!joueur.estCouche()) {
-                    System.out.println("etat. Afficher votre état (gratuit)");
-                    System.out.println("journal. Afficher le journal de bord (gratuit)");
-                    System.out.println("canal. Afficher les actions relatives au canal de communication (gratuit)");
-                    System.out.println("salle. Afficher les actions disponibles dans " + joueur.getPositionKey() + " (gratuit)");
-                    if (joueur.isMush()) {
-                        System.out.println("mush. Actions de Mush (gratuit)");
-                    }
-                    if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1) {
-                        System.out.println("extraire. Extraire un spore (1 PA)");
-                    }
-                    if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1) {
-                        System.out.println("chat. Caresser le chat de Schrödinger (1 PA)");
-                    }
-                    if (joueur.getPm() == 0 && joueur.getPa() >= 1) {
-                        System.out.println("conversion. Convertir 1 PA en 2 PM (1 PA)"); //TODO +2 PM si Sprinter et +2 PM si Trotinnette
-                    }
-                    if (joueur.getPm() >= 1) {
-                        System.out.println("deplacer. Changer de salle (1 PM)");
-                    }
-                } else {
-                    System.out.println("lever. Se lever du lit (gratuit)");
-                }
+                Salle salleJoueur = this.vaisseau.getSalle(joueur.getPositionKey());
 
-                System.out.println("fin. Finir votre tour (gratuit)");
+                boolean stop = false;
 
-                switch (Main.scanner.next()) {
+                while (!stop) {
 
-                    case "lever":
-                        if (joueur.estCouche()) {
+                    System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
 
-                            joueur.toogleEstCouche();
-                            this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se lève");
-                            this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").addValue(1);
-
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
+                    if (!joueur.estCouche()) {
+                        System.out.println("etat. Afficher votre état (gratuit)");
+                        System.out.println("journal. Afficher le journal de bord (gratuit)");
+                        System.out.println("canal. Afficher les actions relatives au canal de communication (gratuit)");
+                        System.out.println("salle. Afficher les actions disponibles dans " + joueur.getPositionKey() + " (gratuit)");
+                        if (joueur.isMush()) {
+                            System.out.println("mush. Actions de Mush (gratuit)");
                         }
-                        break;
-                    case "etat":
-                        if (!joueur.estCouche()) {
-                            joueur.affichageEtatJoueur();
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
+                        if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1) {
+                            System.out.println("extraire. Extraire un spore (1 PA)");
                         }
-                        break;
-                    case "journal":
-
-                        if (!joueur.estCouche()) {
-                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                            System.out.println("cameras. Afficher la liste des joueurs présents dans les salles où il y a une caméra (gratuit)");
-                            System.out.println("incendis. Afficher les incendies en cours (gratuit)");
-                            System.out.println("casse. Afficher la liste des équipements endommagés (gratuit)");
-                            System.out.println("etat. Afficher l'état du vaisseau (gratuit)");
-                            System.out.println("objets. Afficher la position des objets dans les unités de stockage (gratuit)");
-                            System.out.println("aliens. Afficher le nombre de vaisseaux alien à proximité (gratuit)");
-                            System.out.println("planete. Afficher les informations disponibles sur la planète à proximité (gratuit)");
-                            System.out.println("recherches. Afficher les recherches de laboratoire terminées (gratuit)");
-                            System.out.println("neron. Afficher les projets NERON terminés (gratuit)");
-                            System.out.println("mushs. Afficher le nombre de mushs à bord (gratuit)");
-                            System.out.println("morts. Afficher le nombre de joueurs morts (gratuit)");
-                            System.out.println("retour. Retourner au menu principal (gratuit)");
-
-                            switch (Main.scanner.next()) {
-
-                                case "cameras":
-                                    //TODO
-                                    break;
-                                case "incendie":
-                                    //TODO
-
-                                    break;
-                                case "casse":
-                                    //TODO
-                                    break;
-                                case "etat":
-                                    this.vaisseau.afficherEtatVaisseau();
-                                    break;
-                                case "objets":
-                                    //TODO
-                                    break;
-                                case "aliens":
-                                    //TODO
-                                    break;
-                                case "planete":
-                                    //TODO
-
-                                    break;
-                                case "recherchers":
-                                    //TODO
-                                    break;
-                                case "neron":
-                                    //TODO
-                                    break;
-                                case "mushs":
-                                    System.out.println("\n" + this.nbrMush + " mush sont actuellement à bord du vaisseau");
-                                    break;
-                                case "morts":
-                                    System.out.println("\n" + (13 - this.nbrJoueurs) + " joueurs sont morts");
-                                    break;
-                                case "retour":
-                                    break;
-                                default:
-                                    System.out.println(Main.msgErreurEntree);
-
-                            }
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
+                        if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1) {
+                            System.out.println("chat. Caresser le chat de Schrödinger (1 PA)");
                         }
-
-                        break;
-                    case "canal":
-
-                        if (!joueur.estCouche()) {
-                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                            System.out.println("consulter. Consulter le canal de communication (gratuit)");
-                            System.out.println("envoyer. Envoyer un message dans le canal de communication (gratuit)");
-                            System.out.println("retour. Retourner au menu principal (gratuit)");
-
-                            switch (Main.scanner.next()) {
-
-                                case "consulter":
-
-                                    LinkedBlockingQueue<String> mainChatTemp = new LinkedBlockingQueue<>(this.mainChat);
-
-                                    if (mainChatTemp.isEmpty()) {
-                                        System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication");
-                                    } else {
-
-                                        System.out.println("\nHistorique des messages envoyés dans le canal de communication:");
-
-                                        int i = mainChatTemp.size();
-                                        while (!mainChatTemp.isEmpty()) {
-                                            System.out.println(i + ") " + mainChatTemp.poll());
-                                            i--;
-                                        }
-
-                                    }
-
-                                    break;
-                                case "envoyer":
-
-                                    System.out.println("\nEntrez votre message à envoyer dans le canal de communication:");
-                                    this.addToMainChat(Main.scanner.next());
-
-                                    break;
-                                case "retour":
-                                    break;
-                                default:
-                                    System.out.println(Main.msgErreurEntree);
-
-                            }
-
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
+                        if (joueur.getPm() == 0 && joueur.getPa() >= 1) {
+                            System.out.println("conversion. Convertir 1 PA en 2 PM (1 PA)"); //TODO +2 PM si Sprinter et +2 PM si Trotinnette
                         }
+                        if (joueur.getPm() >= 1) {
+                            System.out.println("deplacer. Changer de salle (1 PM)");
+                        }
+                    } else {
+                        System.out.println("lever. Se lever du lit (gratuit)");
+                    }
 
-                        break;
-                    case "salle":
+                    System.out.println("fin. Finir votre tour (gratuit)");
 
-                        if (!joueur.estCouche()) {
+                    switch (Main.scanner.next()) {
 
-                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                            System.out.println("historique. Afficher l'historique des 10 dernières actions de la salle (gratuit)");
-                            if (joueur.hasCompetence("Traqueur")) {
-                                System.out.println("deplacements. Afficher l'historique de déplacements (gratuit)");
-                            }
-                            System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
-                            System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey() + " (gratuit)");
-                            if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
-                                System.out.println("reparer. Reparer un équipement dans la salle " + (joueur.competenceEquals("Technicien", 1) ? "(gratuit)" : "(1PA)"));
-                            }
-                            if (this.vaisseau.getSalle(joueur.getPositionKey()).estEnFeu() && joueur.hasObjet("Extincteur")) {
-                                System.out.println("eteindre. Eteindre un incendie dans la salle (gratuit)");
-                            }
-                            if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 2)) || (joueur.getPa() >= 1) && this.vaisseau.getSalle("Nexus").hasEquipement("Accélération de processeur")) {
-                                System.out.println("detecter. Detecter une planète à proximité" + ((this.vaisseau.getSalle("Nexus").hasEquipement("Accélération du processeur")) ? "(1 PA)" : "(2 PA)"));
-                            }
-                            if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
-                                System.out.println("scanner. Scanner la planète" + (joueur.hasCompetence("Astrophysicien") ? "(2 PA)" : "(3 PA)"));
-                            }
-                            if (joueur.getPositionKey().startsWith("Tourelle") || this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Jet d'attaque")) {
-                                System.out.println("attaquer. Attaquer un vaisseau alien (1 PA)");
-                            }
-                            if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.getPositionKey().equals("Baie Icarus")) {
-                                System.out.println("expedition. Lancer une expédition (3 PA)");
-                            }
-                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote")) {
-                                System.out.println("deplacer. Déplacer le Daedalus (3 PA)");
-                            }
-                            if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
-                                System.out.println("rentrer. Rentrer sur Terre (5 PA)");
-                            }
-                            if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
-                                System.out.println("coucher. Se coucher dans un lit (gratuit)");
-                            }
-                            if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
-                                System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (joueur.competenceEquals("Physicien", 1) ? "(gratuit)" : "(3 PA)"));
-                            }
-                            if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Douche")) {
-                                System.out.println("douche. Se doucher" + ((joueur.hasObjet("Savon")) ? "(1 PA)" : "(2 PA"));
-                            }
-                            if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Camera")) {
-                                System.out.println("camera. Désinstaller une caméra (4 PA)");
+                        case "lever":
+                            if (joueur.estCouche()) {
+
+                                joueur.toogleEstCouche();
+                                salleJoueur.addToHistorique(joueur + " se lève");
+                                salleJoueur.getEquipement("Lit").addValue(1);
+
                             } else {
-                                System.out.println("camera. Installer une caméra (4 PA)");
+                                System.out.println(Main.msgErreurEntree);
                             }
-                            if (joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
-                                System.out.println("cuisiner. Cuisiner une ration (gratuit)");
+                            break;
+                        case "etat":
+                            if (!joueur.estCouche()) {
+                                joueur.affichageEtatJoueur();
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
                             }
-                            if (joueur.getPositionKey().equals("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
-                                System.out.println("mycoscan. Connaitre le nombre de spores sur vous-même (gratuit)");
-                            }
-                            if (joueur.getPositionKey().equals("Laboratoire")) {
-                                System.out.println("recherches. Afficher les recherches disponibles (gratuit)");
-                            }
-                            if (joueur.getPositionKey().equals("Nexus")) {
-                                System.out.println("projets. Afficher les projets NERON disponibles (gratuit)");
-                            }
-                            System.out.println("retour. Retourner au menu principal (gratuit)");
+                            break;
+                        case "journal":
 
-                            switch (Main.scanner.next()) {
+                            if (!joueur.estCouche()) {
+                                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                System.out.println("cameras. Afficher la liste des joueurs présents dans les salles où il y a une caméra (gratuit)");
+                                System.out.println("incendis. Afficher les incendies en cours (gratuit)");
+                                System.out.println("casse. Afficher la liste des équipements endommagés (gratuit)");
+                                System.out.println("etat. Afficher l'état du vaisseau (gratuit)");
+                                System.out.println("objets. Afficher la position des objets dans les unités de stockage (gratuit)");
+                                System.out.println("aliens. Afficher le nombre de vaisseaux alien à proximité (gratuit)");
+                                System.out.println("planete. Afficher les informations disponibles sur la planète à proximité (gratuit)");
+                                System.out.println("recherches. Afficher les recherches de laboratoire terminées (gratuit)");
+                                System.out.println("neron. Afficher les projets NERON terminés (gratuit)");
+                                System.out.println("mushs. Afficher le nombre de mushs à bord (gratuit)");
+                                System.out.println("morts. Afficher le nombre de joueurs morts (gratuit)");
+                                System.out.println("retour. Retourner au menu principal (gratuit)");
 
-                                case "historique":
+                                switch (Main.scanner.next()) {
 
-                                    LinkedBlockingQueue<String> historiqueTemp = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getHistorique());
+                                    case "cameras":
+                                        //TODO
+                                        break;
+                                    case "incendie":
 
-                                    if (historiqueTemp.isEmpty()) {
-                                        System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
-                                    } else {
+                                        System.out.println("\nListe des salles avec un incendie en cours:");
 
-                                        System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
-
-                                        int i = historiqueTemp.size();
-                                        while (!historiqueTemp.isEmpty()) {
-                                            System.out.println(i + ") " + historiqueTemp.poll());
-                                            i--;
+                                        for (Salle salle : this.vaisseau.getSallesIncendie()) {
+                                            System.out.println(salle.getNom());
                                         }
 
-                                    }
+                                        break;
+                                    case "casse":
+                                        //TODO
+                                        break;
+                                    case "etat":
+                                        this.vaisseau.afficherEtatVaisseau();
+                                        break;
+                                    case "objets":
+                                        //TODO
+                                        break;
+                                    case "aliens":
+                                        System.out.println("\nIl y a actuellement " + (this.aliensActifs + this.aliensInter + this.aliensInactifs) + " vaisseaux aliens à proximité du vaisseau");
+                                        break;
+                                    case "planete":
+                                        //TODO
+                                        break;
+                                    case "recherchers":
+                                        //TODO
+                                        break;
+                                    case "neron":
+                                        //TODO
+                                        break;
+                                    case "mushs":
+                                        System.out.println("\n" + this.nbrMush + " mush sont actuellement à bord du vaisseau");
+                                        break;
+                                    case "morts":
+                                        System.out.println("\n" + (16 - this.nbrJoueurs) + " joueurs sont morts");
+                                        break;
+                                    case "retour":
+                                        break;
+                                    default:
+                                        System.out.println(Main.msgErreurEntree);
 
-                                    break;
-                                case "deplacements":
-                                    if (joueur.hasCompetence("Traqueur")) {
+                                }
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
 
-                                        LinkedBlockingQueue<String> deplacementsTemp = new LinkedBlockingQueue<>(this.vaisseau.getSalle(joueur.getPositionKey()).getDeplacements());
+                            break;
+                        case "canal":
 
-                                        if (deplacementsTemp.isEmpty()) {
-                                            System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
+                            if (!joueur.estCouche()) {
+                                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                System.out.println("consulter. Consulter le canal de communication (gratuit)");
+                                System.out.println("envoyer. Envoyer un message dans le canal de communication (gratuit)");
+                                System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                                switch (Main.scanner.next()) {
+
+                                    case "consulter":
+
+                                        LinkedBlockingQueue<String> mainChatTemp = new LinkedBlockingQueue<>(this.mainChat);
+
+                                        if (mainChatTemp.isEmpty()) {
+                                            System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication");
                                         } else {
 
-                                            System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
+                                            System.out.println("\nHistorique des messages envoyés dans le canal de communication:");
 
-                                            int i = deplacementsTemp.size();
-                                            while (!deplacementsTemp.isEmpty()) {
-                                                System.out.println(i + ") " + deplacementsTemp.poll());
+                                            int i = mainChatTemp.size();
+                                            while (!mainChatTemp.isEmpty()) {
+                                                System.out.println(i + ") " + mainChatTemp.poll());
                                                 i--;
                                             }
 
                                         }
 
-                                    } else {
+                                        break;
+                                    case "envoyer":
+
+                                        System.out.println("\nEntrez votre message à envoyer dans le canal de communication:");
+                                        this.addToMainChat(Main.scanner.next());
+
+                                        break;
+                                    case "retour":
+                                        break;
+                                    default:
                                         System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "joueurs":
-                                    //TODO
-                                    break;
-                                case "stockage":
-                                    //TODO
 
-                                    break;
-                                case "reparer":
-                                    if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "eteindre":
-                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).estEnFeu() && joueur.hasObjet("Extincteur")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "detecter":
-                                    if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 2)) || (joueur.getPa() >= 1) && this.vaisseau.getSalle("Nexus").hasEquipement("Accélération de processeur")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "scanner":
-                                    if (joueur.getPositionKey().equals("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "attaquer":
-                                    if (joueur.getPositionKey().startsWith("Tourelle") || this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Jet d'attaque")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "expedition":
-                                    if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.getPositionKey().equals("Baie Icarus")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "deplacer":
-                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "rentrer":
-                                    if (joueur.getPositionKey().equals("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "coucher":
-                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Lit") && this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").getValue() > 0) {
-
-                                        joueur.toogleEstCouche();
-                                        this.vaisseau.getSalle(joueur.getPositionKey()).addToHistorique(joueur + " se couche");
-                                        this.vaisseau.getSalle(joueur.getPositionKey()).getEquipement("Lit").removeValue(1);
-
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "pilgred":
-                                    if (joueur.getPositionKey().equals("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "douche":
-                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Douche")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "camera":
-                                    if (this.vaisseau.getSalle(joueur.getPositionKey()).hasEquipement("Camera")) {
-                                        //TODO
-                                    } else {
-                                        //TODO
-                                    }
-                                    break;
-                                case "cuisiner":
-                                    if (!joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "mycoscan":
-                                    if (joueur.getPositionKey().equals("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "recherches":
-                                    if (joueur.getPositionKey().equals("Laboratoire")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "projets":
-                                    if (joueur.getPositionKey().equals("Nexus")) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "retour":
-                                    break;
-                                default:
-                                    System.out.println(Main.msgErreurEntree);
-                                    break;
-                            }
-
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
-                        }
-
-                        break;
-                    case "mush":
-                        if (joueur.isMush() && !joueur.estCouche()) {
-
-                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                            int PaSpore = 2;
-                            if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Sérum de constipaspore")) {
-                                PaSpore += 2;
-                            }
-                            if (joueur.getPa() >= PaSpore) {
-                                System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
-
-                            }
-                            if (joueur.getPa() >= 2) {
-                                System.out.println("poincon. Poinçonner un joueur ou le chat avec un spore (2 PA)");
-
-                            }
-                            if (joueur.getPa() >= 1) {
-                                System.out.println("infecter. Infecter une ration de nourriture (1 PA)");
-
-                            }
-                            if (joueur.getPa() >= 1) {
-                                System.out.println("manger. Manger un spore (1 PA)");
-
-                            }
-                            if (joueur.getPa() >= 3) {
-                                System.out.println("saboter. Saboter un équipement (3 PA)");
-
-                            }
-                            System.out.println("consulter. Consuler le canal de communication mush (gratuit)");
-                            System.out.println("envoyer. Ecrire dans le canal de communication mush (gratuit)");
-                            System.out.println("retour. Retourner au menu principal (gratuit");
-
-                            switch (Main.scanner.next()) {
-
-                                case "spore":
-                                    if (joueur.getPa() >= PaSpore) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "poincon":
-                                    if (joueur.getPa() >= 2) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "infecter":
-                                    if (joueur.getPa() >= 1) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "manger":
-                                    if (joueur.getPa() >= 1) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "saboter":
-                                    if (joueur.getPa() >= 3) {
-                                        //TODO
-                                    } else {
-                                        System.out.println(Main.msgErreurEntree);
-                                    }
-                                    break;
-                                case "consulter":
-
-                                    LinkedBlockingQueue<String> mushChatTemp = new LinkedBlockingQueue<>(this.mushChat);
-
-                                    if (mushChatTemp.isEmpty()) {
-                                        System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication mush");
-                                    } else {
-
-                                        System.out.println("\nHistorique des messages envoyés dans le canal de communication mush:");
-
-                                        int i = mushChatTemp.size();
-                                        while (!mushChatTemp.isEmpty()) {
-                                            System.out.println(i + ") " + mushChatTemp.poll());
-                                            i--;
-                                        }
-
-                                    }
-
-                                    break;
-                                case "envoyer":
-
-                                    System.out.println("\nEntrez votre message à envoyer dans le canal de communication mush:");
-                                    this.addToMushChat(Main.scanner.next());
-
-                                    break;
-                                case "retour":
-                                    break;
-                                default:
-                                    System.out.println(Main.msgErreurEntree);
-
-                            }
-
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
-                        }
-                        break;
-                    case "extraire":
-                        if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1 && !joueur.estCouche()) {
-                            //TODO
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
-                        }
-                        break;
-                    case "chat":
-                        if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1 && !joueur.estCouche()) {
-                            //TODO
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
-                        }
-                        break;
-                    case "conversion":
-                        if (joueur.getPm() == 0 && joueur.getPa() >= 1 && !joueur.estCouche()) {
-                            //TODO
-                        } else {
-                            System.out.println(Main.msgErreurEntree);
-                        }
-                        break;
-                    case "deplacer":
-                        if (joueur.getPm() >= 1 && !joueur.estCouche()) {
-
-                            ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
-
-                            int choixSalle = -1;
-                            boolean correctInput;
-
-                            do {
-
-                                int i;
-
-                                System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
-                                for (i = 0; i < voisins.size(); i++) {
-                                    System.out.println((i + 1) + ". " + voisins.get(i) + " (1 PM)");
                                 }
-                                System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
-
-                                choixSalle = Main.scanner.nextInt();
-
-                                correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
-
-                            } while (!correctInput);
-
-                            if (choixSalle <= voisins.size()) {
-
-                                this.vaisseau.getSalle(joueur.getPositionKey()).addToDeplacements(joueur + " quitte la salle");
-
-                                joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
-
-                                System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
-                                this.vaisseau.getSalle(joueur.getPositionKey()).addToDeplacements(joueur + " entre dans la salle");
-
-                                joueur.removePm(1);
 
                             } else {
                                 System.out.println(Main.msgErreurEntree);
                             }
 
-                        } else {
+                            break;
+                        case "salle":
+
+                            if (!joueur.estCouche()) {
+
+                                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                System.out.println("historique. Afficher l'historique des 10 dernières actions de la salle (gratuit)");
+                                if (joueur.hasCompetence("Traqueur")) {
+                                    System.out.println("deplacements. Afficher l'historique de déplacements (gratuit)");
+                                }
+                                System.out.println("joueurs. Afficher la liste des joueurs présents dans " + joueur.getPositionKey() + " (gratuit)");
+                                System.out.println("stockage. Afficher les actions relatives à l'unité de stockage de " + joueur.getPositionKey() + " (gratuit)");
+                                if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
+                                    System.out.println("reparer. Reparer un équipement dans la salle " + (joueur.competenceEquals("Technicien", 1) ? "(gratuit)" : "(1PA)"));
+                                }
+                                if (salleJoueur.estEnFeu() && joueur.hasObjet("Extincteur")) {
+                                    System.out.println("eteindre. Eteindre un incendie dans la salle (gratuit)");
+                                }
+                                if (joueur.estDans("Pont") && ((joueur.getPa() >= 2)) || (joueur.getPa() >= 1) && this.vaisseau.getSalle("Nexus").hasEquipement("Accélération de processeur")) {
+                                    System.out.println("detecter. Detecter une planète à proximité" + ((this.vaisseau.getSalle("Nexus").hasEquipement("Accélération du processeur")) ? "(1 PA)" : "(2 PA)"));
+                                }
+                                if (joueur.estDans("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
+                                    System.out.println("scanner. Scanner la planète" + (joueur.hasCompetence("Astrophysicien") ? "(2 PA)" : "(3 PA)"));
+                                }
+                                if (joueur.getPositionKey().startsWith("Tourelle") || salleJoueur.hasEquipement("Jet d'attaque")) {
+                                    System.out.println("attaquer. Attaquer un vaisseau alien (1 PA)");
+                                }
+                                if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.estDans("Baie Icarus")) {
+                                    System.out.println("expedition. Lancer une expédition (3 PA)");
+                                }
+                                if (joueur.estDans("Pont") && joueur.hasCompetence("Pilote")) {
+                                    System.out.println("deplacer. Déplacer le Daedalus (3 PA)");
+                                }
+                                if (joueur.estDans("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
+                                    System.out.println("rentrer. Rentrer sur Terre (5 PA)");
+                                }
+                                if (salleJoueur.hasEquipement("Lit") && salleJoueur.getEquipement("Lit").getValue() > 0) {
+                                    System.out.println("coucher. Se coucher dans un lit (gratuit)");
+                                }
+                                if (joueur.estDans("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
+                                    System.out.println("pilgred. Réparer le réacteur PILGRED de 10%" + (joueur.competenceEquals("Physicien", 1) ? "(gratuit)" : "(3 PA)"));
+                                }
+                                if (salleJoueur.hasEquipement("Douche")) {
+                                    System.out.println("douche. Se doucher" + ((joueur.hasObjet("Savon")) ? "(1 PA)" : "(2 PA"));
+                                }
+                                if (salleJoueur.hasEquipement("Camera")) {
+                                    System.out.println("camera. Désinstaller une caméra (4 PA)");
+                                } else {
+                                    System.out.println("camera. Installer une caméra (4 PA)");
+                                }
+                                if (joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
+                                    System.out.println("cuisiner. Cuisiner une ration (gratuit)");
+                                }
+                                if (joueur.estDans("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
+                                    System.out.println("mycoscan. Connaitre le nombre de spores sur vous-même (gratuit)");
+                                }
+                                if (joueur.estDans("Laboratoire")) {
+                                    System.out.println("recherches. Afficher les recherches disponibles (gratuit)");
+                                }
+                                if (joueur.estDans("Nexus")) {
+                                    System.out.println("projets. Afficher les projets NERON disponibles (gratuit)");
+                                }
+                                System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                                switch (Main.scanner.next()) {
+
+                                    case "historique":
+
+                                        LinkedBlockingQueue<String> historiqueTemp = new LinkedBlockingQueue<>(salleJoueur.getHistorique());
+
+                                        if (historiqueTemp.isEmpty()) {
+                                            System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
+                                        } else {
+
+                                            System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
+
+                                            int i = historiqueTemp.size();
+                                            while (!historiqueTemp.isEmpty()) {
+                                                System.out.println(i + ") " + historiqueTemp.poll());
+                                                i--;
+                                            }
+
+                                        }
+
+                                        break;
+                                    case "deplacements":
+                                        if (joueur.hasCompetence("Traqueur")) {
+
+                                            LinkedBlockingQueue<String> deplacementsTemp = new LinkedBlockingQueue<>(salleJoueur.getDeplacements());
+
+                                            if (deplacementsTemp.isEmpty()) {
+                                                System.out.println("\nAucune action n'a encore été effectuée dans " + joueur.getPositionKey());
+                                            } else {
+
+                                                System.out.println("\nHistorique des actions effectuées dans " + joueur.getPositionKey() + ":");
+
+                                                int i = deplacementsTemp.size();
+                                                while (!deplacementsTemp.isEmpty()) {
+                                                    System.out.println(i + ") " + deplacementsTemp.poll());
+                                                    i--;
+                                                }
+
+                                            }
+
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "joueurs":
+                                        //TODO
+                                        break;
+                                    case "stockage":
+                                        //TODO
+
+                                        break;
+                                    case "reparer":
+                                        if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "eteindre":
+                                        if (salleJoueur.estEnFeu() && joueur.hasObjet("Extincteur")) {
+
+                                            System.out.println("Vous vennez d'éteindre l'incendie dans " + joueur.getPositionKey());
+                                            salleJoueur.addToHistorique(joueur + " vient d'éteindre l'incendies");
+
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "detecter":
+                                        if (joueur.estDans("Pont") && ((joueur.getPa() >= 2)) || (joueur.getPa() >= 1) && this.vaisseau.getSalle("Nexus").hasEquipement("Accélération de processeur")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "scanner":
+                                        if (joueur.estDans("Pont") && ((joueur.getPa() >= 3)) || (joueur.getPa() >= 2) && joueur.hasCompetence("Astrophysicien")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "attaquer":
+                                        if (joueur.getPositionKey().startsWith("Tourelle") || salleJoueur.hasEquipement("Jet d'attaque")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "expedition":
+                                        if (this.planete.estDecouverte() && joueur.hasCompetence("Pilote") && joueur.estDans("Baie Icarus")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "deplacer":
+                                        if (joueur.estDans("Pont") && joueur.hasCompetence("Pilote")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "rentrer":
+                                        if (joueur.estDans("Pont") && joueur.hasCompetence("Pilote") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() == 100) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "coucher":
+                                        if (salleJoueur.hasEquipement("Lit") && salleJoueur.getEquipement("Lit").getValue() > 0) {
+
+                                            joueur.toogleEstCouche();
+                                            salleJoueur.addToHistorique(joueur + " se couche");
+                                            salleJoueur.getEquipement("Lit").removeValue(1);
+
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "pilgred":
+                                        if (joueur.estDans("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "douche":
+                                        if (salleJoueur.hasEquipement("Douche")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "camera":
+                                        if (salleJoueur.hasEquipement("Camera")) {
+                                            //TODO
+                                        } else {
+                                            //TODO
+                                        }
+                                        break;
+                                    case "cuisiner":
+                                        if (!joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0)) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "mycoscan":
+                                        if (joueur.estDans("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "recherches":
+                                        if (joueur.estDans("Laboratoire")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "projets":
+                                        if (joueur.estDans("Nexus")) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "retour":
+                                        break;
+                                    default:
+                                        System.out.println(Main.msgErreurEntree);
+                                        break;
+                                }
+
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+
+                            break;
+                        case "mush":
+                            if (joueur.isMush() && !joueur.estCouche()) {
+
+                                System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                int PaSpore = 2;
+                                if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Sérum de constipaspore")) {
+                                    PaSpore += 2;
+                                }
+                                
+                                boolean estSeul = true;
+                                for(Joueur joueurTemp : personnages) {
+                                    if(joueur.getPositionKey().equals(joueurTemp.getPositionKey())) {
+                                        estSeul = false;
+                                    }
+                                }
+                                
+                                if (joueur.getPa() >= PaSpore && this.sporesExtraits<4 && joueur.getSpores()<2 && estSeul) {
+                                    System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
+
+                                }
+                                if (joueur.getPa() >= 2) {
+                                    System.out.println("poincon. Poinçonner un joueur ou le chat avec un spore (2 PA)");
+
+                                }
+                                if (joueur.getPa() >= 1) {
+                                    System.out.println("infecter. Infecter une ration de nourriture (1 PA)");
+
+                                }
+                                if (joueur.getPa() >= 1) {
+                                    System.out.println("manger. Manger un spore (1 PA)");
+
+                                }
+                                if (joueur.getPa() >= 3) {
+                                    System.out.println("saboter. Saboter un équipement (3 PA)");
+
+                                }
+                                System.out.println("consulter. Consuler le canal de communication mush (gratuit)");
+                                System.out.println("envoyer. Ecrire dans le canal de communication mush (gratuit)");
+                                System.out.println("retour. Retourner au menu principal (gratuit");
+
+                                switch (Main.scanner.next()) {
+
+                                    case "spore":
+                                        if (joueur.getPa() >= PaSpore && this.sporesExtraits<4 && joueur.getSpores()<2 && estSeul) {
+                                            this.sporesExtraits++;
+                                            joueur.addSpore(1);
+                                            joueur.sali();
+                                            if(salleJoueur.hasEquipement("Caméra")) {
+                                                salleJoueur.addToHistorique(joueur + " vient de créer un spore");
+                                            }
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "poincon":
+                                        if (joueur.getPa() >= 2) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "infecter":
+                                        if (joueur.getPa() >= 1) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "manger":
+                                        if (joueur.getPa() >= 1) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "saboter":
+                                        if (joueur.getPa() >= 3) {
+                                            //TODO
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "consulter":
+
+                                        LinkedBlockingQueue<String> mushChatTemp = new LinkedBlockingQueue<>(this.mushChat);
+
+                                        if (mushChatTemp.isEmpty()) {
+                                            System.out.println("\nAucun message n'a encore été envoyé dans le canal de communication mush");
+                                        } else {
+
+                                            System.out.println("\nHistorique des messages envoyés dans le canal de communication mush:");
+
+                                            int i = mushChatTemp.size();
+                                            while (!mushChatTemp.isEmpty()) {
+                                                System.out.println(i + ") " + mushChatTemp.poll());
+                                                i--;
+                                            }
+
+                                        }
+
+                                        break;
+                                    case "envoyer":
+
+                                        System.out.println("\nEntrez votre message à envoyer dans le canal de communication mush:");
+                                        this.addToMushChat(Main.scanner.next());
+
+                                        break;
+                                    case "retour":
+                                        break;
+                                    default:
+                                        System.out.println(Main.msgErreurEntree);
+
+                                }
+
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+                            break;
+                        case "extraire":
+                            if (joueur.hasObjet("Extracteur de Spore") && joueur.getPa() >= 1 && !joueur.estCouche()) {
+                                joueur.removeSpore(1);
+                                salleJoueur.addToHistorique(joueur + " vient de s'extraire un spore");
+                                System.out.println("Vous venez de vous extraire un spore");
+
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+                            break;
+                        case "chat":
+                            if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1 && !joueur.estCouche()) {
+                                //TODO
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+                            break;
+                        case "conversion":
+                            if (joueur.getPm() == 0 && joueur.getPa() >= 1 && !joueur.estCouche()) {
+                                //TODO
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+                            break;
+                        case "deplacer":
+                            if (joueur.getPm() >= 1 && !joueur.estCouche()) {
+
+                                ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
+
+                                int choixSalle = -1;
+                                boolean correctInput;
+
+                                do {
+
+                                    int i;
+
+                                    System.out.println("\nChoississez une salle dans laquelle vous déplacer parmis:");
+                                    for (i = 0; i < voisins.size(); i++) {
+                                        System.out.println((i + 1) + ". " + voisins.get(i) + " (1 PM)");
+                                    }
+                                    System.out.println((i + 1) + ". Restez dans cette salle (gratuit)");
+
+                                    choixSalle = Main.scanner.nextInt();
+
+                                    correctInput = ((choixSalle >= 1) && (choixSalle <= voisins.size() + 1));
+
+                                } while (!correctInput);
+
+                                if (choixSalle <= voisins.size()) {
+
+                                    salleJoueur.addToDeplacements(joueur + " quitte la salle");
+
+                                    joueur.setPositionKey(voisins.get(choixSalle - 1).getNom());
+
+                                    System.out.println("\nVous venez de vous déplacez dans " + joueur.getPositionKey());
+                                    salleJoueur.addToDeplacements(joueur + " entre dans la salle");
+
+                                    joueur.removePm(1);
+
+                                } else {
+                                    System.out.println(Main.msgErreurEntree);
+                                }
+
+                            } else {
+                                System.out.println(Main.msgErreurEntree);
+                            }
+                            break;
+                        case "fin":
+                            stop = true;
+                            break;
+                        default:
                             System.out.println(Main.msgErreurEntree);
-                        }
-                        break;
-                    case "fin":
-                        stop = true;
-                        break;
-                    default:
-                        System.out.println(Main.msgErreurEntree);
+
+                    }
 
                 }
 
             }
 
-        }
+            //Action des ordinateurs
+            for (Joueur joueur : ordinateurs) {
 
-        //Action des ordinateurs
-        for (Joueur joueur : ordinateurs) {
+                //TODO actions aléatoires pour les joueurs contrôlés par les ordinateurs
+            }
 
-            //TODO actions aléatoires pour les joueurs contrôlés par les ordinateurs
-        }
+            this.nextCycle();
 
-        this.nextCycle();
+            //Clean des joueurs morts
+            for (Iterator<Joueur> iterator = this.personnages.iterator(); iterator.hasNext();) {
 
-    }
+                Joueur joueur = iterator.next();
 
-    /**
-     * Arrête la partie
-     */
-    public void end() {
-        //TODO
+                if (!joueur.estEnVie()) {
+                    iterator.remove();
+                    this.joueurs.remove(joueur);
+                    this.ordinateurs.remove(joueur);
+
+                    this.nbrJoueurs--;
+
+                    if (joueur.isMush()) {
+                        this.nbrMush--;
+                    }
+                }
+
+            }
+
+            //Vérification des conditions de victoires
+            if (this.nbrJoueurs == 0) {
+                System.out.println("\nTout les joueurs sont morts, la partie est finie !");
+                continuer = false;
+            } else if (this.nbrMush == 0) {
+                System.out.println("\nTout les mushs sont morts, la partie est finie !");
+                continuer = false;
+            } else if (this.nbrMush == this.nbrJoueurs) {
+                System.out.println("\nTout l'équipage est mush, la partie est finie !");
+                continuer = false;
+            }
+
+        } while (continuer);
+
     }
 
 }
