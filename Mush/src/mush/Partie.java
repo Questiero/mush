@@ -34,6 +34,9 @@ public class Partie {
     private final LinkedBlockingQueue mainChat = new LinkedBlockingQueue<>(10);
     private final LinkedBlockingQueue mushChat = new LinkedBlockingQueue<>(10);
 
+    //Vaisseaux Aliens
+    private int aliensActifs = 0, aliensInter = 0, aliensInactifs = 0;
+    
     /**
      * Constructeur de Partie
      */
@@ -44,9 +47,8 @@ public class Partie {
     }
 
     private void initPersonnages() {
-        
-        //TODO Objets
 
+        //TODO Objets
         String[][] caracteristiquesPersonnages = {{"Wang Chao", "Tireur", "Bourreau"},
         {"Zhong Chun", "Seul espoir", "Infirmier"},
         {"Eleesha Williams", "Traqueur", "Observateur"},
@@ -103,35 +105,52 @@ public class Partie {
 
         //Evénèments aléatoires
         Random rand = new Random();
-        
-        //TODO Logs
-        
-        //Incendies
-        for(Salle salle : this.vaisseau.getSallesNonIncendie()) {
-            if(rand.nextInt(100)<5) {
+
+        this.vaisseau.removeArmure(5 * this.vaisseau.getSallesIncendie().size());
+
+        for (Salle salle : this.vaisseau.getSalles()) {
+
+            //Incendies
+            if (rand.nextInt(100) < 5) {
                 salle.toggleIncendie();
+                salle.addToHistorique("Un incendie viens de se déclarer !");
             }
-        }
-        this.vaisseau.removeArmure(5*this.vaisseau.getSallesIncendie().size());
-        
-        //TODO Equipements endomagés
-        
-        //Plafond qui tombe
-        for(Salle salle : this.vaisseau.getSalles()) {
-            if(rand.nextInt(100)<2) {
-                
-                for(Joueur joueur : this.personnages) {
-                    
-                    if(joueur.getPositionKey().equals(salle.getNom())) {
+
+            //Plafond qui tombe
+            if (rand.nextInt(100) < 2) {
+
+                for (Joueur joueur : this.personnages) {
+
+                    if (joueur.getPositionKey().equals(salle.getNom())) {
                         joueur.removePv(6);
                     }
-                    
+
                 }
                 
+                salle.addToHistorique("Le plafond viens de tomber !");
+
             }
+            
+            //Equipements endommagés
+            for(Equipement equipement : salle.getEquipements()) {
+                if(rand.nextInt(100)<3) {
+                    equipement.toggleCasse();
+                    salle.addToHistorique("L'équipement " + equipement.getNom() + " viens de se casser");
+                }
+            }
+            
         }
-        
-        //TODO Aliens
+
+        //Aliens, l'apparition ne commence qu'à partir du 5ème cycle du premier jour
+        if(this.cycle>=5 || this.jour>=2) {
+            
+            //Augmentation de l'activité des aliens
+            this.aliensActifs += this.aliensInter;
+            this.aliensInter += this.aliensInactifs;
+            this.aliensInactifs = rand.nextInt(6);
+            
+            
+        }
         
         this.vaisseau.removeOxygene(this.nbrJoueurs);
 
@@ -210,7 +229,6 @@ public class Partie {
         this.jour++;
 
         //TODO Code chaque jour (ex: reset Infirmier)
-        
     }
 
     /**
@@ -324,7 +342,6 @@ public class Partie {
     private void gameProcess() {
 
         //TODO boucle et arrêt quand il faut genre
-        
         //Actions des joueurs
         for (Joueur joueur : joueurs) {
 
@@ -432,7 +449,7 @@ public class Partie {
                                     System.out.println("\n" + this.nbrMush + " mush sont actuellement à bord du vaisseau");
                                     break;
                                 case "morts":
-                                    System.out.println("\n" + (13-this.nbrJoueurs) + " joueurs sont morts");
+                                    System.out.println("\n" + (13 - this.nbrJoueurs) + " joueurs sont morts");
                                     break;
                                 case "retour":
                                     break;

@@ -105,6 +105,10 @@ public class Salle {
         return false;
     }
 
+    public HashSet<Equipement> getEquipements() {
+        return this.equipements;
+    }
+    
     public Equipement getEquipement(String key) {
 
         for (Equipement equipement : this.equipements) {
