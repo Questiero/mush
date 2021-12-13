@@ -157,6 +157,27 @@ public class Joueur {
         return inventaire;
     }
 
+    public boolean inventairePlein() {
+        for (Objet objet : inventaire) {
+            if (objet.getNom().equals("Rien")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void addObjet(Objet objet) {
+
+        if (this.inventaire[0].getNom().equals("Rien")) {
+            this.inventaire[0] = new Objet(objet.getNom());
+        } else if (this.inventaire[1].getNom().equals("Rien")) {
+            this.inventaire[1] = new Objet(objet.getNom());
+        } else if (this.inventaire[2].getNom().equals("Rien")) {
+            this.inventaire[2] = new Objet(objet.getNom());
+        }
+
+    }
+
     public HashMap<String, Integer> getCompetences() {
         return this.competences;
     }

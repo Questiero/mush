@@ -749,7 +749,126 @@ public class Partie {
                                         //TODO
                                         break;
                                     case "stockage":
-                                        //TODO
+
+                                        System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                        System.out.println("regarder. Regarder les objets non cachés (gratuit)");
+                                        System.out.println("deposer. Deposer un objet (gratuit)");
+                                        if (!joueur.inventairePlein()) {
+                                            System.out.println("prendre. Prendre un objet (gratuit)");
+                                        }
+                                        if (joueur.getPa() >= 1) {
+                                            System.out.println("cacher. Cacher un objet (1 PA)");
+                                        }
+                                        if (joueur.getPa() >= 2 || ((joueur.hasCompetence("Observateur") && joueur.getPa() >= 1))) {
+                                            System.out.println("fouiller. Fouiller l'unité de stockage" + (joueur.hasCompetence("Observateur") ? "(1 PA)" : "(2 PA)"));
+                                        }
+                                        System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                                        switch (Main.scanner.next()) {
+
+                                            case "regarder":
+
+                                                System.out.println("\nStockage de " + salleJoueur + ": " + salleJoueur.getStockage());
+                                                salleJoueur.addToHistorique(joueur + "vient de regarder le stockage de la salle");
+
+                                                break;
+                                            case "deposer":
+
+                                                System.out.println("\nSélectionner l'objet que vous voulez déposer:");
+                                                int iDep = 1;
+                                                for (Objet objet : joueur.getInventaire()) {
+                                                    System.out.println(iDep + ". " + objet);
+                                                    iDep++;
+                                                }
+                                                System.out.println(iDep + ". Ne rien deposer");
+
+                                                int choixDep = Main.scanner.nextInt() - 1;
+
+                                                if (choixDep < 0 || choixDep >= 3 || joueur.getInventaire()[choixDep].getNom().equals("Rien")) {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                } else if (choixDep != iDep - 1) {
+
+                                                    System.out.println("\nVous vennez de déposer " + joueur.getInventaire()[choixDep] + " dans le stockage de " + salleJoueur);
+                                                    salleJoueur.addToHistorique(joueur + "vient de déposer " + joueur.getInventaire()[choixDep] + " dans le stockage");
+                                                    salleJoueur.addObjet(joueur.getInventaire()[choixDep]);
+                                                    joueur.getInventaire()[choixDep] = new Objet("Rien");
+
+                                                }
+
+                                                break;
+                                            case "prendre":
+                                                if (!joueur.inventairePlein()) {
+
+                                                    System.out.println("\nSélectionner l'objet que vous voulez prendre:");
+
+                                                    int iPren = 1;
+                                                    for (Objet objet : salleJoueur.getStockage()) {
+                                                        System.out.println(iPren + ". " + objet);
+                                                        iPren++;
+                                                    }
+                                                    System.out.println(iPren + ". Ne rien prendre");
+
+                                                    int choixPren = Main.scanner.nextInt() - 1;
+
+                                                    if (choixPren < 0 || choixPren > iPren - 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    } else if (choixPren != iPren - 1) {
+
+                                                        System.out.println("\nVous vennez de prendre " + salleJoueur.getStockage().get(choixPren));
+                                                        salleJoueur.addToHistorique(joueur + "vient de prendre " + salleJoueur.getStockage().get(choixPren) + " dans le stockage");
+                                                        joueur.addObjet(salleJoueur.getStockage().get(choixPren));
+                                                        salleJoueur.removeObjet(salleJoueur.getStockage().get(choixPren));
+
+                                                    }
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "cacher":
+                                                if (joueur.getPa() >= 1) {
+
+                                                    System.out.println("\nSélectionner l'objet que vous voulez cacher:");
+                                                    int iCach = 1;
+                                                    for (Objet objet : salleJoueur.getStockage()) {
+                                                        System.out.println(iCach + ". " + objet);
+                                                        iCach++;
+                                                    }
+                                                    System.out.println(iCach + ". Ne rien cacher");
+
+                                                    int choixCach = Main.scanner.nextInt() - 1;
+
+                                                    if (choixCach < 0 || choixCach > iCach - 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    } else if (choixCach != iCach - 1) {
+
+                                                        System.out.println("\nVous vennez de cacher " + salleJoueur.getStockage().get(choixCach) + " dans le stockage de " + salleJoueur);
+                                                        salleJoueur.addToHistorique(joueur + "vient de cacher " + salleJoueur.getStockage().get(choixCach) + " dans le stockage");
+                                                        salleJoueur.cacherObjet(salleJoueur.getStockage().get(choixCach));
+                                                        joueur.getInventaire()[choixCach] = new Objet("Rien");
+                                                    }
+
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "fouiller":
+                                                if (joueur.getPa() >= 2 || ((joueur.hasCompetence("Observateur") && joueur.getPa() >= 1))) {
+
+                                                    salleJoueur.fouiller();
+                                                    System.out.println("\nVous fouillez " + salleJoueur);
+                                                    salleJoueur.addToHistorique(joueur + "viens de fouiller la salle");
+
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "retour":
+                                                retour = true;
+                                                break;
+                                            default:
+                                                System.out.println(Main.msgErreurEntree);
+
+                                        }
 
                                         break;
                                     case "reparer":

@@ -2,6 +2,7 @@ package mush;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,6 +12,7 @@ public class Salle {
     private final String nom;
     //Stockage de la salle
     private final ArrayList<Objet> stockage = new ArrayList<>();
+    private final ArrayList<Objet> stockageCache = new ArrayList<>();
     //Equipements de la salle
     private final HashSet<Equipement> equipements = new HashSet<>();
     //Historique des actions
@@ -93,9 +95,29 @@ public class Salle {
     public void addObjet(Objet objet) {
         this.stockage.add(objet);
     }
-    
+
+    public void removeObjet(Objet objet) {
+        this.stockage.remove(objet);
+    }
+
     public ArrayList<Objet> getStockage() {
         return this.stockage;
+    }
+
+    public void cacherObjet(Objet objet) {
+        this.stockage.remove(objet);
+        this.stockageCache.add(objet);
+    }
+
+    public void fouiller() {
+        for (Iterator<Objet> iterator = this.stockageCache.iterator(); iterator.hasNext();) {
+
+            Objet objet = iterator.next();
+
+            this.stockage.add(objet);
+            iterator.remove();
+
+        }
     }
 
     public boolean hasEquipement(String key) {
