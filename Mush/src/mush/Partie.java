@@ -1427,6 +1427,8 @@ public class Partie {
 
                                                         if (!joueur.competenceEquals("Technicien", 1)) {
                                                             joueur.removePa(1);
+                                                        } else {
+                                                            joueur.setCompetence("Technicien", 0);
                                                         }
 
                                                     } else if (choixEquipement != salleJoueur.getEquipements().size() + 1) {
@@ -2147,7 +2149,7 @@ public class Partie {
                                     System.out.println("infecter. Infecter une ration de nourriture (1 PA)");
 
                                 }
-                                if (joueur.getPa() >= 1) {
+                                if ((joueur.getPa() >= 1) && (joueur.getSpores() >= 1)) {
                                     System.out.println("manger. Manger un spore (1 PA)");
 
                                 }
@@ -2175,7 +2177,49 @@ public class Partie {
                                         break;
                                     case "poincon":
                                         if (joueur.getPa() >= 2) {
-                                            //TODO
+
+                                            ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                            //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                            for (Joueur joueurTemp : this.personnages) {
+                                                if (joueurTemp.getPositionKey().equals(salleJoueur.getNom()) && !joueurTemp.isMush()) {
+                                                    joueursSalle.add(joueurTemp);
+                                                }
+                                            }
+
+                                            int choixJoueur = -1;
+                                            boolean correctInput;
+
+                                            do {
+
+                                                int i;
+
+                                                System.out.println("\nChoississez un joueur à poinconner:");
+                                                for (i = 0; i < joueursSalle.size(); i++) {
+                                                    System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (2 PA)");
+                                                }
+                                                System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                choixJoueur = Main.scanner.nextInt();
+
+                                                correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                            } while (!correctInput);
+
+                                            if (choixJoueur <= joueursSalle.size()) {
+
+                                                System.out.println("\nVous venez de poinconner " + joueursSalle.get(choixJoueur - 1));
+                                                if (salleJoueur.hasEquipement("Caméra")) {
+                                                    salleJoueur.addToHistorique(joueur + " vient de poinconner " + joueursSalle.get(choixJoueur - 1));
+                                                }
+                                                joueursSalle.get(choixJoueur - 1).addSpore(1);
+
+                                                joueur.removePa(2);
+
+                                            } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                System.out.println(Main.msgErreurEntree);
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
@@ -2188,15 +2232,68 @@ public class Partie {
                                         }
                                         break;
                                     case "manger":
-                                        if (joueur.getPa() >= 1) {
-                                            //TODO
+                                        if ((joueur.getPa() >= 1) && (joueur.getSpores() >= 1)) {
+
+                                            joueur.removeSpore(1);
+                                            joueur.addPa(3);
+                                            joueur.addPm(2);
+                                            joueur.sali();
+
+                                            System.out.println("\nVous vennez de manger un spore");
+                                            if (salleJoueur.hasEquipement("Caméra")) {
+                                                salleJoueur.addToHistorique(joueur + " vient de manger un spore");
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
                                         break;
                                     case "saboter":
                                         if (joueur.getPa() >= 3) {
-                                            //TODO
+
+                                            ArrayList<Equipement> equipementsNonCasses = new ArrayList<>();
+
+                                            for (Equipement equipement : salleJoueur.getEquipements()) {
+                                                if (!equipement.estCasse()) {
+                                                    equipementsNonCasses.add(equipement);
+                                                }
+                                            }
+
+                                            int choixEquipement = -1;
+                                            boolean correctInputEquipement;
+
+                                            do {
+
+                                                int i;
+
+                                                System.out.println("\nChoississez un équipement à saboter parmis:");
+                                                for (i = 0; i < equipementsNonCasses.size(); i++) {
+                                                    System.out.println((i + 1) + ". " + equipementsNonCasses.get(i) + " (3 PA)");
+                                                }
+                                                System.out.println((i + 1) + ". Ne rien faire (gratuit)");
+
+                                                choixEquipement = Main.scanner.nextInt();
+
+                                                correctInputEquipement = ((choixEquipement >= 1) && (choixEquipement <= equipementsNonCasses.size() + 1));
+
+                                            } while (!correctInputEquipement);
+
+                                            if (choixEquipement <= equipementsNonCasses.size()) {
+
+                                                equipementsNonCasses.get(choixEquipement - 1).toggleCasse();
+
+                                                System.out.println("\nVous vennez de saboter " + equipementsNonCasses.get(choixEquipement - 1));
+                                                if (salleJoueur.hasEquipement("Caméra")) {
+                                                    salleJoueur.addToHistorique(joueur + " vient de saboter " + equipementsNonCasses.get(choixEquipement - 1));
+
+                                                }
+
+                                                joueur.removePa(3);
+
+                                            } else if (choixEquipement != salleJoueur.getEquipements().size() + 1) {
+                                                System.out.println(Main.msgErreurEntree);
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
