@@ -1294,7 +1294,7 @@ public class Partie {
                                             if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
                                                 System.out.println("bouclier. Faire progresser le projet de bouclier plasma de 20-30% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
-                                            if (j(joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
                                                 System.out.println("reducteur. Faire progresser le projet de réducteur de trainée de 2-3% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
                                             System.out.println("retour. Retourner au menu principal");
@@ -1330,7 +1330,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "reducteur":
-                                                    if (j(joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
                                                         //TODO
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
