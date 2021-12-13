@@ -42,9 +42,10 @@ public class Partie {
     private final LinkedBlockingQueue mainChat = new LinkedBlockingQueue<>(10);
     private final LinkedBlockingQueue mushChat = new LinkedBlockingQueue<>(10);
 
-    //Recherchers et projets
+    //Recherchers, projets et pilgred
     private final HashMap<String, Integer> recherches = new HashMap<>();
     private final HashMap<String, Integer> projets = new HashMap<>();
+    private int pilgred = 0;
 
     //Vaisseaux Aliens
     private int aliensActifs = 0, aliensInter = 0, aliensInactifs = 0;
@@ -1195,7 +1196,24 @@ public class Partie {
                                         break;
                                     case "pilgred":
                                         if (joueur.estDans("Salle des moteurs") && this.vaisseau.getSalle("Salle des moteurs").hasEquipement("Réacteur PILGRED") && this.vaisseau.getSalle("Salle des moteurs").getEquipement("Réacteur PILGRED").getValue() < 100 && (joueur.competenceEquals("Physicien", 1) || joueur.getPa() >= 3)) {
-                                            //TODO
+
+                                            this.pilgred += 10;
+                                            if (this.pilgred >= 100) {
+                                                this.pilgred = 100;
+                                            }
+
+                                            System.out.println("Vous vennez de réparer 10% du réacteur PILGRED");
+                                            salleJoueur.addToHistorique(joueur + " viens de faire avancer la réparation du réacteur PILGRED");
+
+                                            if(!joueur.competenceEquals("Physicien", 1)) {
+                                                joueur.removePa(3);
+                                            }
+
+                                            if (this.pilgred == 100) {
+                                                salleJoueur.addToHistorique("La réparation du réacteur PILGRED est terminée !");
+                                                salleJoueur.addEquipement("Réacteur PILGRED", 1);
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
