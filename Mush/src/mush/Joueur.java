@@ -333,6 +333,9 @@ public class Joueur {
             case "Cuistot":
                 this.competences.put(competenceKey, 4);
                 break;
+            case "Paranoïaque":
+                this.addObjet(new Objet("Caméra"));
+                this.addObjet(new Objet("Caméra"));
             case "Astrophysicien":
             case "Biologiste":
             case "Bourreur":
@@ -343,7 +346,6 @@ public class Joueur {
             case "Mycologiste":
             case "Observateur":
             case "Optimiste":
-            case "Paranoïaque":
             case "Pilote":
             case "Psy":
             case "Robuste":

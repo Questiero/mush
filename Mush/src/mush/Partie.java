@@ -29,6 +29,7 @@ public class Partie {
     //Nombre de mush actuellement dans la partie
     private int nbrMush = 0;
     private int sporesExtraits = 0;
+    private int maxSpore = 4;
     //Nombre de joueurs encore en vie dans la partie
     private int nbrJoueurs = 0;
 
@@ -61,7 +62,6 @@ public class Partie {
 
     private void initPersonnages() {
 
-        //TODO Objets
         String[][] caracteristiquesPersonnages = {{"Wang Chao", "Tireur", "Bourreau"},
         {"Zhong Chun", "Seul espoir", "Infirmier"},
         {"Eleesha Williams", "Traqueur", "Observateur"},
@@ -1202,22 +1202,22 @@ public class Partie {
 
                                             System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
-                                                System.out.println("mycoscan. Faire progresser la recherche sur le mycoscan de 3-10% (2 PA)");
+                                                System.out.println("mycoscan. Faire progresser la recherche sur le Mycoscan de " + ((joueur.hasCompetence("Biologiste")) ? "13-20%" : "3-10%") + " (2 PA)");
                                             }
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
-                                                System.out.println("gaz. Faire progresser la recherche sur le gaz antispore de 6-9% (2 PA)");
+                                                System.out.println("gaz. Faire progresser la recherche sur le Gaz antispore de " + ((joueur.hasCompetence("Biologiste")) ? "16-19%" : "6-9%") + " (2 PA)");
                                             }
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
-                                                System.out.println("constipaspore. Faire progresser la recherche sur le sérum de constipaspore de 10-15% (2 PA)");
+                                                System.out.println("constipaspore. Faire progresser la recherche sur le Sérum de constipaspore de " + ((joueur.hasCompetence("Biologiste")) ? "20-25%" : "10-15%") + " (2 PA)");
                                             }
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
-                                                System.out.println("savon. Faire progresser la recherche sur le savon mushicide de 3-4% (2 PA)");
+                                                System.out.println("savon. Faire progresser la recherche sur le Savon mushicide de " + ((joueur.hasCompetence("Biologiste")) ? "13-14%" : "3-4%") + " (2 PA)");
                                             }
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
-                                                System.out.println("retro. Faire progresser la recherche sur le sérum rétro-fongique de 1-4% (2 PA)");
+                                                System.out.println("retro. Faire progresser la recherche sur le Sérum rétro-fongique de " + ((joueur.hasCompetence("Biologiste")) ? "11-14%" : "1-4%") + " (2 PA)");
                                             }
                                             if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
-                                                System.out.println("extracteur. Faire progresser la recherche sur l'extracteur de spores de 3-7% (2 PA)");
+                                                System.out.println("extracteur. Faire progresser la recherche sur l'Extracteur de spores de " + ((joueur.hasCompetence("Biologiste")) ? "13-17%" : "3-7%") + " (2 PA)");
                                             }
 
                                             System.out.println("retour. Retourner au menu principal");
@@ -1226,42 +1226,162 @@ public class Partie {
 
                                                 case "mycoscan":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(11) + 3;
+                                                        if (joueur.hasCompetence("Biologiste")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Mycoscan", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Mycoscan de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Mycoscan");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Mycoscan est terminée !");
+                                                            salleJoueur.addEquipement("Mycoscan", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "gaz":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 6;
+                                                        if (joueur.hasCompetence("Biologiste")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Gaz antispore", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Gaz antispore de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Gaz antispore");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Gaz antispore est terminée !");
+                                                            salleJoueur.addEquipement("Gaz antispore", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "constipaspore":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(16) + 10;
+                                                        if (joueur.hasCompetence("Sérum de constipaspore")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Sérum de constipaspore", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Sérum de constipaspore de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Sérum de constipaspore");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Sérum de constipaspore est terminée !");
+                                                            salleJoueur.addEquipement("Sérum de constipaspore", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "savon":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(5) + 3;
+                                                        if (joueur.hasCompetence("Savon mushicide")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Savon mushicide", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Savon mushicide de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Savon mushicide");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Savon mushicide est terminée !");
+                                                            salleJoueur.addObjet(new Objet("Savon mushicide"));
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "retro":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(5) + 1;
+                                                        if (joueur.hasCompetence("Sérum rétro-fongique")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Sérum rétro-fongique", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Sérum rétro-fongique de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Sérum rétro-fongique");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Sérum rétro-fongique est terminée !");
+                                                            salleJoueur.addObjet(new Objet("Sérum rétro-fongique"));
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "extracteur":
                                                     if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(8) + 3;
+                                                        if (joueur.hasCompetence("Extracteur de spores")) {
+                                                            n += 10;
+                                                        }
+
+                                                        this.avancerRecherche("Extracteur de spores", n);
+
+                                                        System.out.println("Vous vennez de faire avancer la recherche sur le Extracteur de spores de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Extracteur de spores");
+
+                                                        if (!joueur.hasObjet("Tablier intachable")) {
+                                                            joueur.sali();
+                                                        }
+
+                                                        if (this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("La recherche sur le Extracteur de spores est terminée !");
+                                                            salleJoueur.addObjet(new Objet("Extracteur de spores"));
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
@@ -1376,7 +1496,13 @@ public class Partie {
                                     }
                                 }
 
-                                if (joueur.getPa() >= PaSpore && this.sporesExtraits < 4 && joueur.getSpores() < 2 && estSeul) {
+                                if (this.vaisseau.getSalle("Laboratoire").hasEquipement("Gaz antispore")) {
+                                    this.maxSpore = 2;
+                                } else {
+                                    this.maxSpore = 4;
+                                }
+
+                                if (joueur.getPa() >= PaSpore && this.sporesExtraits < this.maxSpore && joueur.getSpores() < 2 && estSeul) {
                                     System.out.println("spore. Créer un spore (" + PaSpore + " PA)");
 
                                 }
@@ -1403,7 +1529,7 @@ public class Partie {
                                 switch (Main.scanner.next().toLowerCase()) {
 
                                     case "spore":
-                                        if (joueur.getPa() >= PaSpore && this.sporesExtraits < 4 && joueur.getSpores() < 2 && estSeul) {
+                                        if (joueur.getPa() >= PaSpore && this.sporesExtraits < this.maxSpore && joueur.getSpores() < 2 && estSeul) {
                                             this.sporesExtraits++;
                                             joueur.addSpore(1);
                                             joueur.sali();
@@ -1617,6 +1743,28 @@ public class Partie {
         }
 
         return null;
+
+    }
+
+    private void avancerRecherche(String key, int n) {
+
+        int m = this.recherches.get(key) + n;
+        if (m >= 100) {
+            m = 100;
+        }
+
+        this.recherches.put(key, m);
+
+    }
+
+    private void avancerProjet(String key, int n) {
+
+        int m = this.projets.get(key) + n;
+        if (m >= 100) {
+            m = 100;
+        }
+
+        this.projets.put(key, m);
 
     }
 
