@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
@@ -200,7 +201,7 @@ public class Partie {
 
         }
 
-        if(!(this.vaisseau.getSalle("Nexus").hasEquipement("Conduites oxygénées") && Math.random()*100<20)) {
+        if (!(this.vaisseau.getSalle("Nexus").hasEquipement("Conduites oxygénées") && Math.random() * 100 < 20)) {
             this.vaisseau.removeOxygene(this.nbrJoueurs);
         }
 
@@ -555,7 +556,49 @@ public class Partie {
 
                                         break;
                                     case "casse":
-                                        //TODO
+
+                                        System.out.println("\nListe des équipements endommagés par salle:");
+                                        //Affichage des équipements endommagés
+                                        for (Salle salle : this.vaisseau.getSalles()) {
+
+                                            if (!salle.getEquipements().isEmpty()) {
+
+                                                StringBuilder sb = new StringBuilder();
+
+                                                sb.append(salle.getNom());
+                                                sb.append(":  ");
+
+                                                for (Equipement equipement : salle.getEquipements()) {
+                                                    if (equipement.estCasse()) {
+                                                        sb.append(equipement.getNom());
+                                                        sb.append(", ");
+                                                    }
+                                                }
+
+                                                sb.delete(sb.length() - 2, sb.length() - 1);
+
+                                                System.out.println(sb);
+
+                                            }
+
+                                        }
+
+                                        System.out.println("\nListe des portes endommagées:");
+                                        //Affichage des portes endommagées
+                                        int[][] graph = this.vaisseau.getPortes();
+
+                                        for (int j = 0; j < graph.length; j++) {
+
+                                            for (int k = j; k < graph.length; k++) {
+
+                                                if (graph[j][k] == -1) {
+                                                    System.out.println("Porte entre " + this.vaisseau.getSalles()[j] + " et " + this.vaisseau.getSalles()[k]);
+                                                }
+
+                                            }
+
+                                        }
+
                                         break;
                                     case "etat":
                                         this.vaisseau.afficherEtatVaisseau();
@@ -571,7 +614,7 @@ public class Partie {
                                                 StringBuilder sb = new StringBuilder();
 
                                                 sb.append(salle.getNom());
-                                                sb.append(": ");
+                                                sb.append(":  ");
 
                                                 for (Objet objet : salle.getStockage()) {
                                                     sb.append(objet.getNom());
@@ -592,11 +635,25 @@ public class Partie {
                                     case "planete":
                                         //TODO
                                         break;
-                                    case "recherchers":
-                                        //TODO
+                                    case "recherches":
+
+                                        System.out.println("\nListe des recherches terminées:");
+                                        for (Map.Entry valeur : this.recherches.entrySet()) {
+                                            if (valeur.equals(Integer.valueOf(100))) {
+                                                System.out.println(valeur.getKey());
+                                            }
+                                        }
+
                                         break;
                                     case "neron":
-                                        //TODO
+
+                                        System.out.println("\nListe des projets NERON terminées:");
+                                        for (Map.Entry valeur : this.projets.entrySet()) {
+                                            if (valeur.equals(Integer.valueOf(100))) {
+                                                System.out.println(valeur.getKey());
+                                            }
+                                        }
+
                                         break;
                                     case "mushs":
                                         System.out.println("\n" + this.nbrMush + " mush sont actuellement à bord du vaisseau");
@@ -1732,7 +1789,7 @@ public class Partie {
 
                                     joueur.removePm(1);
 
-                                } else {
+                                } else if (choixSalle != voisins.size()+1) {
                                     System.out.println(Main.msgErreurEntree);
                                 }
 
