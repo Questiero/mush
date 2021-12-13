@@ -102,13 +102,13 @@ public class Partie {
         this.recherches.put("Savon mushicide", 0);
         this.recherches.put("Sérum rétro-fongique", 0);
         this.recherches.put("Extracteur de spores", 0);
-        
+
         this.projets.put("Accélération du processeur", 0);
         this.projets.put("Arrosseurs automatiques", 0);
         this.projets.put("Conduites oxygénées", 0);
         this.projets.put("Bouclier plasma", 0);
         this.projets.put("Réducteur de trainée", 0);
-        
+
     }
 
     public void addToMainChat(String msg) {
@@ -1199,14 +1199,151 @@ public class Partie {
                                         break;
                                     case "recherches":
                                         if (joueur.estDans("Laboratoire")) {
-                                            //TODO
+
+                                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                                System.out.println("mycoscan. Faire progresser la recherche sur le mycoscan de 3-10% (2 PA)");
+                                            }
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                                System.out.println("gaz. Faire progresser la recherche sur le gaz antispore de 6-9% (2 PA)");
+                                            }
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                                System.out.println("constipaspore. Faire progresser la recherche sur le sérum de constipaspore de 10-15% (2 PA)");
+                                            }
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                                System.out.println("savon. Faire progresser la recherche sur le savon mushicide de 3-4% (2 PA)");
+                                            }
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
+                                                System.out.println("retro. Faire progresser la recherche sur le sérum rétro-fongique de 1-4% (2 PA)");
+                                            }
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                                System.out.println("extracteur. Faire progresser la recherche sur l'extracteur de spores de 3-7% (2 PA)");
+                                            }
+
+                                            System.out.println("retour. Retourner au menu principal");
+
+                                            switch (Main.scanner.next()) {
+
+                                                case "mycoscan":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "gaz":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "constipaspore":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "savon":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "retro":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "extracteur":
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "retour":
+                                                    retour = true;
+                                                    break;
+                                                default:
+                                                    System.out.println(Main.msgErreurEntree);
+
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
                                         break;
                                     case "projets":
                                         if (joueur.estDans("Nexus")) {
-                                            //TODO
+
+                                            System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                                System.out.println("processeur. Faire progresser le projet d'accélération du processeur de 6-9% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
+                                            }
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                                System.out.println("arroseurs. Faire progresser le projet d'arroseurs automatiques de 10-12% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
+                                            }
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                                System.out.println("conduites. Faire progresser le projet de conduites oxygénées de 10-15% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
+                                            }
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                                System.out.println("bouclier. Faire progresser le projet de bouclier plasma de 20-30% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
+                                            }
+                                            if (j(joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                System.out.println("reducteur. Faire progresser le projet de réducteur de trainée de 2-3% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
+                                            }
+                                            System.out.println("retour. Retourner au menu principal");
+
+                                            switch (Main.scanner.next()) {
+
+                                                case "processer":
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "arrosseurs":
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "conduites":
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "bouclier":
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "reducteur":
+                                                    if (j(joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                        //TODO
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "retour":
+                                                    retour = true;
+                                                    break;
+                                                default:
+                                                    System.out.println(Main.msgErreurEntree);
+
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
@@ -1216,7 +1353,6 @@ public class Partie {
                                         break;
                                     default:
                                         System.out.println(Main.msgErreurEntree);
-                                        break;
                                 }
 
                             } else {
@@ -1469,6 +1605,18 @@ public class Partie {
             }
 
         } while (continuer);
+
+    }
+
+    private Joueur getJoueur(String key) {
+
+        for (Joueur joueur : this.personnages) {
+            if (joueur.getNom().equals(key)) {
+                return joueur;
+            }
+        }
+
+        return null;
 
     }
 

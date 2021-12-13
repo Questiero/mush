@@ -119,6 +119,17 @@ public class Salle {
         }
     }
 
+    public boolean hasObject(String key) {
+
+        for (Objet objet : this.stockage) {
+            if (objet.getNom().equals(key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean hasEquipement(String key) {
 
         for (Equipement equipement : this.equipements) {
