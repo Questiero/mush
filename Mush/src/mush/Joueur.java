@@ -178,6 +178,17 @@ public class Joueur {
 
     }
 
+    public void removeObjet(Objet objet) {
+        if (this.inventaire[0].getNom().equals(objet.getNom())) {
+            this.inventaire[0] = new Objet("Rien");
+        } else if (this.inventaire[1].getNom().equals(objet.getNom())) {
+            this.inventaire[1] = new Objet("Rien");
+        } else if (this.inventaire[2].getNom().equals(objet.getNom())) {
+            this.inventaire[2] = new Objet("Rien");
+        }
+
+    }
+
     public HashMap<String, Integer> getCompetences() {
         return this.competences;
     }

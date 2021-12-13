@@ -154,5 +154,9 @@ public class Salle {
         this.equipements.add(equipement);
 
     }
+    
+    public void removeCamera() {
+        this.equipements.remove("Caméra");
+    }
 
 }
