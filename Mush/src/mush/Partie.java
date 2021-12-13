@@ -781,6 +781,9 @@ public class Partie {
                                 if (joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0) && joueur.hasObjet("Ration standard")) {
                                     System.out.println("cuisiner. Cuisiner une ration (gratuit)");
                                 }
+                                if ((joueur.hasObjet("Ration standard") || joueur.hasObjet("Ration cuisinée")) && !(joueur.getSasiete() == 3)) {
+                                    System.out.println("manger. Manger une ration (gratuit)");
+                                }
                                 if (joueur.estDans("Laboratoire") && this.vaisseau.getSalle("Laboratoire").hasEquipement("Mycoscan")) {
                                     System.out.println("mycoscan. Connaitre le nombre de spores sur vous-même (gratuit)");
                                 }
@@ -1205,7 +1208,7 @@ public class Partie {
                                             System.out.println("Vous vennez de réparer 10% du réacteur PILGRED");
                                             salleJoueur.addToHistorique(joueur + " viens de faire avancer la réparation du réacteur PILGRED");
 
-                                            if(!joueur.competenceEquals("Physicien", 1)) {
+                                            if (!joueur.competenceEquals("Physicien", 1)) {
                                                 joueur.removePa(3);
                                             }
 
@@ -1260,7 +1263,7 @@ public class Partie {
                                             System.out.println("\nVous vennez d'installer une caméra dans " + salleJoueur);
                                             salleJoueur.addToHistorique(joueur + " viens d'installer une caméra");
 
-                                            joueur.removeObjet(new Objet("Caméra"));
+                                            joueur.removeObjet("Caméra");
                                             salleJoueur.addEquipement("Caméra", 1);
 
                                             joueur.removePa(4);
@@ -1269,7 +1272,73 @@ public class Partie {
                                         break;
                                     case "cuisiner":
                                         if (joueur.hasCompetence("Cuistot") && !joueur.competenceEquals("Cuistot", 0) && joueur.hasObjet("Ration standard")) {
-                                            //TODO
+
+                                            System.out.println("\nVous vennez de cuisiner une ration");
+                                            salleJoueur.addToHistorique(joueur + " viens de cuisiner une ration");
+
+                                            joueur.removeObjet("Ration standard");
+                                            joueur.addObjet(new Objet("Ration cuisinee"));
+
+                                        } else {
+                                            System.out.println(Main.msgErreurEntree);
+                                        }
+                                        break;
+                                    case "manger":
+                                        if ((joueur.hasObjet("Ration standard") || joueur.hasObjet("Ration cuisinée")) && !(joueur.getSasiete() == 3)) {
+
+                                            System.out.println("\nQuelle ration voulez-vous manger ?");
+                                            if (joueur.hasObjet("Ration standard")) {
+                                                System.out.println("standard. Ration standard");
+                                            }
+                                            if (joueur.hasObjet("Ration cuisinée")) {
+                                                System.out.println("cuisinee. Ration cuisinée");
+                                            }
+                                            System.out.println("retour. Retourner au menu principal");
+
+                                            switch (Main.scanner.next()) {
+
+                                                case "standard":
+                                                    if (joueur.hasObjet("Ration standard")) {
+
+                                                        joueur.removeObjet("Ration Standard");
+
+                                                        joueur.mange();
+
+                                                        joueur.addPa(2);
+                                                        joueur.removePmo(1);
+
+                                                        System.out.println("Vous vennez de manger une ration standard");
+                                                        salleJoueur.addToHistorique(joueur + "vient de manger une ration standard");
+
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "cuisinee":
+                                                    if (joueur.hasObjet("Ration cuisinée")) {
+
+                                                        joueur.removeObjet("Ration cuisinée");
+
+                                                        joueur.mange();
+
+                                                        joueur.addPa(4);
+                                                        joueur.addPmo(3);
+
+                                                        System.out.println("Vous vennez de manger une Ration cuisinée");
+                                                        salleJoueur.addToHistorique(joueur + "vient de manger une Ration cuisinée");
+
+                                                    } else {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+                                                    break;
+                                                case "retour":
+                                                    retour = true;
+                                                    break;
+                                                default:
+                                                    System.out.println(Main.msgErreurEntree);
+
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }
