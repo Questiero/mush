@@ -192,10 +192,7 @@ public class Vaisseau {
 
         for (int i = 0; i < nomObjets.length; i++) {
             for (int j = 0; j < nbrObjets[i]; j++) {
-
-                Objet objet = new Objet(nomObjets[i]);
-
-                this.salles[ra.nextInt(nbSalles - 1)].addObjet(objet);
+                this.salles[ra.nextInt(nbSalles - 1)].addObjet(new Objet(nomObjets[i]));
             }
 
         }

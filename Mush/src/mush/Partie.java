@@ -412,13 +412,12 @@ public class Partie {
             //Actions des joueurs
             for (Joueur joueur : joueurs) {
 
-                Salle salleJoueur = this.vaisseau.getSalle(joueur.getPositionKey());
-
                 boolean stop = false;
 
                 while (!stop && joueur.getPv() > 0) {
 
                     boolean retour = false;
+                    Salle salleJoueur = this.vaisseau.getSalle(joueur.getPositionKey());
 
                     System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
 
