@@ -164,7 +164,7 @@ public class Vaisseau {
             "Paire de gants de protection",
             "Savon",
             "Tablier intachable",
-            "Trottinette",
+            "Trotinette",
             "Extincteur",
             "Couteau",
             "Blaster",

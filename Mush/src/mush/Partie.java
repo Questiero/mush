@@ -463,8 +463,15 @@ public class Partie {
                         if (joueur.hasObjet("Chat de Schrödinger") && joueur.getPa() >= 1) {
                             System.out.println("chat. Caresser le chat de Schrödinger (1 PA)");
                         }
+                        int pmConversion = 2;
+                        if (joueur.hasCompetence("Sprinter")) {
+                            pmConversion += 2;
+                        }
+                        if (joueur.hasObjet("Trotinette")) {
+                            pmConversion += 2;
+                        }
                         if (joueur.getPm() == 0 && joueur.getPa() >= 1) {
-                            System.out.println("conversion. Convertir 1 PA en 2 PM (1 PA)"); //TODO +2 PM si Sprinter et +2 PM si Trotinnette
+                            System.out.println("conversion. Convertir 1 PA en " + pmConversion + " PM (1 PA)");
                         }
                         if (joueur.getPm() >= 1) {
                             System.out.println("deplacer. Changer de salle (1 PM)");
@@ -1297,6 +1304,8 @@ public class Partie {
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Mycoscan de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Mycoscan");
 
+                                                        joueur.removePa(2);
+
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
                                                         }
@@ -1323,6 +1332,8 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Gaz antispore de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Gaz antispore");
+
+                                                        joueur.removePa(2);
 
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
@@ -1351,6 +1362,8 @@ public class Partie {
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Sérum de constipaspore de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Sérum de constipaspore");
 
+                                                        joueur.removePa(2);
+
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
                                                         }
@@ -1377,6 +1390,8 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Savon mushicide de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Savon mushicide");
+
+                                                        joueur.removePa(2);
 
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
@@ -1405,6 +1420,8 @@ public class Partie {
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Sérum rétro-fongique de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Sérum rétro-fongique");
 
+                                                        joueur.removePa(2);
+
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
                                                         }
@@ -1431,6 +1448,8 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer la recherche sur le Extracteur de spores de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer la recherche sur le Extracteur de spores");
+
+                                                        joueur.removePa(2);
 
                                                         if (!joueur.hasObjet("Tablier intachable")) {
                                                             joueur.sali();
@@ -1491,6 +1510,10 @@ public class Partie {
                                                         System.out.println("Vous vennez de faire avancer le projet d'Accélération du processeur de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet d'Accélération du processeur");
 
+                                                        if (!(joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) {
+                                                            joueur.removePa(2);
+                                                        }
+
                                                         if (this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
                                                             salleJoueur.addToHistorique("e projet d'Accélération du processeur est terminée !");
                                                             salleJoueur.addEquipement("Accélération du processeur", 1);
@@ -1510,6 +1533,10 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer le projet d'Arrosseurs automatiques de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet d'Arrosseurs automatiques");
+
+                                                        if (!(joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) {
+                                                            joueur.removePa(2);
+                                                        }
 
                                                         if (this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
                                                             salleJoueur.addToHistorique("e projet d'Arrosseurs automatiques est terminée !");
@@ -1531,6 +1558,10 @@ public class Partie {
                                                         System.out.println("Vous vennez de faire avancer le projet de Conduites oxygénées de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Conduites oxygénées");
 
+                                                        if (!(joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) {
+                                                            joueur.removePa(2);
+                                                        }
+
                                                         if (this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
                                                             salleJoueur.addToHistorique("e projet de Conduites oxygénées est terminée !");
                                                             salleJoueur.addEquipement("Conduites oxygénées", 1);
@@ -1550,6 +1581,10 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer le projet de Bouclier plasma de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Bouclier plasma");
+
+                                                        if (!(joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) {
+                                                            joueur.removePa(2);
+                                                        }
 
                                                         if (this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
                                                             salleJoueur.addToHistorique("e projet de Bouclier plasma est terminée !");
@@ -1571,6 +1606,10 @@ public class Partie {
 
                                                         System.out.println("Vous vennez de faire avancer le projet de Réducteur de trainée de " + n + "%");
                                                         salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Réducteur de trainée");
+
+                                                        if (!(joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) {
+                                                            joueur.removePa(2);
+                                                        }
 
                                                         if (this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
                                                             salleJoueur.addToHistorique("e projet de Réducteur de trainée est terminée !");
@@ -1749,7 +1788,21 @@ public class Partie {
                             break;
                         case "conversion":
                             if (joueur.getPm() == 0 && joueur.getPa() >= 1 && !joueur.estCouche()) {
-                                //TODO
+
+                                int pmConversion = 2;
+                                if (joueur.hasCompetence("Sprinter")) {
+                                    pmConversion += 2;
+                                }
+                                if (joueur.hasObjet("Trotinette")) {
+                                    pmConversion += 2;
+                                }
+
+                                joueur.removePa(1);
+                                joueur.addPm(pmConversion);
+
+                                System.out.println("\nVous vennez de convertir 1 PA en " + pmConversion + " PM");
+                                salleJoueur.addToHistorique(joueur + " vient de convertir des PA en PM");
+
                             } else {
                                 System.out.println(Main.msgErreurEntree);
                             }
@@ -1789,7 +1842,7 @@ public class Partie {
 
                                     joueur.removePm(1);
 
-                                } else if (choixSalle != voisins.size()+1) {
+                                } else if (choixSalle != voisins.size() + 1) {
                                     System.out.println(Main.msgErreurEntree);
                                 }
 
