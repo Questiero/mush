@@ -256,8 +256,13 @@ public class Joueur {
      *
      */
     public void transform() {
-        this.mush = true;
-        this.peutPoinconner = true;
+        if (this.mush) {
+            this.mush = false;
+            this.peutPoinconner = false;
+        } else {
+            this.mush = true;
+            this.peutPoinconner = true;
+        }
     }
 
     public boolean isMush() {

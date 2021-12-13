@@ -647,7 +647,7 @@ public class Partie {
 
                                         System.out.println("\nListe des recherches terminées:");
                                         for (Map.Entry valeur : this.recherches.entrySet()) {
-                                            if (valeur.equals(Integer.valueOf(100))) {
+                                            if (valeur.equals(100)) {
                                                 System.out.println(valeur.getKey());
                                             }
                                         }
@@ -657,7 +657,7 @@ public class Partie {
 
                                         System.out.println("\nListe des projets NERON terminées:");
                                         for (Map.Entry valeur : this.projets.entrySet()) {
-                                            if (valeur.equals(Integer.valueOf(100))) {
+                                            if (valeur.equals(100)) {
                                                 System.out.println(valeur.getKey());
                                             }
                                         }
@@ -867,17 +867,136 @@ public class Partie {
                                         switch (Main.scanner.next()) {
 
                                             case "liste":
-                                                //TODO
+
+                                                System.out.println("\nListe des joueurs dans " + salleJoueur);
+                                                for (Joueur joueurTemp : this.personnages) {
+                                                    if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                        System.out.println(joueurTemp);
+                                                    }
+                                                }
+
+                                                salleJoueur.addToHistorique(joueur + "observe les personnes autour de lui");
+
                                                 break;
                                             case "discours":
                                                 if (joueur.hasCompetence("Leader") && joueur.getPa() >= 2) {
-                                                    //TODO
+
+                                                    for (Joueur joueurTemp : this.personnages) {
+                                                        if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                            joueur.addPmo(2);
+                                                        }
+                                                    }
+
+                                                    joueur.removePa(2);
+
+                                                    System.out.println("Vous vennez de faire un discours");
+                                                    salleJoueur.addToHistorique(joueur + "vient de faire un discours");
+
                                                 } else {
                                                     System.out.println(Main.msgErreurEntree);
                                                 }
                                                 break;
                                             case "soigner":
                                                 if (joueur.competenceEquals("Infirmier", 1) || (joueur.hasObjet("Medkit") && joueur.getPa() >= 2)) {
+
+                                                    ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                    //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                    for (Joueur joueurTemp : this.personnages) {
+                                                        if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                            joueursSalle.add(joueurTemp);
+                                                        }
+                                                    }
+
+                                                    int choixJoueur = -1;
+                                                    boolean correctInput;
+
+                                                    do {
+
+                                                        int i;
+
+                                                        System.out.println("\nChoississez un joueur à soigner:");
+                                                        for (i = 0; i < joueursSalle.size(); i++) {
+                                                            System.out.println((i + 1) + ". " + joueursSalle.get(i) + (joueur.competenceEquals("Infirimier", 1) ? " (gratuit)" : " (1 PA)"));
+                                                        }
+                                                        System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                        choixJoueur = Main.scanner.nextInt();
+
+                                                        correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                    } while (!correctInput);
+
+                                                    if (choixJoueur <= joueursSalle.size()) {
+
+                                                        System.out.println("\nVous venez de soigner " + joueursSalle.get(choixJoueur - 1));
+                                                        salleJoueur.addToHistorique(joueur + " vient de soigner " + joueursSalle.get(choixJoueur - 1));
+
+                                                        joueursSalle.get(choixJoueur - 1).addPv(4);
+
+                                                        if (joueur.competenceEquals("Infirimier", 1)) {
+                                                            joueur.setCompetence("Infirmier", 0);
+                                                        } else {
+                                                            joueur.removePa(1);
+                                                        }
+
+                                                    } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "reconforter":
+                                                if (joueur.hasCompetence("Psy") && joueur.getPa() >= 1) {
+
+                                                    ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                    //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                    for (Joueur joueurTemp : this.personnages) {
+                                                        if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                            joueursSalle.add(joueurTemp);
+                                                        }
+                                                    }
+
+                                                    int choixJoueur = -1;
+                                                    boolean correctInput;
+
+                                                    do {
+
+                                                        int i;
+
+                                                        System.out.println("\nChoississez un joueur à réconforter:");
+                                                        for (i = 0; i < joueursSalle.size(); i++) {
+                                                            System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (1 PA)");
+                                                        }
+                                                        System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                        choixJoueur = Main.scanner.nextInt();
+
+                                                        correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                    } while (!correctInput);
+
+                                                    if (choixJoueur <= joueursSalle.size()) {
+
+                                                        System.out.println("\nVous venez de réconforter " + joueursSalle.get(choixJoueur - 1));
+                                                        salleJoueur.addToHistorique(joueur + " vient de réconforter " + joueursSalle.get(choixJoueur - 1));
+
+                                                        joueursSalle.get(choixJoueur - 1).addPmo(2);
+                                                        joueur.removePa(1);
+
+                                                    } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "attaquer":
+                                                if (joueur.getPa() >= 2 || (joueur.getPa() >= 1 && (joueur.hasObjet("Blaster") || joueur.hasObjet("Couteau"))) || joueur.hasObjet("Grenade")) {
 
                                                     System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
                                                     if (joueur.getPa() >= 2) {
@@ -898,28 +1017,157 @@ public class Partie {
 
                                                         case "main":
                                                             if (joueur.getPa() >= 2) {
-                                                                //TODO
+
+                                                                ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                                //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                                for (Joueur joueurTemp : this.personnages) {
+                                                                    if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                                        joueursSalle.add(joueurTemp);
+                                                                    }
+                                                                }
+
+                                                                int choixJoueur = -1;
+                                                                boolean correctInput;
+
+                                                                do {
+
+                                                                    int i;
+
+                                                                    System.out.println("\nChoississez un joueur à attaquer à main nues:");
+                                                                    for (i = 0; i < joueursSalle.size(); i++) {
+                                                                        System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (2 PA)");
+                                                                    }
+                                                                    System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                                    choixJoueur = Main.scanner.nextInt();
+
+                                                                    correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                                } while (!correctInput);
+
+                                                                if (choixJoueur <= joueursSalle.size()) {
+
+                                                                    System.out.println("\nVous venez d'attaquer " + joueursSalle.get(choixJoueur - 1) + " à main nues");
+                                                                    salleJoueur.addToHistorique(joueur + " vient d'attaquer " + joueursSalle.get(choixJoueur - 1) + " à main nues");
+
+                                                                    joueursSalle.get(choixJoueur - 1).removePv(1);
+                                                                    joueur.removePa(2);
+
+                                                                } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                                    System.out.println(Main.msgErreurEntree);
+                                                                }
+
                                                             } else {
                                                                 System.out.println(Main.msgErreurEntree);
                                                             }
                                                             break;
                                                         case "couteau":
                                                             if (joueur.getPa() >= 1 && joueur.hasObjet("Couteau")) {
-                                                                //TODO
+
+                                                                ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                                //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                                for (Joueur joueurTemp : this.personnages) {
+                                                                    if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                                        joueursSalle.add(joueurTemp);
+                                                                    }
+                                                                }
+
+                                                                int choixJoueur = -1;
+                                                                boolean correctInput;
+
+                                                                do {
+
+                                                                    int i;
+
+                                                                    System.out.println("\nChoississez un joueur à attaquer au Couteau:");
+                                                                    for (i = 0; i < joueursSalle.size(); i++) {
+                                                                        System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (1 PA)");
+                                                                    }
+                                                                    System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                                    choixJoueur = Main.scanner.nextInt();
+
+                                                                    correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                                } while (!correctInput);
+
+                                                                if (choixJoueur <= joueursSalle.size()) {
+
+                                                                    System.out.println("\nVous venez d'attaquer " + joueursSalle.get(choixJoueur - 1) + " au Couteau");
+                                                                    salleJoueur.addToHistorique(joueur + " vient d'attaquer " + joueursSalle.get(choixJoueur - 1) + " au Coutea");
+
+                                                                    joueursSalle.get(choixJoueur - 1).removePv(1);
+                                                                    joueur.removePa(1);
+
+                                                                } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                                    System.out.println(Main.msgErreurEntree);
+                                                                }
+
                                                             } else {
                                                                 System.out.println(Main.msgErreurEntree);
                                                             }
                                                             break;
                                                         case "blaster":
                                                             if (joueur.getPa() >= 1 && joueur.hasObjet("Blaster")) {
-                                                                //TODO
+
+                                                                ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                                //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                                for (Joueur joueurTemp : this.personnages) {
+                                                                    if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                                        joueursSalle.add(joueurTemp);
+                                                                    }
+                                                                }
+
+                                                                int choixJoueur = -1;
+                                                                boolean correctInput;
+
+                                                                do {
+
+                                                                    int i;
+
+                                                                    System.out.println("\nChoississez un joueur à attaquer au Blaster:");
+                                                                    for (i = 0; i < joueursSalle.size(); i++) {
+                                                                        System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (1 PA)");
+                                                                    }
+                                                                    System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                                    choixJoueur = Main.scanner.nextInt();
+
+                                                                    correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                                } while (!correctInput);
+
+                                                                if (choixJoueur <= joueursSalle.size()) {
+
+                                                                    System.out.println("\nVous venez d'attaquer " + joueursSalle.get(choixJoueur - 1) + " au Blaster");
+                                                                    salleJoueur.addToHistorique(joueur + " vient d'attaquer " + joueursSalle.get(choixJoueur - 1) + " au Blaster");
+
+                                                                    joueursSalle.get(choixJoueur - 1).removePv(1);
+                                                                    joueur.removePa(1);
+
+                                                                } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                                    System.out.println(Main.msgErreurEntree);
+                                                                }
+
                                                             } else {
                                                                 System.out.println(Main.msgErreurEntree);
                                                             }
                                                             break;
                                                         case "grenade":
                                                             if (joueur.hasObjet("Grenade")) {
-                                                                //TODO
+
+                                                                for (Joueur joueurTemp : this.personnages) {
+                                                                    if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                                        joueurTemp.removePv(6);
+                                                                    }
+                                                                }
+
+                                                                System.out.println("\nVous vennez de lancer une grenade dans " + salleJoueur);
+                                                                salleJoueur.addToHistorique(joueur + "vient de lancer une grande");
+
                                                             } else {
                                                                 System.out.println(Main.msgErreurEntree);
                                                             }
@@ -935,23 +1183,51 @@ public class Partie {
                                                     System.out.println(Main.msgErreurEntree);
                                                 }
                                                 break;
-                                            case "reconforter":
-                                                if (joueur.hasCompetence("Psy") && joueur.getPa() >= 1) {
-                                                    //TODO
-                                                } else {
-                                                    System.out.println(Main.msgErreurEntree);
-                                                }
-                                                break;
-                                            case "attaquer":
-                                                if (joueur.getPa() >= 2 || (joueur.getPa() >= 1 && (joueur.hasObjet("Blaster") || joueur.hasObjet("Couteau"))) || joueur.hasObjet("Grenade")) {
-                                                    //TODO
-                                                } else {
-                                                    System.out.println(Main.msgErreurEntree);
-                                                }
-                                                break;
                                             case "serum":
                                                 if (joueur.hasObjet("Sérum retro-fongique") && joueur.getPa() >= 2) {
-                                                    //TODO
+
+                                                    ArrayList<Joueur> joueursSalle = new ArrayList<>();
+
+                                                    //Construction de l'ArrayList des joueurs dans la même salle que joueur
+                                                    for (Joueur joueurTemp : this.personnages) {
+                                                        if (joueurTemp.getPositionKey().equals(salleJoueur.getNom())) {
+                                                            joueursSalle.add(joueurTemp);
+                                                        }
+                                                    }
+
+                                                    int choixJoueur = -1;
+                                                    boolean correctInput;
+
+                                                    do {
+
+                                                        int i;
+
+                                                        System.out.println("\nChoississez un joueur sur qui utiliser le Sérum retro-fongique:");
+                                                        for (i = 0; i < joueursSalle.size(); i++) {
+                                                            System.out.println((i + 1) + ". " + joueursSalle.get(i) + " (2 PA)");
+                                                        }
+                                                        System.out.println((i + 1) + ". Personne (gratuit)");
+
+                                                        choixJoueur = Main.scanner.nextInt();
+
+                                                        correctInput = ((choixJoueur >= 1) && (choixJoueur <= joueursSalle.size() + 1));
+
+                                                    } while (!correctInput);
+
+                                                    if (choixJoueur <= joueursSalle.size()) {
+
+                                                        System.out.println("\nVous venez d'utiliser le Sérum rétro-fongique sur " + joueursSalle.get(choixJoueur - 1));
+                                                        salleJoueur.addToHistorique(joueur + " vient d'utiliser le Sérum rétro-fongique sur " + joueursSalle.get(choixJoueur - 1));
+
+                                                        if (joueursSalle.get(choixJoueur - 1).isMush()) {
+                                                            joueursSalle.get(choixJoueur - 1).transform();
+                                                        }
+                                                        joueur.removePa(2);
+
+                                                    } else if (choixJoueur != joueursSalle.size() + 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+
                                                 } else {
                                                     System.out.println(Main.msgErreurEntree);
                                                 }
@@ -1132,7 +1408,7 @@ public class Partie {
 
                                                         System.out.println("\nChoississez un équipement à réparer parmis:");
                                                         for (i = 0; i < equipementsCasses.size(); i++) {
-                                                            System.out.println((i + 1) + ". " + equipementsCasses.get(i) + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PM)"));
+                                                            System.out.println((i + 1) + ". " + equipementsCasses.get(i) + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PA)"));
                                                         }
                                                         System.out.println((i + 1) + ". Ne rien faire (gratuit)");
 
@@ -1162,8 +1438,8 @@ public class Partie {
 
                                                     ArrayList<Integer> portesCasses = new ArrayList<>();
                                                     int salleId = this.vaisseau.getSalleId(salleJoueur);
-                                                    
-                                                    for (int i = 0; i<this.vaisseau.getPortes()[salleId].length; i++) {
+
+                                                    for (int i = 0; i < this.vaisseau.getPortes()[salleId].length; i++) {
                                                         if (this.vaisseau.getPortes()[salleId][i] == -1) {
                                                             portesCasses.add(i);
                                                         }
@@ -1178,7 +1454,7 @@ public class Partie {
 
                                                         System.out.println("\nChoississez une porte à réparer parmis:");
                                                         for (i = 0; i < portesCasses.size(); i++) {
-                                                            System.out.println((i + 1) + ". " + this.vaisseau.getSalles()[portesCasses.get(i)] + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PM)"));
+                                                            System.out.println((i + 1) + ". " + this.vaisseau.getSalles()[portesCasses.get(i)] + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PA)"));
                                                         }
                                                         System.out.println((i + 1) + ". Ne rien faire (gratuit)");
 
@@ -1190,10 +1466,10 @@ public class Partie {
 
                                                     if (choixPorte <= portesCasses.size()) {
 
-                                                        this.vaisseau.getPortes()[salleId][portesCasses.get(choixPorte-1)] = 1;
+                                                        this.vaisseau.getPortes()[salleId][portesCasses.get(choixPorte - 1)] = 1;
 
-                                                        System.out.println("\nVous vennez de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte-1)]);
-                                                        salleJoueur.addToHistorique(joueur + " vient de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte-1)]);
+                                                        System.out.println("\nVous vennez de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte - 1)]);
+                                                        salleJoueur.addToHistorique(joueur + " vient de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte - 1)]);
 
                                                         if (!joueur.competenceEquals("Technicien", 1)) {
                                                             joueur.removePa(1);
@@ -1256,7 +1532,7 @@ public class Partie {
                                                 }
                                                 joueur.removePa(1);
                                                 System.out.println("\nVous vennez d'attaquer un vaisseau alien");
-                                                salleJoueur.addToDeplacements(joueur + " vient d'attaquer un vaisseau alien");
+                                                salleJoueur.addToHistorique(joueur + " vient d'attaquer un vaisseau alien");
                                             }
 
                                         } else {
@@ -1460,22 +1736,22 @@ public class Partie {
                                         if (joueur.estDans("Laboratoire")) {
 
                                             System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(100)) {
                                                 System.out.println("mycoscan. Faire progresser la recherche sur le Mycoscan de " + ((joueur.hasCompetence("Biologiste")) ? "13-20%" : "3-10%") + " (2 PA)");
                                             }
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(100)) {
                                                 System.out.println("gaz. Faire progresser la recherche sur le Gaz antispore de " + ((joueur.hasCompetence("Biologiste")) ? "16-19%" : "6-9%") + " (2 PA)");
                                             }
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(100)) {
                                                 System.out.println("constipaspore. Faire progresser la recherche sur le Sérum de constipaspore de " + ((joueur.hasCompetence("Biologiste")) ? "20-25%" : "10-15%") + " (2 PA)");
                                             }
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(100)) {
                                                 System.out.println("savon. Faire progresser la recherche sur le Savon mushicide de " + ((joueur.hasCompetence("Biologiste")) ? "13-14%" : "3-4%") + " (2 PA)");
                                             }
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(100) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
                                                 System.out.println("retro. Faire progresser la recherche sur le Sérum rétro-fongique de " + ((joueur.hasCompetence("Biologiste")) ? "11-14%" : "1-4%") + " (2 PA)");
                                             }
-                                            if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                            if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(100)) {
                                                 System.out.println("extracteur. Faire progresser la recherche sur l'Extracteur de spores de " + ((joueur.hasCompetence("Biologiste")) ? "13-17%" : "3-7%") + " (2 PA)");
                                             }
 
@@ -1484,7 +1760,7 @@ public class Partie {
                                             switch (Main.scanner.next()) {
 
                                                 case "mycoscan":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Mycoscan").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(11) + 3;
@@ -1503,7 +1779,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Mycoscan").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Mycoscan").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Mycoscan est terminée !");
                                                             salleJoueur.addEquipement("Mycoscan", 1);
                                                         }
@@ -1513,7 +1789,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "gaz":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Gaz antispore").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 6;
@@ -1532,7 +1808,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Gaz antispore").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Gaz antispore").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Gaz antispore est terminée !");
                                                             salleJoueur.addEquipement("Gaz antispore", 1);
                                                         }
@@ -1542,7 +1818,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "constipaspore":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum de constipaspore").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(16) + 10;
@@ -1561,7 +1837,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Sérum de constipaspore").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Sérum de constipaspore").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Sérum de constipaspore est terminée !");
                                                             salleJoueur.addEquipement("Sérum de constipaspore", 1);
                                                         }
@@ -1571,7 +1847,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "savon":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Savon mushicide").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(5) + 3;
@@ -1590,7 +1866,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Savon mushicide").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Savon mushicide").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Savon mushicide est terminée !");
                                                             salleJoueur.addObjet(new Objet("Savon mushicide"));
                                                         }
@@ -1600,7 +1876,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "retro":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100)) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Sérum rétro-fongique").equals(100) && salleJoueur.hasObject("Souche de test mush") && this.getJoueur("Zhong Chun").getPositionKey().equals("Laboratoire")) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(5) + 1;
@@ -1619,7 +1895,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Sérum rétro-fongique").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Sérum rétro-fongique").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Sérum rétro-fongique est terminée !");
                                                             salleJoueur.addObjet(new Objet("Sérum rétro-fongique"));
                                                         }
@@ -1629,7 +1905,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "extracteur":
-                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                                    if (joueur.getPa() >= 2 && !this.recherches.get("Extracteur de spores").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(8) + 3;
@@ -1648,7 +1924,7 @@ public class Partie {
                                                             joueur.sali();
                                                         }
 
-                                                        if (this.recherches.get("Extracteur de spores").equals(Integer.valueOf(100))) {
+                                                        if (this.recherches.get("Extracteur de spores").equals(100)) {
                                                             salleJoueur.addToHistorique("La recherche sur le Extracteur de spores est terminée !");
                                                             salleJoueur.addObjet(new Objet("Extracteur de spores"));
                                                         }
@@ -1673,19 +1949,19 @@ public class Partie {
                                         if (joueur.estDans("Nexus")) {
 
                                             System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
-                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(100)) {
                                                 System.out.println("processeur. Faire progresser le projet d'accélération du processeur de 6-9% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
-                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(100)) {
                                                 System.out.println("arroseurs. Faire progresser le projet d'arroseurs automatiques de 10-12% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
-                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(100)) {
                                                 System.out.println("conduites. Faire progresser le projet de conduites oxygénées de 10-15% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
-                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(100)) {
                                                 System.out.println("bouclier. Faire progresser le projet de bouclier plasma de 20-30% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
-                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                            if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(100)) {
                                                 System.out.println("reducteur. Faire progresser le projet de réducteur de trainée de 2-3% " + ((joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0)) ? "(gratuit)" : "(2 PA)"));
                                             }
                                             System.out.println("retour. Retourner au menu principal");
@@ -1693,7 +1969,7 @@ public class Partie {
                                             switch (Main.scanner.next()) {
 
                                                 case "processer":
-                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 9;
@@ -1707,7 +1983,7 @@ public class Partie {
                                                             joueur.removePa(2);
                                                         }
 
-                                                        if (this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                                        if (this.projets.get("Accélération du processeur").equals(100)) {
                                                             salleJoueur.addToHistorique("e projet d'Accélération du processeur est terminée !");
                                                             salleJoueur.addEquipement("Accélération du processeur", 1);
                                                         }
@@ -1717,7 +1993,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "arrosseurs":
-                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 9;
@@ -1731,7 +2007,7 @@ public class Partie {
                                                             joueur.removePa(2);
                                                         }
 
-                                                        if (this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                                        if (this.projets.get("Arrosseurs automatiques").equals(100)) {
                                                             salleJoueur.addToHistorique("e projet d'Arrosseurs automatiques est terminée !");
                                                             salleJoueur.addEquipement("Arrosseurs automatiques", 1);
                                                         }
@@ -1741,7 +2017,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "conduites":
-                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 9;
@@ -1755,7 +2031,7 @@ public class Partie {
                                                             joueur.removePa(2);
                                                         }
 
-                                                        if (this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                                        if (this.projets.get("Conduites oxygénées").equals(100)) {
                                                             salleJoueur.addToHistorique("e projet de Conduites oxygénées est terminée !");
                                                             salleJoueur.addEquipement("Conduites oxygénées", 1);
                                                         }
@@ -1765,7 +2041,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "bouclier":
-                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 9;
@@ -1779,7 +2055,7 @@ public class Partie {
                                                             joueur.removePa(2);
                                                         }
 
-                                                        if (this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                                        if (this.projets.get("Bouclier plasma").equals(100)) {
                                                             salleJoueur.addToHistorique("e projet de Bouclier plasma est terminée !");
                                                             salleJoueur.addEquipement("Bouclier plasma", 1);
                                                             this.vaisseau.addArmure(200);
@@ -1790,7 +2066,7 @@ public class Partie {
                                                     }
                                                     break;
                                                 case "reducteur":
-                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                    if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(100)) {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(10) + 9;
@@ -1804,7 +2080,7 @@ public class Partie {
                                                             joueur.removePa(2);
                                                         }
 
-                                                        if (this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                        if (this.projets.get("Réducteur de trainée").equals(100)) {
                                                             salleJoueur.addToHistorique("e projet de Réducteur de trainée est terminée !");
                                                             salleJoueur.addEquipement("Réducteur de trainée", 1);
                                                         }
