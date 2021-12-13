@@ -745,7 +745,137 @@ public class Partie {
                                         }
                                         break;
                                     case "joueurs":
-                                        //TODO
+
+                                        System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                        System.out.println("liste. Afficher la liste des joueurs présents dans" + salleJoueur + "(gratuit)");
+                                        if (joueur.hasCompetence("Leader") && joueur.getPa() >= 2) {
+                                            System.out.println("discours. Prononcer un discours (2 PA)");
+                                        }
+                                        if (joueur.competenceEquals("Infirmier", 1) || (joueur.hasObjet("Medkit") && joueur.getPa() >= 2)) {
+                                            System.out.println("soigner. Soigner un joueur" + (joueur.competenceEquals("Infirmier", 1) ? "(gratuit)" : "(2 PA)"));
+                                        }
+                                        if (joueur.hasCompetence("Psy") && joueur.getPa() >= 1) {
+                                            System.out.println("reconforter. Reconforter un joueur (1 PA)");
+                                        }
+                                        if (joueur.getPa() >= 2 || (joueur.getPa() >= 1 && (joueur.hasObjet("Blaster") || joueur.hasObjet("Couteau"))) || joueur.hasObjet("Grenade")) {
+                                            System.out.println("attaquer. Voir les options pour attaquer un joueur (gratuit)");
+
+                                        }
+                                        if (joueur.hasObjet("Sérum retro-fongique") && joueur.getPa() >= 2) {
+                                            System.out.println("serum. Utiliser le sérum rétro-fongique sur un joueur (2 PA)");
+                                        }
+                                        if (joueur.hasCompetence("Bourreau") && joueur.getPa() >= 2) {
+                                            System.out.println("bourreau. Fait perdre 1 PV à un joueur et révèle autant de ses dernières actions qu'il lui manque de PV (1 PA)");
+                                        }
+                                        System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                                        switch (Main.scanner.next()) {
+
+                                            case "liste":
+                                                //TODO
+                                                break;
+                                            case "discours":
+                                                if (joueur.hasCompetence("Leader") && joueur.getPa() >= 2) {
+                                                    //TODO
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "soigner":
+                                                if (joueur.competenceEquals("Infirmier", 1) || (joueur.hasObjet("Medkit") && joueur.getPa() >= 2)) {
+
+                                                    System.out.println("\n" + joueur + ", sélectionnez une action à effectuer parmis:");
+                                                    if (joueur.getPa() >= 2) {
+                                                        System.out.println("main. Attaquer un joueur à main nue (2 PA)");
+                                                    }
+                                                    if (joueur.getPa() >= 1 && joueur.hasObjet("Couteau")) {
+                                                        System.out.println("couteau. Attaquer un joueur avec un couteau (1 PA)");
+                                                    }
+                                                    if (joueur.getPa() >= 1 && joueur.hasObjet("Blaster")) {
+                                                        System.out.println("blaster. Attaquer un joueur avec un blaster (1 PA)");
+                                                    }
+                                                    if (joueur.hasObjet("Grenade")) {
+                                                        System.out.println("grenade. Lancer une grenade (gratuit)");
+                                                    }
+                                                    System.out.println("retour. Retourner au menu principal (gratuit)");
+
+                                                    switch (Main.scanner.next()) {
+
+                                                        case "main":
+                                                            if (joueur.getPa() >= 2) {
+                                                                //TODO
+                                                            } else {
+                                                                System.out.println(Main.msgErreurEntree);
+                                                            }
+                                                            break;
+                                                        case "couteau":
+                                                            if (joueur.getPa() >= 1 && joueur.hasObjet("Couteau")) {
+                                                                //TODO
+                                                            } else {
+                                                                System.out.println(Main.msgErreurEntree);
+                                                            }
+                                                            break;
+                                                        case "blaster":
+                                                            if (joueur.getPa() >= 1 && joueur.hasObjet("Blaster")) {
+                                                                //TODO
+                                                            } else {
+                                                                System.out.println(Main.msgErreurEntree);
+                                                            }
+                                                            break;
+                                                        case "grenade":
+                                                            if (joueur.hasObjet("Grenade")) {
+                                                                //TODO
+                                                            } else {
+                                                                System.out.println(Main.msgErreurEntree);
+                                                            }
+                                                            break;
+                                                        case "retour":
+                                                            retour = true;
+                                                        default:
+                                                            System.out.println(Main.msgErreurEntree);
+
+                                                    }
+
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "reconforter":
+                                                if (joueur.hasCompetence("Psy") && joueur.getPa() >= 1) {
+                                                    //TODO
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "attaquer":
+                                                if (joueur.getPa() >= 2 || (joueur.getPa() >= 1 && (joueur.hasObjet("Blaster") || joueur.hasObjet("Couteau"))) || joueur.hasObjet("Grenade")) {
+                                                    //TODO
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "serum":
+                                                if (joueur.hasObjet("Sérum retro-fongique") && joueur.getPa() >= 2) {
+                                                    //TODO
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "bourreau":
+                                                if (joueur.hasCompetence("Bourreau") && joueur.getPa() >= 2) {
+                                                    //TODO
+                                                } else {
+                                                    System.out.println(Main.msgErreurEntree);
+                                                }
+                                                break;
+                                            case "retour":
+                                                retour = true;
+                                                break;
+                                            default:
+                                                System.out.println(Main.msgErreurEntree);
+
+                                        }
+
                                         break;
                                     case "stockage":
 
