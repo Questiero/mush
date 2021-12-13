@@ -200,7 +200,9 @@ public class Partie {
 
         }
 
-        this.vaisseau.removeOxygene(this.nbrJoueurs);
+        if(!(this.vaisseau.getSalle("Nexus").hasEquipement("Conduites oxygénées") && Math.random()*100<20)) {
+            this.vaisseau.removeOxygene(this.nbrJoueurs);
+        }
 
         //Gestion des compétences et changement de caractéristiques des joueurs à chaque fin de cycle
         for (Joueur joueur : this.personnages) {
@@ -1283,7 +1285,7 @@ public class Partie {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(16) + 10;
-                                                        if (joueur.hasCompetence("Sérum de constipaspore")) {
+                                                        if (joueur.hasCompetence("Biologiste")) {
                                                             n += 10;
                                                         }
 
@@ -1337,7 +1339,7 @@ public class Partie {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(5) + 1;
-                                                        if (joueur.hasCompetence("Sérum rétro-fongique")) {
+                                                        if (joueur.hasCompetence("Biologiste")) {
                                                             n += 10;
                                                         }
 
@@ -1364,7 +1366,7 @@ public class Partie {
 
                                                         Random rand = new Random();
                                                         int n = rand.nextInt(8) + 3;
-                                                        if (joueur.hasCompetence("Extracteur de spores")) {
+                                                        if (joueur.hasCompetence("Biologiste")) {
                                                             n += 10;
                                                         }
 
@@ -1423,35 +1425,101 @@ public class Partie {
 
                                                 case "processer":
                                                     if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 9;
+
+                                                        this.avancerProjet("Accélération du processeur", n);
+
+                                                        System.out.println("Vous vennez de faire avancer le projet d'Accélération du processeur de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet d'Accélération du processeur");
+
+                                                        if (this.projets.get("Accélération du processeur").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("e projet d'Accélération du processeur est terminée !");
+                                                            salleJoueur.addEquipement("Accélération du processeur", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "arrosseurs":
                                                     if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 9;
+
+                                                        this.avancerProjet("Arrosseurs automatiques", n);
+
+                                                        System.out.println("Vous vennez de faire avancer le projet d'Arrosseurs automatiques de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet d'Arrosseurs automatiques");
+
+                                                        if (this.projets.get("Arrosseurs automatiques").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("e projet d'Arrosseurs automatiques est terminée !");
+                                                            salleJoueur.addEquipement("Arrosseurs automatiques", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "conduites":
                                                     if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 9;
+
+                                                        this.avancerProjet("Conduites oxygénées", n);
+
+                                                        System.out.println("Vous vennez de faire avancer le projet de Conduites oxygénées de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Conduites oxygénées");
+
+                                                        if (this.projets.get("Conduites oxygénées").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("e projet de Conduites oxygénées est terminée !");
+                                                            salleJoueur.addEquipement("Conduites oxygénées", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "bouclier":
                                                     if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 9;
+
+                                                        this.avancerProjet("Bouclier plasma", n);
+
+                                                        System.out.println("Vous vennez de faire avancer le projet de Bouclier plasma de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Bouclier plasma");
+
+                                                        if (this.projets.get("Bouclier plasma").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("e projet de Bouclier plasma est terminée !");
+                                                            salleJoueur.addEquipement("Bouclier plasma", 1);
+                                                            this.vaisseau.addArmure(200);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }
                                                     break;
                                                 case "reducteur":
                                                     if ((joueur.getPa() >= 2 || (joueur.hasCompetence("Informatition") && !joueur.competenceEquals("Informatitien", 0))) && !this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
-                                                        //TODO
+
+                                                        Random rand = new Random();
+                                                        int n = rand.nextInt(10) + 9;
+
+                                                        this.avancerProjet("Réducteur de trainée", n);
+
+                                                        System.out.println("Vous vennez de faire avancer le projet de Réducteur de trainée de " + n + "%");
+                                                        salleJoueur.addToHistorique(joueur + " viens de faire avancer le projet de Réducteur de trainée");
+
+                                                        if (this.projets.get("Réducteur de trainée").equals(Integer.valueOf(100))) {
+                                                            salleJoueur.addToHistorique("e projet de Réducteur de trainée est terminée !");
+                                                            salleJoueur.addEquipement("Réducteur de trainée", 1);
+                                                        }
+
                                                     } else {
                                                         System.out.println(Main.msgErreurEntree);
                                                     }

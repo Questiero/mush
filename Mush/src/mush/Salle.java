@@ -133,7 +133,7 @@ public class Salle {
     public boolean hasEquipement(String key) {
 
         for (Equipement equipement : this.equipements) {
-            if (equipement.getNom().equals(key)) {
+            if (equipement.getNom().equals(key) && !equipement.estCasse()) {
                 return true;
             }
         }
