@@ -1105,7 +1105,113 @@ public class Partie {
                                         break;
                                     case "reparer":
                                         if (joueur.competenceEquals("Technicien", 1) || joueur.getPa() >= 1) {
-                                            //TODO
+
+                                            System.out.println("\nSouhaitez-vous réparer:");
+                                            System.out.println("equipement. Un équipement");
+                                            System.out.println("porte. Une porte");
+                                            System.out.println("retour. Retourner au menu principal");
+
+                                            switch (Main.scanner.next()) {
+
+                                                case "equipement":
+
+                                                    ArrayList<Equipement> equipementsCasses = new ArrayList<>();
+
+                                                    for (Equipement equipement : salleJoueur.getEquipements()) {
+                                                        if (equipement.estCasse()) {
+                                                            equipementsCasses.add(equipement);
+                                                        }
+                                                    }
+
+                                                    int choixEquipement = -1;
+                                                    boolean correctInputEquipement;
+
+                                                    do {
+
+                                                        int i;
+
+                                                        System.out.println("\nChoississez un équipement à réparer parmis:");
+                                                        for (i = 0; i < equipementsCasses.size(); i++) {
+                                                            System.out.println((i + 1) + ". " + equipementsCasses.get(i) + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PM)"));
+                                                        }
+                                                        System.out.println((i + 1) + ". Ne rien faire (gratuit)");
+
+                                                        choixEquipement = Main.scanner.nextInt();
+
+                                                        correctInputEquipement = ((choixEquipement >= 1) && (choixEquipement <= equipementsCasses.size() + 1));
+
+                                                    } while (!correctInputEquipement);
+
+                                                    if (choixEquipement <= equipementsCasses.size()) {
+
+                                                        equipementsCasses.get(choixEquipement - 1).toggleCasse();
+
+                                                        System.out.println("\nVous vennez de réparer " + equipementsCasses.get(choixEquipement - 1));
+                                                        salleJoueur.addToHistorique(joueur + " vient de réparer " + equipementsCasses.get(choixEquipement - 1));
+
+                                                        if (!joueur.competenceEquals("Technicien", 1)) {
+                                                            joueur.removePa(1);
+                                                        }
+
+                                                    } else if (choixEquipement != salleJoueur.getEquipements().size() + 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+
+                                                    break;
+                                                case "porte":
+
+                                                    ArrayList<Integer> portesCasses = new ArrayList<>();
+                                                    int salleId = this.vaisseau.getSalleId(salleJoueur);
+                                                    
+                                                    for (int i = 0; i<this.vaisseau.getPortes()[salleId].length; i++) {
+                                                        if (this.vaisseau.getPortes()[salleId][i] == -1) {
+                                                            portesCasses.add(i);
+                                                        }
+                                                    }
+
+                                                    int choixPorte = -1;
+                                                    boolean correctInputPorte;
+
+                                                    do {
+
+                                                        int i;
+
+                                                        System.out.println("\nChoississez une porte à réparer parmis:");
+                                                        for (i = 0; i < portesCasses.size(); i++) {
+                                                            System.out.println((i + 1) + ". " + this.vaisseau.getSalles()[portesCasses.get(i)] + (joueur.competenceEquals("Technicien", 1) ? " (gratuit)" : " (1 PM)"));
+                                                        }
+                                                        System.out.println((i + 1) + ". Ne rien faire (gratuit)");
+
+                                                        choixPorte = Main.scanner.nextInt();
+
+                                                        correctInputPorte = ((choixPorte >= 1) && (choixPorte <= portesCasses.size() + 1));
+
+                                                    } while (!correctInputPorte);
+
+                                                    if (choixPorte <= portesCasses.size()) {
+
+                                                        this.vaisseau.getPortes()[salleId][portesCasses.get(choixPorte-1)] = 1;
+
+                                                        System.out.println("\nVous vennez de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte-1)]);
+                                                        salleJoueur.addToHistorique(joueur + " vient de réparer la porte vers " + this.vaisseau.getSalles()[portesCasses.get(choixPorte-1)]);
+
+                                                        if (!joueur.competenceEquals("Technicien", 1)) {
+                                                            joueur.removePa(1);
+                                                        }
+
+                                                    } else if (choixPorte != salleJoueur.getEquipements().size() + 1) {
+                                                        System.out.println(Main.msgErreurEntree);
+                                                    }
+
+                                                    break;
+                                                case "retour":
+                                                    retour = true;
+                                                    break;
+                                                default:
+                                                    System.out.println(Main.msgErreurEntree);
+
+                                            }
+
                                         } else {
                                             System.out.println(Main.msgErreurEntree);
                                         }

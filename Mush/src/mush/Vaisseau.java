@@ -286,6 +286,17 @@ public class Vaisseau {
         return this.graphVoisins;
     }
 
+    public int getSalleId(Salle salle) {
+        for (int i = 0; i<this.salles.length; i++) {
+            if (salle.getNom().equals(this.salles[i].getNom())) {
+                return i;
+            }
+        }
+
+        return -1;
+
+    }
+
     public int getArmure() {
         return this.armure;
     }
