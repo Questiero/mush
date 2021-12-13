@@ -839,14 +839,14 @@ public class Partie {
                                                     if (choixCach < 0 || choixCach > iCach - 1) {
                                                         System.out.println(Main.msgErreurEntree);
                                                     } else if (choixCach != iCach - 1) {
-                                                        
+
                                                         System.out.println("\nVous vennez de cacher " + salleJoueur.getStockage().get(choixCach) + " dans le stockage de " + salleJoueur);
                                                         salleJoueur.addToHistorique(joueur + "vient de cacher " + salleJoueur.getStockage().get(choixCach) + " dans le stockage");
                                                         salleJoueur.cacherObjet(salleJoueur.getStockage().get(choixCach));
                                                         joueur.getInventaire()[choixCach] = new Objet("Rien");
-                                                        
+
                                                         joueur.removePa(1);
-                                                        
+
                                                     }
 
                                                 } else {
@@ -859,9 +859,9 @@ public class Partie {
                                                     salleJoueur.fouiller();
                                                     System.out.println("\nVous fouillez " + salleJoueur);
                                                     salleJoueur.addToHistorique(joueur + "viens de fouiller la salle");
-                                                    
+
                                                     joueur.removePa(1);
-                                                    if(!joueur.hasCompetence("Observateur")) {
+                                                    if (!joueur.hasCompetence("Observateur")) {
                                                         joueur.removePa(1);
                                                     }
 
@@ -1007,15 +1007,15 @@ public class Partie {
                                             System.out.println("\nVous vennez de désinstaller une caméra dans " + salleJoueur);
                                             salleJoueur.addToHistorique(joueur + " viens de désinstaller une caméra");
 
-                                            if(joueur.inventairePlein()) {
+                                            if (joueur.inventairePlein()) {
                                                 salleJoueur.addObjet(new Objet("Caméra"));
                                             } else {
                                                 joueur.addObjet(new Objet("Caméra"));
                                             }
                                             salleJoueur.removeCamera();
-                                            
+
                                             joueur.removePa(4);
-                                            
+
                                         } else if (joueur.hasObjet("Caméra")) {
 
                                             System.out.println("\nVous vennez d'installer une caméra dans " + salleJoueur);
@@ -1023,7 +1023,7 @@ public class Partie {
 
                                             joueur.removeObjet(new Objet("Caméra"));
                                             salleJoueur.addEquipement("Caméra", 1);
-                                            
+
                                             joueur.removePa(4);
 
                                         }
