@@ -2,6 +2,7 @@ package mush;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -39,6 +40,10 @@ public class Partie {
     private final LinkedBlockingQueue mainChat = new LinkedBlockingQueue<>(10);
     private final LinkedBlockingQueue mushChat = new LinkedBlockingQueue<>(10);
 
+    //Recherchers et projets
+    private final HashMap<String, Integer> recherches = new HashMap<>();
+    private final HashMap<String, Integer> projets = new HashMap<>();
+
     //Vaisseaux Aliens
     private int aliensActifs = 0, aliensInter = 0, aliensInactifs = 0;
 
@@ -48,7 +53,10 @@ public class Partie {
     public Partie() {
 
         this.vaisseau = new Vaisseau("Daedalus");
+
         this.initPersonnages();
+        this.initRecherchesProjets();
+
     }
 
     private void initPersonnages() {
@@ -84,6 +92,23 @@ public class Partie {
 
         }
 
+    }
+
+    private void initRecherchesProjets() {
+
+        this.recherches.put("Mycoscan", 0);
+        this.recherches.put("Gaz antispore", 0);
+        this.recherches.put("Sérum de constipaspore", 0);
+        this.recherches.put("Savon mushicide", 0);
+        this.recherches.put("Sérum rétro-fongique", 0);
+        this.recherches.put("Extracteur de spores", 0);
+        
+        this.projets.put("Accélération du processeur", 0);
+        this.projets.put("Arrosseurs automatiques", 0);
+        this.projets.put("Conduites oxygénées", 0);
+        this.projets.put("Bouclier plasma", 0);
+        this.projets.put("Réducteur de trainée", 0);
+        
     }
 
     public void addToMainChat(String msg) {
@@ -1395,8 +1420,12 @@ public class Partie {
                     }
 
                     if (!retour) {
-                        System.out.println("\nEntrez n'importe quoi pour continuer");
-                        Main.scanner.next();
+                        System.out.println("\nAppuyez sur Entrée pour continuer");
+                        try {
+                            System.in.read();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Partie.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
 
                 }
