@@ -237,7 +237,6 @@ public class Joueur {
 
     public void affichageEtatJoueur() {
 
-        //TODO clean un peu
         System.out.println("\nEtat actuel de " + this.getNom() + ":");
         System.out.println("PV: " + this.pv + "/" + this.maxPV);
         System.out.println("PA: " + this.pa + "/" + this.maxPA);
