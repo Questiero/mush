@@ -229,7 +229,7 @@ public class Vaisseau {
      */
     public ArrayList<Salle> getVoisins(Salle salle) {
 
-        return getVoisinsByKey(salle.getNom());
+        return getVoisins(salle.getNom());
 
     }
 
@@ -240,7 +240,7 @@ public class Vaisseau {
      * voisins
      * @return liste des voisins de salle si elle existe, null sinon
      */
-    public ArrayList<Salle> getVoisinsByKey(String salleKey) {
+    public ArrayList<Salle> getVoisins(String salleKey) {
 
         //Détermination de la salle 
         for (int i = 0; i < this.salles.length; i++) {
@@ -248,7 +248,7 @@ public class Vaisseau {
             Salle salle = this.salles[i];
 
             if (salle.getNom().equals(salleKey)) {
-                return getVoisinsByIndex(i);
+                return getVoisins(i);
             }
 
         }
@@ -264,7 +264,7 @@ public class Vaisseau {
      * voisins
      * @return liste des voisins de salle si elle existe, null sinon
      */
-    public ArrayList<Salle> getVoisinsByIndex(int salleIndex) {
+    public ArrayList<Salle> getVoisins(int salleIndex) {
 
         ArrayList<Salle> res = new ArrayList<>();
 

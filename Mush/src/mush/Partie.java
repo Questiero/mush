@@ -2376,7 +2376,7 @@ public class Partie {
                         case "deplacer":
                             if (joueur.getPm() >= 1 && !joueur.estCouche()) {
 
-                                ArrayList<Salle> voisins = this.vaisseau.getVoisinsByKey(joueur.getPositionKey());
+                                ArrayList<Salle> voisins = this.vaisseau.getVoisins(joueur.getPositionKey());
 
                                 int choixSalle = -1;
                                 boolean correctInput;
